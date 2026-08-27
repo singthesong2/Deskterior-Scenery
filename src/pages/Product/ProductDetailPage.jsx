@@ -3,7 +3,8 @@ import { mockProduct } from "../../constants/mockProduct";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
 import ProductInfo from "../../components/product/ProductInfo";
 import PurchaseBox from "../../components/product/PurchaseBox";
-import ProductDetails from "../../components/product/ProductDetails";
+import ProductSummary from "../../components/product/ProductSummary";
+import ProductDetailContent from "../../components/product/ProductDetailContent";
 
 const ProductDetailPage = ({ product = mockProduct }) => {
   const [quantity, setQuantity] = useState(1);
@@ -56,7 +57,7 @@ const ProductDetailPage = ({ product = mockProduct }) => {
             price={product.price}
             description={product.description}
           />
-          <ProductDetails details={product.details} />
+          <ProductSummary details={product.details} />
           <PurchaseBox
             quantity={quantity}
             onQuantityChange={setQuantity}
@@ -66,6 +67,8 @@ const ProductDetailPage = ({ product = mockProduct }) => {
           />
         </div>
       </div>
+
+      <ProductDetailContent sections={product.detailSections} />
     </div>
   );
 };
