@@ -14,7 +14,7 @@ const ProductInfo = ({
 
   return (
     <div style={{ borderBottom: "1px solid #eee", paddingBottom: 16 }}>
-      <h3 style={{ fontSize: 26, margin: "0 0 8px" }}>{name}</h3>
+      <h1 style={{ fontSize: 26, margin: "0 0 8px" }}>{name}</h1>
 
       <p style={{ color: "#888", fontSize: 14, marginBottom: 12 }}>
         <span aria-label={`5점 만점에 ${safeRating.toFixed(1)}점`}>
