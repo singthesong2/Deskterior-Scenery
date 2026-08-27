@@ -1,6 +1,7 @@
 import SignupForm from "./pages/SignupForm";
 import LoginForm from "./pages/LoginForm";
 import CartPage from "./pages/Cart/CartPage";
+import ProductDetailPage from "./pages/Product/ProductDetailPage";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <LoginForm />
       <SignupForm />
       <CartPage />
+      <ProductDetailPage />
     </>
   );
 }
