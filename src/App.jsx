@@ -53,7 +53,11 @@ function App() {
       <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
       <SignupForm />
       <CartPage />
-      <ProductDetailPage />
+      <ProductDetailPage
+        isLoggedIn={isLoggedIn}
+        currentUserId={userInfo?.id ?? null}
+        currentUserName={userInfo?.name ?? ""}
+      />
       <NotFoundPage />
       <LightingPage />
     </ThemeProvider>
