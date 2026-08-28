@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { Global, ThemeProvider } from "@emotion/react";
+import { theme } from "./styles/theme";
+import { reset } from "./styles/reset";
 import SignupForm from "./pages/SignupForm";
 import LoginForm from "./pages/LoginForm";
 import CartPage from "./pages/Cart/CartPage";
@@ -41,7 +44,8 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <Global styles={reset} />
       <div>{isLoggedIn ? "로그인 상태" : "로그아웃 상태"}</div>
 
       {isLoggedIn && userInfo && <p>{userInfo.name}님</p>}
@@ -52,7 +56,7 @@ function App() {
       <ProductDetailPage />
       <NotFoundPage />
       <LightingPage />
-    </>
+    </ThemeProvider>
   );
 }
 
