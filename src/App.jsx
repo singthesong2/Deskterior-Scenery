@@ -5,6 +5,7 @@ import CartPage from "./pages/Cart/CartPage";
 import ProductDetailPage from "./pages/Product/ProductDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
+import LightingPage from "./pages/Lighting/LightingPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +51,7 @@ function App() {
       <CartPage />
       <ProductDetailPage />
       <NotFoundPage />
+      <LightingPage />
     </>
   );
 }
