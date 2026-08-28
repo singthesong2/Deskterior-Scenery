@@ -104,7 +104,14 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
       <label>
         비밀번호를 입력해주세요.
-        <input type="password" {...register("password")} />
+        <input
+          type="password"
+          {...register("password", {
+            onChange: () => {
+              setMessage("");
+            },
+          })}
+        />
       </label>
 
       {message && <p>{message}</p>}
