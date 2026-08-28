@@ -1,7 +1,7 @@
 import { clientApi } from "./clientApi";
 
 export async function signUp(id, password) {
-  const result = await clientApi("/auth//signup", {
+  return clientApi("/auth/signup", {
     method: "POST",
     body: JSON.stringify({
       id,
@@ -11,7 +11,7 @@ export async function signUp(id, password) {
 }
 
 export async function login(id, password) {
-  const result = await clientApi("/auth/login", {
+  return clientApi("/auth/login", {
     method: "POST",
     body: JSON.stringify({
       id,

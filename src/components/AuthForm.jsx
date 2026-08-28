@@ -14,14 +14,30 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   });
 
   const submitForm = async (data) => {
-    if (mode === "signup" && !idCheck) {
-      setMessage("아이디 중복 확인을 해주세요.");
-      return;
+    if (mode === "signup") {
+      if (!data.id) {
+        setMessage("아이디를 입력해주세요.");
+        return;
+      }
+
+      if (!data.password) {
+        setMessage("비밀번호를 입력해주세요.");
+        return;
+      }
+
+      if (!idCheck) {
+        setMessage("아이디 중복 확인을 해주세요.");
+        return;
+      }
     }
 
-    const success = await onSubmit(data.id, data.password);
+    try {
+      await onSubmit(data.id, data.password);
 
-    if (success) resetUser();
+      resetUser();
+    } catch (error) {
+      setMessage(error.message);
+    }
   };
 
   const handleIdCheck = async () => {
