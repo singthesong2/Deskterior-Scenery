@@ -5,8 +5,14 @@ import ProductInfo from "../../components/product/ProductInfo";
 import PurchaseBox from "../../components/product/PurchaseBox";
 import ProductSummary from "../../components/product/ProductSummary";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
+import ReviewSection from "../../components/review/ReviewSection";
 
-const ProductDetailPage = ({ product = mockProduct }) => {
+const ProductDetailPage = ({
+  product = mockProduct,
+  isLoggedIn = false,
+  currentUserId = null,
+  currentUserName = "",
+}) => {
   const [quantity, setQuantity] = useState(1);
 
   const totalPrice = product.price * quantity;
@@ -69,6 +75,14 @@ const ProductDetailPage = ({ product = mockProduct }) => {
       </div>
 
       <ProductDetailContent sections={product.detailSections} />
+
+      <ReviewSection
+        key={product.id}
+        initialReviews={product.reviews}
+        isLoggedIn={isLoggedIn}
+        currentUserId={currentUserId}
+        currentUserName={currentUserName}
+      />
     </div>
   );
 };
