@@ -1,4 +1,5 @@
 import { BasketIcon, LoginIcon } from "../icons/Icons";
+import styled from "@emotion/styled";
 
 const navLinks = [
   "Lighting",
@@ -8,50 +9,96 @@ const navLinks = [
   "Stationery",
 ];
 
-const Header = ({ activeLink = "Lighting" }) => {
+const Header = ({ activeLink }) => {
   return (
-    <header
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "20px 32px",
-        borderBottom: "1px solid #ece9e2",
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "Georgia, 'Times New Roman', serif",
-          fontWeight: 700,
-          fontSize: 20,
-          letterSpacing: 1,
-        }}
-      >
-        SCENERY
-      </div>
+    <HeaderSection>
+      <Logo>SCENERY</Logo>
 
-      <nav style={{ display: "flex", gap: 32 }}>
-        {navLinks.map((link) => (
-          <span
-            key={link}
-            style={{
-              fontSize: 14,
-              cursor: "pointer",
-              color: link === activeLink ? "#0d0c0a" : "#a19d92",
-              fontWeight: link === activeLink ? 600 : 400,
-            }}
-          >
-            {link}
-          </span>
-        ))}
-      </nav>
+      <Navigation>
+        <NavList>
+          {navLinks.map((link)=>(
+            <NavItem key={link}>
+              <NavButton
+              type="button"
+              isActive={link === activeLink}
+              >
+                {link}
+              </NavButton>
+            </NavItem>
+          ))}
+        </NavList>
+      </Navigation>
 
-      <div style={{ display: "flex", gap: 18, color: "#0d0c0a" }}>
-        <BasketIcon style={{ cursor: "pointer" }} />
-        <LoginIcon style={{ cursor: "pointer" }} />
-      </div>
-    </header>
+      <IconContainer>
+        <IconButton>
+          <LoginIcon />
+        </IconButton>
+
+        <IconButton>
+          <BasketIcon />
+        </IconButton>
+      </IconContainer>
+    </HeaderSection>
   );
 };
+
+const HeaderSection = styled.header(({theme}) => ({
+  width: "100%",
+  height: "80px",
+  padding: `0 ${theme.spacing.xl}`,
+  display: "flex",
+  alignItems: "center",
+  backgroundColor: theme.colors.background,
+}));
+
+const Logo = styled.h1(({theme}) => ({
+  flex: "0 0 96px",
+  color: theme.colors.textMain,
+  fontSize: theme.fontSize.xl,
+  letterSpacing: "-2px",
+}));
+
+const Navigation = styled.nav({
+  display: "flex",
+  flex: 1,
+  justifyContent: "center",
+});
+
+const NavList = styled.ul(({theme}) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing.lg,
+}));
+
+const NavItem = styled.li({});
+
+const NavButton = styled.a(({theme, isActive}) => ({
+  fontSize: theme.fontSize.sm,
+  fontWeight: isActive
+    ? theme.fontWeight.semiBold
+    : theme.fontWeight.regular,
+  color: isActive
+    ? theme.colors.textMain
+    : theme.colors.secondText,
+    cursor: "pointer",
+  "&:hover": {
+    color: theme.colors.textMain,
+  },
+}));
+
+const IconContainer = styled.div(({theme}) => ({
+  display: "flex",
+  flex: "0 0 96px",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  gap: theme.spacing.sm,
+}));
+
+const IconButton = styled.button(({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+}));
 
 export default Header;
