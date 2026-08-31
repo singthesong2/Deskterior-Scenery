@@ -86,10 +86,21 @@ const CartPage = () => {
     setCheckedItems([]);
   }, []);
 
-  /* 총 금액 */
-  const totalPrice = useMemo(() => {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  }, [cartItems]);
+  /* subtotal */
+  const subtotal = useMemo(() => {
+    return cartItems
+      .filter((item) => checkedItems.includes(item.id))
+      .reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [cartItems, checkedItems]);
+
+  // delivery fee
+  const deliveryFee = useMemo(() => {
+    if (subtotal === 0) return 0;
+    return subtotal >= 80000 ? 0 : 3000;
+  }, [subtotal]);
+
+  // total
+  const total = subtotal + deliveryFee;
 
   /* 화면 */
   return (
@@ -128,7 +139,11 @@ const CartPage = () => {
               onDelete={handleDelete}
             />
           ))}
-          <CartSummary totalPrice={totalPrice} />
+          <CartSummary
+            subtotal={subtotal}
+            deliveryFee={deliveryFee}
+            total={total}
+          />
         </div>
       )}
     </div>
