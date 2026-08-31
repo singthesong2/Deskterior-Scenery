@@ -6,11 +6,9 @@ function CommonLayout() {
   return (
     <>
       <Header />
-
       <main>
         <Outlet />
       </main>
-
       <Footer />
     </>
   );
