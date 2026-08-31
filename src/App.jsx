@@ -9,6 +9,7 @@ import ProductDetailPage from "./pages/Product/ProductDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
 import LightingPage from "./pages/Lighting/LightingPage";
+import HomePage from "./pages/Home/HomePage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,7 @@ function App() {
 
       <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
       <SignupForm />
+      <HomePage />
       <CartPage />
       <ProductDetailPage
         isLoggedIn={isLoggedIn}
