@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { mockLighting } from "../../constants/mockLighting";
-import Header from "../../components/layout/Header";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
@@ -32,8 +31,6 @@ const LightingPage = ({ products = mockLighting }) => {
 
   return (
     <div>
-      <Header activeLink="Lighting" />
-
       <main style={{ padding: "40px 32px", textAlign: "left" }}>
         <h1
           style={{

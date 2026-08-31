@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { checkId } from "../api/authApi";
 import { useForm } from "react-hook-form";
+import { Form, Label, Input, Button, Message } from "../styles/AuthForm.styles";
 
 function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   const [idCheck, setIdCheck] = useState(false);
@@ -82,52 +83,56 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitForm)}>
-      <label>
-        아이디를 입력해주세요.
-        <input
-          type="text"
-          {...register("id", {
-            onChange: () => {
-              setIdCheck(false);
-              setMessage("");
-            },
-          })}
-        />
-      </label>
+    <>
+      <Form onSubmit={handleSubmit(submitForm)}>
+        <Label>
+          ID
+          <Input
+            type="text"
+            {...register("id", {
+              onChange: () => {
+                setIdCheck(false);
+                setMessage("");
+              },
+            })}
+          />
+        </Label>
 
-      {mode === "signup" && (
-        <button type="button" onClick={handleIdCheck}>
-          아이디 중복 확인
-        </button>
-      )}
+        {mode === "signup" && (
+          <Button type="button" onClick={handleIdCheck}>
+            아이디 중복 확인
+          </Button>
+        )}
 
-      <label>
-        비밀번호를 입력해주세요.
-        <input
-          type="password"
-          {...register("password", {
-            onChange: () => {
-              setMessage("");
-            },
-          })}
-        />
-      </label>
+        <Label>
+          Password
+          <Input
+            type="password"
+            {...register("password", {
+              onChange: () => {
+                setMessage("");
+              },
+            })}
+          />
+        </Label>
 
-      {message && <p>{message}</p>}
+        {message && <Message>{message}</Message>}
 
-      <button type="submit">{mode === "signup" ? "회원가입" : "로그인"}</button>
+        <Button type="submit">
+          {mode === "signup" ? "Sign Up" : "Log in"}
+        </Button>
 
-      {mode === "login" && (
-        <button type="button" onClick={handleLogOut}>
-          로그아웃
-        </button>
-      )}
+        {/*{mode === "login" && (
+          <Button type="button" onClick={handleLogOut}>
+            로그아웃
+          </Button>
+        )}*/}
 
-      <button type="button" onClick={handleCancel}>
-        취소
-      </button>
-    </form>
+        {/*}Button type="button" onClick={handleCancel}>
+          취소
+        </Button>*/}
+      </Form>
+    </>
   );
 }
 

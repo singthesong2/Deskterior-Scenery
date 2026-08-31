@@ -1,5 +1,12 @@
 import AuthForm from "../components/AuthForm";
 import { login } from "../api/authApi";
+import {
+  LoginPage,
+  LoginImage,
+  LoginCard,
+  Title,
+  SignupLink,
+} from "../styles/LoginForm.styles";
 
 function LoginForm({ setIsLoggedIn, setUserInfo }) {
   const handleLogin = async (id, password) => {
@@ -15,12 +22,24 @@ function LoginForm({ setIsLoggedIn, setUserInfo }) {
   };
 
   return (
-    <AuthForm
-      mode="login"
-      onSubmit={handleLogin}
-      setIsLoggedIn={setIsLoggedIn}
-      setUserInfo={setUserInfo}
-    />
+    <>
+      <LoginPage>
+        <LoginImage />
+
+        <LoginCard>
+          <Title>Log In</Title>
+
+          <AuthForm
+            mode="login"
+            onSubmit={handleLogin}
+            setIsLoggedIn={setIsLoggedIn}
+            setUserInfo={setUserInfo}
+          />
+
+          <SignupLink to="/signup">Create an account</SignupLink>
+        </LoginCard>
+      </LoginPage>
+    </>
   );
 }
 
