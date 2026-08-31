@@ -1,7 +1,7 @@
 // 색상
 const colors = {
-  background: "#F9F7F3", //전체 배경색 흰색은 fff임
-  cards: "#fff", //상품 카드배경 및 어두운 배경
+  background: "#F9F7F3", //전체 배경색 흰색은 fDfDfD임
+  cards: "#fDfDfD", //상품 카드배경 및 어두운 배경
   imagePlacholder: "#E8E6DF", //이미지 들어갈자리 표시용
   textMain: "#1F211F", //텍스트 본문색, 버튼 배경색
   secondText: "#74766F", //캡션, 텍스트홀더 서브 텍스트 색
@@ -63,9 +63,10 @@ const borderWidth = {
 
 //  반응형
 const media = {
-  mobile: `@media (max-width: 480px)`,
-  tablet: `@media (max-width: 768px)`,
-  pc: `@media (min-width: 1024px)`,
+  mobile: `@media (max-width: 767px)`,
+  tablet: `@media (min-width: 768px) and (max-width: 1023px)`,
+  pc: `@media (min-width: 1024px) and (max-width: 1439px)`,
+  wide: `@media (min-width: 1440px)`,
 };
 
 export const theme = {
