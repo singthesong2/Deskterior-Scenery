@@ -59,3 +59,26 @@ export const ChevronDownIcon = (props) => (
     <polyline points="6 9 12 15 18 9" />
   </svg>
 );
+
+export const NoResultIcon = (props) => (
+  <svg
+    viewBox="0 0 64 64"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <circle cx="26" cy="26" r="16" />
+    <line x1="37.5" y1="37.5" x2="50" y2="50" />
+    <line x1="19" y1="19" x2="25" y2="25" />
+    <line x1="25" y1="19" x2="19" y2="25" />
+    <line x1="29" y1="19" x2="35" y2="25" />
+    <line x1="35" y1="19" x2="29" y2="25" />
+    <path d="M18 33c3 3 13 3 16 0" />
+    <line x1="44" y1="10" x2="41" y2="15" />
+    <line x1="52" y1="14" x2="47" y2="17" />
+    <line x1="54" y1="22" x2="48" y2="22" />
+  </svg>
+);
