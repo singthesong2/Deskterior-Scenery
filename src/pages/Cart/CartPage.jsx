@@ -20,6 +20,39 @@ const CartPage = () => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // 체크박스(체크로시작)
+  const [checkedItems, setCheckedItems] = useState(() => {
+    return cartItems.map((item) => item.id);
+  });
+
+  //  개별 체크박스
+  const handleToggleCheck = useCallback((id) => {
+    setCheckedItems((prevChecked) => {
+      if (prevChecked.includes(id)) {
+        return prevChecked.filter((itemId) => itemId !== id);
+      } else {
+        return [...prevChecked, id];
+      }
+    });
+  }, []);
+
+  // 전체 선택 계산
+  const isAllChecked = useMemo(() => {
+    if (cartItems.length === 0) return false;
+    return cartItems.length === checkedItems.length;
+  }, [cartItems, checkedItems]);
+
+  // 전체 선택 체크박스
+  const handleToggleAllCheck = useCallback(() => {
+    if (isAllChecked) {
+      // 다 켜져 있으면 전체 해제
+      setCheckedItems([]);
+    } else {
+      // 전체 선택
+      setCheckedItems(cartItems.map((item) => item.id));
+    }
+  }, [isAllChecked, cartItems]);
+
   const handleIncrease = useCallback((id) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
@@ -39,27 +72,45 @@ const CartPage = () => {
     );
   }, []);
 
-  /* 개별 삭제 */
+  // 개별 삭제 (체크 돼도 삭제)
   const handleDelete = useCallback((id) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    setCheckedItems((prevChecked) =>
+      prevChecked.filter((itemId) => itemId !== id),
+    );
   }, []);
 
-  /* 전체 삭제 */
+  // 전체 삭제 (체크 돼도 삭제)
   const handleClearAll = useCallback(() => {
     setCartItems([]);
+    setCheckedItems([]);
   }, []);
 
   /* 총 금액 */
   const totalPrice = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }, [cartItems]);
+
   /* 화면 */
   return (
     <div>
-      <h1>🛒 장바구니</h1>
+      <h1>Cart</h1>
 
       {cartItems.length > 0 && (
-        <button onClick={handleClearAll}>전체 삭제</button>
+        <div>
+          {/* 전체 선택 체크박스 */}
+          <label>
+            <input
+              type="checkbox"
+              checked={isAllChecked}
+              onChange={handleToggleAllCheck}
+            />
+            Selected All
+          </label>
+
+          {/* 전체 삭제 버튼 */}
+          <button onClick={handleClearAll}>Clear All</button>
+        </div>
       )}
 
       {cartItems.length === 0 ? (
@@ -70,6 +121,8 @@ const CartPage = () => {
             <CartItem
               key={item.id}
               item={item}
+              isChecked={checkedItems.includes(item.id)}
+              onToggleCheck={handleToggleCheck}
               onIncrease={handleIncrease}
               onDecrease={handleDecrease}
               onDelete={handleDelete}
