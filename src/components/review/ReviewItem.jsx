@@ -1,4 +1,4 @@
-import StarRating from "./StarRating";
+import StarRating from "../common/StarRating";
 
 const ReviewItem = ({ review, isMine = false, onEdit, onDelete }) => {
   const authorName = isMine ? "Me" : review.author;

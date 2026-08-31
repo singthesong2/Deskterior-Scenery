@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StarRating from "./StarRating";
+import StarRating from "../common/StarRating";
 
 /**
  * defaultValue 를 주면 "수정" 모드, 없으면 "작성" 모드.
