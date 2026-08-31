@@ -4,16 +4,27 @@ import Header from "../../components/layout/Header";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
+import { NoResultIcon } from "../../components/icons/Icons";
 
 const TOTAL_PAGES = 6;
+
+const SORT_COMPARATORS = {
+  name: (a, b) => a.name.localeCompare(b.name),
+  priceHigh: (a, b) => b.price - a.price,
+  priceLow: (a, b) => a.price - b.price,
+  reviewCount: (a, b) => b.reviewCount - a.reviewCount,
+};
 
 const LightingPage = ({ products = mockLighting }) => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState("name");
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredProducts = products
+    .filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase()),
+    )
+    .sort(SORT_COMPARATORS[sortBy]);
 
   const handleAddToCart = (productId) => {
     console.log("장바구니 담기", { productId });
@@ -43,7 +54,13 @@ const LightingPage = ({ products = mockLighting }) => {
           }}
         />
 
-        <hr style={{ border: "none", borderTop: "1px solid #ece9e2", margin: "40px 0" }} />
+        <hr
+          style={{
+            border: "none",
+            borderTop: "1px solid #ece9e2",
+            margin: "40px 0",
+          }}
+        />
 
         <h2
           style={{
@@ -57,23 +74,59 @@ const LightingPage = ({ products = mockLighting }) => {
           Lighting
         </h2>
 
-        <ProductToolbar search={search} onSearchChange={setSearch} />
+        <ProductToolbar
+          search={search}
+          onSearchChange={setSearch}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 24,
-          }}
-        >
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
-        </div>
+        {filteredProducts.length === 0 ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "120px 0",
+            }}
+          >
+            <NoResultIcon width={64} height={64} style={{ color: "#e2ded3" }} />
+            <p
+              style={{
+                marginTop: 20,
+                fontSize: 15,
+                color: "#1F211F",
+              }}
+            >
+              "{search}"에 대한 검색 결과가 없습니다
+            </p>
+            <p
+              style={{
+                marginTop: 6,
+                fontSize: 13,
+                color: "#a19d92",
+              }}
+            >
+              검색어를 확인하거나 다시 입력해주세요
+            </p>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 24,
+            }}
+          >
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        )}
 
         <Pagination
           currentPage={currentPage}
