@@ -1,57 +1,104 @@
-const STARS = [1, 2, 3, 4, 5];
+import { useId } from "react";
+
+// viewBox 0 0 24 24 기준 5각 별
+const STAR_PATH =
+  "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
+
+const FILLED = "#FF5722";
+const EMPTY = "#d9d5cc";
+
+// 화면엔 안 보이고 스크린리더만 읽는 스타일
+const srOnly = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  margin: -1,
+  padding: 0,
+  border: 0,
+  overflow: "hidden",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+};
 
 /**
- * onChange 를 주면 클릭으로 정수 별점 선택(입력용),
- * 안 주면 읽기 전용이며 소수점(반쪽 별)까지 표시한다.
+ * SVG 별점.
+ * - onChange 를 주면 네이티브 radio 로 별점 선택(입력용) — 키보드 조작은 브라우저가 처리
+ * - 안 주면 읽기 전용이며 소수점(반쪽 별)까지 표시
  */
-const StarRating = ({ value = 0, onChange }) => {
+const StarRating = ({ value = 0, onChange, size = 18 }) => {
+  const uid = useId();
   const selectable = typeof onChange === "function";
   const score = Math.max(0, Math.min(5, Number(value) || 0));
 
-  // 읽기 전용: ☆ 5개 위에 ★ 5개를 점수 비율만큼만 잘라서 겹침 → 반쪽 별 표현
-  if (!selectable) {
+  if (selectable) {
+    const rounded = Math.round(score);
     return (
-      <span
-        aria-label={`5점 만점에 ${score.toFixed(1)}점`}
+      <fieldset
         style={{
-          position: "relative",
-          display: "inline-block",
-          whiteSpace: "nowrap",
+          display: "inline-flex",
+          gap: 2,
+          border: 0,
+          padding: 0,
+          margin: 0,
         }}
       >
-        <span aria-hidden="true">☆☆☆☆☆</span>
-        <span
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            width: `${(score / 5) * 100}%`,
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-          }}
-        >
-          ★★★★★
-        </span>
-      </span>
+        <legend style={srOnly}>별점 선택 (5점 만점)</legend>
+
+        {[1, 2, 3, 4, 5].map((star) => (
+          <label key={star} style={{ cursor: "pointer", lineHeight: 0 }}>
+            <input
+              type="radio"
+              name={uid}
+              value={star}
+              checked={star === rounded}
+              onChange={() => onChange(star)}
+              aria-label={`${star}점`}
+              style={srOnly}
+            />
+            <svg
+              width={size}
+              height={size}
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d={STAR_PATH}
+                fill={star <= rounded ? FILLED : EMPTY}
+              />
+            </svg>
+          </label>
+        ))}
+      </fieldset>
     );
   }
 
-  // 입력용: 별 하나씩 버튼 (정수만)
-  const rounded = Math.round(score);
   return (
-    <span>
-      {STARS.map((star) => (
-        <button
-          key={star}
-          type="button"
-          aria-label={`${star}점`}
-          aria-pressed={star === rounded}
-          onClick={() => onChange(star)}
-        >
-          {star <= rounded ? "★" : "☆"}
-        </button>
-      ))}
+    <span
+      role="img"
+      aria-label={`5점 만점에 ${score.toFixed(1)}점`}
+      style={{ display: "inline-flex", gap: 2, lineHeight: 0 }}
+    >
+      {[0, 1, 2, 3, 4].map((i) => {
+        const pct = Math.max(0, Math.min(1, score - i)) * 100;
+        const gradId = `${uid}-star-${i}`;
+        return (
+          <svg
+            key={i}
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id={gradId}>
+                <stop offset={`${pct}%`} stopColor={FILLED} />
+                <stop offset={`${pct}%`} stopColor={EMPTY} />
+              </linearGradient>
+            </defs>
+            <path d={STAR_PATH} fill={`url(#${gradId})`} />
+          </svg>
+        );
+      })}
     </span>
   );
 };

@@ -17,6 +17,15 @@ const ProductDetailPage = ({
   const [isWished, setIsWished] = useState(false);
   const [reviews, setReviews] = useState(product.reviews ?? []);
 
+  /* 상품이 바뀌면(라우터로 다른 상세페이지 이동 등) 상품별 state 초기화 */
+  const [shownProductId, setShownProductId] = useState(product.id);
+  if (product.id !== shownProductId) {
+    setShownProductId(product.id);
+    setReviews(product.reviews ?? []);
+    setQuantity(1);
+    setIsWished(false);
+  }
+
   /* 별점·리뷰 수는 리뷰 목록에서 실시간 계산 (단일 소스) */
   const reviewCount = reviews.length;
   const averageRating =
@@ -83,7 +92,11 @@ const ProductDetailPage = ({
 
       <div style={{ display: "flex", gap: 40, flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 360px" }}>
-          <ProductImageGallery images={product.images} alt={product.name} />
+          <ProductImageGallery
+            key={product.id}
+            images={product.images}
+            alt={product.name}
+          />
         </div>
 
         <div
