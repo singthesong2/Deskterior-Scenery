@@ -1,3 +1,6 @@
+import SafeImage from "../common/SafeImage";
+import SceneryBox from "../common/SceneryBox";
+
 const ProductDetailContent = ({ sections }) => {
   if (!sections?.length) return null;
 
@@ -9,15 +12,23 @@ const ProductDetailContent = ({ sections }) => {
         padding: "0 40px",
       }}
     >
-      <h2 style={{ fontSize: 22, marginBottom: 24 }}>상세 설명</h2>
+      <h2 style={{ fontSize: 22, marginBottom: 24 }}>Item Detail</h2>
 
       {sections.map((section) => (
         <article key={section.id} style={{ marginBottom: 56 }}>
           {section.image && (
-            <img
+            <SafeImage
               src={section.image}
               alt={section.title || ""}
               loading="lazy"
+              fallback={
+                <SceneryBox
+                  aspectRatio="3 / 2"
+                  fontSize={20}
+                  radius={8}
+                  label="이미지를 불러올 수 없습니다"
+                />
+              }
               style={{ width: "100%", borderRadius: 8, display: "block" }}
             />
           )}

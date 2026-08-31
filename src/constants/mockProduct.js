@@ -1,11 +1,6 @@
-const images = [
-  "https://placedog.net/800/800?id=1",
-  "https://placedog.net/800/800?id=2",
-  "https://placedog.net/800/800?id=3",
-  "https://placedog.net/800/800?id=4",
-  "https://placedog.net/800/800?id=5",
-  "https://placedog.net/800/800?id=6",
-];
+const mainImage = "https://i.ibb.co/Nnxv35Z9/whaudwprj1.webp";
+
+const images = [mainImage, null, null, null, null];
 
 export const mockProduct = {
   id: 101,
@@ -34,13 +29,13 @@ export const mockProduct = {
     },
     {
       id: 2,
-      image: images[1],
+      image: images[0],
       title: "터치 한 번으로 3단계 밝기",
       body: "은은한 무드등부터 책 읽기 좋은 밝기까지, 상단을 가볍게 두드려 상황에 맞게 조절하세요.",
     },
     {
       id: 3,
-      image: images[2],
+      image: images[0],
       title: "선 없이, 최대 12시간",
       body: "USB-C로 완충하면 최저 밝기 기준 약 12시간 사용할 수 있어 잠들기 전까지 곁에 둘 수 있어요.",
     },
@@ -53,8 +48,7 @@ export const mockProduct = {
       author: "김**",
       rating: 5,
       date: "2026.08.20",
-      content:
-        "밝기 조절이 부드럽고 디자인이 예뻐요. 침대 옆에 두고 잘 쓰고 있습니다.",
+      content: "밝기 조절이 부드럽고 디자인이 예뻐요. 잘 쓰고 있습니다.",
     },
     {
       id: 222,
@@ -62,7 +56,8 @@ export const mockProduct = {
       author: "이**",
       rating: 4,
       date: "2026.08.14",
-      content: "생각보다 크기는 작지만 무드등으로는 딱 좋아요.",
+      content:
+        "생각보다 크기는 작지만 무드등으로는 딱 좋아요. 책상 옆에 두기가 좋은거같아요.",
     },
   ],
 };
