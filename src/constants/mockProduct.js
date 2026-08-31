@@ -10,12 +10,11 @@ const images = [
 export const mockProduct = {
   id: 101,
   name: "미니멀 버섯 무선 램프",
-  rating: 4.5,
-  reviewCount: 2,
   price: 38000,
   description:
     "버섯을 닮은 무선 무드등입니다. 3단계 밝기 조절과 USB-C 충전을 지원해 침대 옆이나 책상 어디에나 두고 쓸 수 있어요.",
-  category: "데스크 소품",
+  category: "조명 (Lighting)",
+  soldOut: true,
   images,
   details: [
     "크기: 지름 120 x 높이 150 (mm)",

@@ -1,20 +1,21 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import ReviewForm from "./ReviewForm";
 import ReviewSummary from "./ReviewSummary";
 import ReviewList from "./ReviewList";
 
 /**
- * 리뷰 영역 전체를 관리하는 컴포넌트
- * - reviews: 리뷰 목록 (지금은 로컬 state, 나중에 reviewsApi 로 교체)
- * - editingId: 수정 중인 리뷰 id (null 이면 새 글 작성)
+ * 리뷰 영역 UI.
+ * 리뷰 목록(reviews)은 부모가 소유하고, 이 컴포넌트는
+ * "수정 중인 리뷰"(editingId) 같은 UI 상태만 로컬로 관리한다.
  */
 const ReviewSection = ({
-  initialReviews = [],
+  reviews = [],
   isLoggedIn = false,
   currentUserId = null,
-  currentUserName = "",
+  onCreate,
+  onUpdate,
+  onDelete,
 }) => {
-  const [reviews, setReviews] = useState(initialReviews);
   const [editingId, setEditingId] = useState(null);
 
   const editingReview =
@@ -22,37 +23,24 @@ const ReviewSection = ({
       ? undefined
       : reviews.find((review) => review.id === editingId);
 
-  const average = useMemo(() => {
-    if (reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc, review) => acc + (review.rating ?? 0), 0);
-    return sum / reviews.length;
-  }, [reviews]);
+  const average =
+    reviews.length === 0
+      ? 0
+      : reviews.reduce((sum, review) => sum + (review.rating ?? 0), 0) /
+        reviews.length;
 
-  const handleCreate = ({ rating, content }) => {
-    const newReview = {
-      id: crypto.randomUUID(),
-      authorId: currentUserId,
-      author: currentUserName || "익명",
-      rating,
-      content,
-      date: new Date().toISOString(),
-    };
-    setReviews((prev) => [newReview, ...prev]);
-  };
-
-  const handleUpdate = ({ rating, content }) => {
-    const targetId = editingId;
-    setReviews((prev) =>
-      prev.map((review) =>
-        review.id === targetId ? { ...review, rating, content } : review,
-      ),
-    );
-    setEditingId(null);
+  const handleSubmit = (payload) => {
+    if (editingId != null) {
+      onUpdate?.(editingId, payload);
+      setEditingId(null);
+    } else {
+      onCreate?.(payload);
+    }
   };
 
   const handleDelete = (id) => {
-    setReviews((prev) => prev.filter((review) => review.id !== id));
     if (editingId === id) setEditingId(null);
+    onDelete?.(id);
   };
 
   return (
@@ -66,7 +54,7 @@ const ReviewSection = ({
         key={editingId ?? "new"}
         isLoggedIn={isLoggedIn}
         defaultValue={editingReview}
-        onSubmit={editingReview ? handleUpdate : handleCreate}
+        onSubmit={handleSubmit}
         onCancel={() => setEditingId(null)}
       />
 

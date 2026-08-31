@@ -1,9 +1,11 @@
+import { HeartIcon } from "../icons/Icons";
+
 const PurchaseBox = ({
   quantity = 1,
   onQuantityChange,
-  totalPrice = 0,
   onAddToCart,
-  onBuyNow,
+  isWished = false,
+  onToggleWish,
   maxQuantity = 99,
   isSubmitting = false,
 }) => {
@@ -11,7 +13,6 @@ const PurchaseBox = ({
     maxQuantity,
     Math.max(1, Math.floor(Number(quantity) || 1)),
   );
-  const safeTotal = Number(totalPrice) || 0;
 
   const decrease = () => onQuantityChange(Math.max(1, safeQty - 1));
   const increase = () => onQuantityChange(Math.min(maxQuantity, safeQty + 1));
@@ -25,51 +26,28 @@ const PurchaseBox = ({
 
   return (
     <div style={{ borderTop: "1px solid #eee", paddingTop: 16 }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 12,
-        }}
-      >
-        <span style={{ fontWeight: "bold" }}>수량</span>
-        <div>
-          <button
-            type="button"
-            onClick={decrease}
-            disabled={safeQty <= 1}
-            aria-label="수량 감소"
-            style={stepperBtn}
-          >
-            -
-          </button>
-          <span style={{ margin: "0 12px" }} aria-live="polite">
-            {safeQty}
-          </span>
-          <button
-            type="button"
-            onClick={increase}
-            disabled={safeQty >= maxQuantity}
-            aria-label="수량 증가"
-            style={stepperBtn}
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 16,
-        }}
-      >
-        <span>총 상품 금액</span>
-        <strong style={{ fontSize: 20 }}>
-          {safeTotal.toLocaleString("ko-KR")}원
-        </strong>
+      <div style={{ marginBottom: 16 }}>
+        <button
+          type="button"
+          onClick={decrease}
+          disabled={safeQty <= 1}
+          aria-label="수량 감소"
+          style={stepperBtn}
+        >
+          -
+        </button>
+        <span style={{ margin: "0 12px" }} aria-live="polite">
+          {safeQty}
+        </span>
+        <button
+          type="button"
+          onClick={increase}
+          disabled={safeQty >= maxQuantity}
+          aria-label="수량 증가"
+          style={stepperBtn}
+        >
+          +
+        </button>
       </div>
 
       <div style={{ display: "flex", gap: 8 }}>
@@ -79,15 +57,16 @@ const PurchaseBox = ({
           disabled={isSubmitting}
           style={{ flex: 1, padding: "12px 0" }}
         >
-          장바구니
+          Add to Cart
         </button>
         <button
           type="button"
-          onClick={onBuyNow}
-          disabled={isSubmitting}
-          style={{ flex: 1, padding: "12px 0" }}
+          onClick={onToggleWish}
+          aria-label={isWished ? "찜 해제" : "찜하기"}
+          aria-pressed={isWished}
+          style={{ padding: "12px 16px", cursor: "pointer" }}
         >
-          바로 구매
+          <HeartIcon filled={isWished} width={24} height={24} />
         </button>
       </div>
     </div>
