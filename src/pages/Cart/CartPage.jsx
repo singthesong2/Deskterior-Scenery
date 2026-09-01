@@ -3,6 +3,7 @@ import { MockCartData } from "../../constants/mockCart";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
+import Modal from "../../components/common/Modal";
 
 const CartPage = () => {
   /* 로컬 스토리지 */
@@ -24,6 +25,9 @@ const CartPage = () => {
   const [checkedItems, setCheckedItems] = useState(() => {
     return cartItems.map((item) => item.id);
   });
+
+  // 모달
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
 
   //  개별 체크박스
   const handleToggleCheck = useCallback((id) => {
@@ -95,6 +99,12 @@ const CartPage = () => {
     setCheckedItems([]);
   }, []);
 
+  // 모달 삭제 연결
+  const confirmClearAll = () => {
+    handleClearAll();
+    setIsClearModalOpen(false);
+  };
+
   // 소계
   const subtotal = useMemo(() => {
     return cartItems
@@ -129,7 +139,7 @@ const CartPage = () => {
           </label>
 
           {/* 전체 삭제 버튼 */}
-          <button onClick={handleClearAll}>Clear All</button>
+          <button onClick={() => setIsClearModalOpen(true)}>All Delete</button>
         </div>
       )}
 
@@ -154,6 +164,15 @@ const CartPage = () => {
             total={total}
           />
         </div>
+      )}
+      {isClearModalOpen && (
+        <Modal
+          title="All Delete?"
+          description="정말 모두 지우시겠습니까?"
+          confirmText="Delete"
+          onClose={() => setIsClearModalOpen(false)}
+          onConfirm={confirmClearAll}
+        />
       )}
     </div>
   );

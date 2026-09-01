@@ -6,7 +6,7 @@ const colors = {
   textMain: "#1F211F", //텍스트 본문색, 버튼 배경색
   secondText: "#74766F", //캡션, 텍스트홀더 서브 텍스트 색
   emphasis: "#EB6923", //강조색 (일부요소에 불투명도 들어가있어서 확인 요망!!)
-  subtle: "#EBEAE4", //메인배경보다 어두운색(ex 상페 설명란)
+  subtle: "#EBEAE4", //메인배경보다 어두운색(ex 상페 설명란) 버튼 보더색
   mutedText: "#6B7280",
 };
 
