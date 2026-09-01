@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
 
-export const LoginPage = styled.main({
+export const SignupPage = styled.main({
   display: "flex",
   justifyContent: "center",
   alignItems: "stretch",
@@ -9,12 +9,12 @@ export const LoginPage = styled.main({
   padding: "60px 40px",
 });
 
-export const LoginImage = styled.div({
+export const SignupImage = styled.div({
   width: "50vw",
   backgroundColor: "#e8e6df",
 });
 
-export const LoginCard = styled.section({
+export const SignupCard = styled.section({
   width: "50vw",
   padding: "50px 30px",
   border: "1px solid #eee",
@@ -24,8 +24,9 @@ export const LoginCard = styled.section({
 
 export const Title = styled.h1({
   margin: "0 0 40px",
-  textAlign: "center",
-  fontSize: "40px",
+  textAlign: "left",
+  fontSize: "20px",
+  fontWeight: 550,
 });
 
 export const SignupLink = styled(Link)({
