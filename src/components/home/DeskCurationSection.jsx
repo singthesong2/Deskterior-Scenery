@@ -1,4 +1,11 @@
-import styled from "@emotion/styled";
+import {
+  CurationSection,
+  CurationTitle,
+  KeywordChipContainer,
+  ClickableProductMap,
+  DeskArea,
+  ProductArea,
+} from "../../styles/DeskCurationSection.styles";
 
 function DeskCurationSection() {
   return (
@@ -13,38 +20,5 @@ function DeskCurationSection() {
     </CurationSection>
   );
 }
-
-const CurationSection = styled.section(({theme}) => ({
-  padding: theme.spacing["3xl"],
-}))
-
-const CurationTitle = styled.h2(({theme}) => ({
-  fontsize: theme.fontSize["4xl"],
-  fontweight: theme.fontWeight.regular,
-  color: theme.colors.textMain,
-}));
-
-const KeywordChipContainer=styled.div(({theme}) => ({
-  width: "100%",
-}));
-
-const ClickableProductMap = styled.div(({theme}) => ({
-  display: "flex",
-  gap: theme.spacing.lg,
-}));
-
-const DeskArea = styled.div(({theme}) => ({
-  height: "700px",
-  flex: 2,
-  backgroundColor: theme.colors.imagePlaceholder,
-  borderRadius: theme.radius.md,
-}));
-
-const ProductArea = styled.div(({theme}) => ({
-  height: "700px",
-  flex: 1,
-  backgroundColor: theme.colors.cards,
-  borderRadius: theme.radius.md,
-}))
 
 export { DeskCurationSection };

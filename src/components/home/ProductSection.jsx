@@ -1,4 +1,9 @@
-import styled from "@emotion/styled";
+import {
+    ProductsSection,
+    ProductContainer,
+    ProductTitle,
+    ProductCards,
+} from "../../styles/ProductSection.styles";
 
 function ProductSection() {
   return (
@@ -26,26 +31,5 @@ function ProductSection() {
     </>
   )
 }
-
-const ProductsSection = styled.section(({theme}) => ({
-    padding: theme.spacing["3xl"],
-}));
-
-const ProductTitle = styled.h2(({theme}) => ({
-    fontsize: theme.fontSize["4xl"],
-    color: theme.colors.textMain,
-}));
-
-const ProductContainer = styled.div(({theme}) => ({
-    width: "100%",
-    display: "flex",
-    gap: theme.spacing.lg,
-}));
-
-const ProductCards = styled.div(({theme}) => ({
-    width: "280px",
-    height: "280px",
-    background: theme.colors.imagePlaceholder,
-}))
 
 export { ProductSection };
