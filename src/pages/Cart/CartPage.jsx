@@ -49,7 +49,10 @@ const CartPage = () => {
       setCheckedItems([]);
     } else {
       // 전체 선택
-      setCheckedItems(cartItems.map((item) => item.id));
+      const availableItemIds = cartItems
+        .filter((item) => !item.isSoldOut)
+        .map((item) => item.id);
+      setCheckedItems(availableItemIds);
     }
   }, [isAllChecked, cartItems]);
 
@@ -86,20 +89,20 @@ const CartPage = () => {
     setCheckedItems([]);
   }, []);
 
-  /* subtotal */
+  // 소계
   const subtotal = useMemo(() => {
     return cartItems
       .filter((item) => checkedItems.includes(item.id))
       .reduce((sum, item) => sum + item.price * item.quantity, 0);
   }, [cartItems, checkedItems]);
 
-  // delivery fee
+  // 배달이여
   const deliveryFee = useMemo(() => {
     if (subtotal === 0) return 0;
     return subtotal >= 80000 ? 0 : 3000;
   }, [subtotal]);
 
-  // total
+  // 총합
   const total = subtotal + deliveryFee;
 
   /* 화면 */
