@@ -1,64 +1,87 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "../icons/Icons";
+import * as S from "../../styles/Pagination.styles";
+
+const getPageList = (currentPage, totalPages) => {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  const pages = [1];
+
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  // 1과 start 사이에 숨겨진 페이지가 1개면 숫자로, 2개 이상이면 "..."
+  if (start === 3) {
+    pages.push(2);
+  } else if (start > 2) {
+    pages.push("...");
+  }
+
+  for (let page = start; page <= end; page++) pages.push(page);
+
+  // end와 totalPages 사이에 숨겨진 페이지가 1개면 숫자로, 2개 이상이면 "..."
+  if (end === totalPages - 2) {
+    pages.push(totalPages - 1);
+  } else if (end < totalPages - 2) {
+    pages.push("...");
+  }
+
+  pages.push(totalPages);
+
+  return pages;
+};
 
 const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange }) => {
-  const pages =
-    totalPages <= 4
-      ? Array.from({ length: totalPages }, (_, i) => i + 1)
-      : [1, 2, 3, "...", totalPages];
+  const pages = getPageList(currentPage, totalPages);
+
+  const goToPrev = () => currentPage > 1 && onPageChange?.(currentPage - 1);
+  const goToNext = () =>
+    currentPage < totalPages && onPageChange?.(currentPage + 1);
+
+  const handleKeyDown = (action) => (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      action();
+    }
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 16,
-        margin: "40px 0",
-      }}
-    >
-      <ChevronLeftIcon
-        style={{
-          cursor: currentPage > 1 ? "pointer" : "default",
-          color: currentPage > 1 ? "#0d0c0a" : "#ccc9c0",
-        }}
-        onClick={() => currentPage > 1 && onPageChange?.(currentPage - 1)}
+    <S.PaginationWrapper role="navigation" aria-label="페이지네이션">
+      <S.StyledChevronLeftIcon
+        role="button"
+        tabIndex={currentPage <= 1 ? -1 : 0}
+        aria-disabled={currentPage <= 1}
+        aria-label="이전 페이지"
+        $disabled={currentPage <= 1}
+        onClick={goToPrev}
+        onKeyDown={handleKeyDown(goToPrev)}
       />
 
       {pages.map((page, idx) =>
         page === "..." ? (
-          <span key={`ellipsis-${idx}`} style={{ color: "#a19d92" }}>
-            …
-          </span>
+          <S.Ellipsis key={`ellipsis-${idx}`}>…</S.Ellipsis>
         ) : (
-          <button
+          <S.PageButton
             key={page}
+            $active={page === currentPage}
+            aria-current={page === currentPage ? "page" : undefined}
             onClick={() => onPageChange?.(page)}
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              border: "none",
-              cursor: "pointer",
-              fontSize: 14,
-              background: page === currentPage ? "#0d0c0a" : "transparent",
-              color: page === currentPage ? "#fff" : "#0d0c0a",
-            }}
           >
             {page}
-          </button>
+          </S.PageButton>
         ),
       )}
 
-      <ChevronRightIcon
-        style={{
-          cursor: currentPage < totalPages ? "pointer" : "default",
-          color: currentPage < totalPages ? "#0d0c0a" : "#ccc9c0",
-        }}
-        onClick={() =>
-          currentPage < totalPages && onPageChange?.(currentPage + 1)
-        }
+      <S.StyledChevronRightIcon
+        role="button"
+        tabIndex={currentPage >= totalPages ? -1 : 0}
+        aria-disabled={currentPage >= totalPages}
+        aria-label="다음 페이지"
+        $disabled={currentPage >= totalPages}
+        onClick={goToNext}
+        onKeyDown={handleKeyDown(goToNext)}
       />
-    </div>
+    </S.PaginationWrapper>
   );
 };
 
