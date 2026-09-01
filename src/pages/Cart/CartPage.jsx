@@ -36,10 +36,16 @@ const CartPage = () => {
     });
   }, []);
 
-  // 전체 선택 계산
+  // 전체 선택 계산(품절 아닌거 한개라도 있으면 체크할때 모두 체크로 본다)
   const isAllChecked = useMemo(() => {
     if (cartItems.length === 0) return false;
-    return cartItems.length === checkedItems.length;
+    const availableItemsCount = cartItems.filter(
+      (item) => !item.isSoldOut,
+    ).length;
+
+    return (
+      availableItemsCount > 0 && availableItemsCount === checkedItems.length
+    );
   }, [cartItems, checkedItems]);
 
   // 전체 선택 체크박스
