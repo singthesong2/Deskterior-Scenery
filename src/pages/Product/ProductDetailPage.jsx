@@ -49,6 +49,15 @@ const ProductDetailPage = ({
     console.log("찜 토글", { productId: product.id });
   };
 
+  /* 나중에 결제 페이지로 이동하도록 교체 */
+  const handleCheckout = () => {
+    console.log("결제하기", {
+      productId: product.id,
+      quantity,
+      price: product.price,
+    });
+  };
+
   /* 리뷰 CRUD — 나중에 reviewsApi 로 교체 */
   const handleCreateReview = ({ rating, content }) => {
     setReviews((prev) => [
@@ -110,7 +119,6 @@ const ProductDetailPage = ({
           <ProductInfo
             name={product.name}
             category={product.category}
-            soldOut={product.soldOut}
             rating={averageRating}
             reviewCount={reviewCount}
             price={product.price}
@@ -121,6 +129,7 @@ const ProductDetailPage = ({
             quantity={quantity}
             onQuantityChange={setQuantity}
             onAddToCart={handleAddToCart}
+            onCheckout={handleCheckout}
             isWished={isWished}
             onToggleWish={handleToggleWish}
           />
