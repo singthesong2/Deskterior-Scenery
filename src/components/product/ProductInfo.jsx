@@ -3,7 +3,6 @@ import StarRating from "../common/StarRating";
 const ProductInfo = ({
   name,
   category = "",
-  soldOut = false,
   rating = 0,
   reviewCount = 0,
   price = 0,
@@ -17,7 +16,6 @@ const ProductInfo = ({
   return (
     <div style={{ borderBottom: "1px solid #eee", paddingBottom: 16 }}>
       {category && <p>{category}</p>}
-      {soldOut && <span>Sold out</span>}
 
       <h1 style={{ fontSize: 26, margin: "0 0 8px" }}>{name}</h1>
 

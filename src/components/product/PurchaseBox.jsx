@@ -4,6 +4,7 @@ const PurchaseBox = ({
   quantity = 1,
   onQuantityChange,
   onAddToCart,
+  onCheckout,
   isWished = false,
   onToggleWish,
   maxQuantity = 99,
@@ -69,6 +70,15 @@ const PurchaseBox = ({
           <HeartIcon filled={isWished} width={24} height={24} />
         </button>
       </div>
+
+      <button
+        type="button"
+        onClick={onCheckout}
+        disabled={isSubmitting}
+        style={{ width: "100%", marginTop: 8, padding: "12px 0", cursor: "pointer" }}
+      >
+        CheckOut
+      </button>
     </div>
   );
 };

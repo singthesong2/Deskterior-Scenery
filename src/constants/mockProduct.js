@@ -4,12 +4,11 @@ const images = [mainImage, null, null, null, null];
 
 export const mockProduct = {
   id: 101,
-  name: "미니멀 버섯 무선 램프",
+  name: "Minimal Mushroom Wireless Lamp",
   price: 38000,
   description:
     "버섯을 닮은 무선 무드등입니다. 3단계 밝기 조절과 USB-C 충전을 지원해 침대 옆이나 책상 어디에나 두고 쓸 수 있어요.",
-  category: "조명 (Lighting)",
-  soldOut: true,
+  category: "Lighting",
   images,
   details: [
     "크기: 지름 120 x 높이 150 (mm)",
