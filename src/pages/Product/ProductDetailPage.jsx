@@ -6,6 +6,7 @@ import ProductInfo from "../../components/product/ProductInfo";
 import PurchaseBox from "../../components/product/PurchaseBox";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
+import ScrollTopButton from "../../components/common/ScrollTopButton";
 
 const ProductDetailPage = ({
   product = mockProduct,
@@ -147,6 +148,8 @@ const ProductDetailPage = ({
         onUpdate={handleUpdateReview}
         onDelete={handleDeleteReview}
       />
+
+      <ScrollTopButton />
     </div>
   );
 };
