@@ -5,7 +5,7 @@ import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
 import { NoResultIcon } from "../../components/icons/Icons";
 
-const TOTAL_PAGES = 6;
+const TOTAL_PAGES = 2;
 
 const SORT_COMPARATORS = {
   name: (a, b) => a.name.localeCompare(b.name),
@@ -24,6 +24,21 @@ const LightingPage = ({ products = mockLighting }) => {
       product.name.toLowerCase().includes(search.toLowerCase()),
     )
     .sort(SORT_COMPARATORS[sortBy]);
+
+  const duplicateProducts = products.map((product) => ({
+    ...product,
+    id: `${product.id}-copy`,
+  }));
+
+  const pagedProducts =
+    currentPage === 1
+      ? filteredProducts
+      : duplicateProducts
+          .filter((product) =>
+            product.name.toLowerCase().includes(search.toLowerCase()),
+          )
+          .sort(SORT_COMPARATORS[sortBy])
+          .reverse();
 
   const handleAddToCart = (productId) => {
     console.log("장바구니 담기", { productId });
@@ -115,7 +130,7 @@ const LightingPage = ({ products = mockLighting }) => {
               gap: 24,
             }}
           >
-            {filteredProducts.map((product) => (
+            {pagedProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
