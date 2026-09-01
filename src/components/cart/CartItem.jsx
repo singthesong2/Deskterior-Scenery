@@ -1,3 +1,5 @@
+import Badge from "../common/Badge";
+
 const CartItem = ({
   item,
   isChecked,
@@ -15,8 +17,11 @@ const CartItem = ({
         onChange={() => onToggleCheck(item.id)}
       />
 
-      {/* 2. 이미지 */}
-      <img src={item.imageUrl} alt={item.name} width="100" height="100" />
+      {/* 2. 이미지 뺏찌*/}
+      <div>
+        {item.isSoldOut && <Badge text="Sold out" top="8px" left="8px" />}
+        <img src={item.imageUrl} alt={item.name} width="132" height="132" />
+      </div>
 
       {/* 3. 상품 정보 */}
       <div>
