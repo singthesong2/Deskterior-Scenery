@@ -10,38 +10,43 @@ const CartItem = ({
 }) => {
   return (
     <div>
-      {/* 1. 개별 체크박스 */}
+      {/* 개별 체크박스 */}
       <input
         type="checkbox"
         checked={isChecked}
         onChange={() => onToggleCheck(item.id)}
+        disabled={item.isSoldOut}
       />
 
-      {/* 2. 이미지 뺏찌*/}
+      {/* 이미지 뺏찌*/}
       <div>
         {item.isSoldOut && <Badge text="Sold out" top="8px" left="8px" />}
         <img src={item.imageUrl} alt={item.name} width="132" height="132" />
       </div>
 
-      {/* 3. 상품 정보 */}
+      {/* 상품 */}
       <div>
         <h4>{item.name}</h4>
         <p>{item.price.toLocaleString()}원</p>
       </div>
 
-      {/* 4. 수량 조절 버튼 */}
+      {/* 수량 */}
       <div>
-        <button onClick={() => onDecrease(item.id)}>-</button>
+        <button onClick={() => onDecrease(item.id)} disabled={item.isSoldOut}>
+          -
+        </button>
         <span>{item.quantity}</span>
-        <button onClick={() => onIncrease(item.id)}>+</button>
+        <button onClick={() => onIncrease(item.id)} disabled={item.isSoldOut}>
+          +
+        </button>
       </div>
 
-      {/* 5. 합계 금액 (단가 * 수량) */}
+      {/* 합계 */}
       <div>
         <strong>{(item.price * item.quantity).toLocaleString()}원</strong>
       </div>
 
-      {/* 6. 삭제 버튼 */}
+      {/* 삭제 */}
       <button onClick={() => onDelete(item.id)}>삭제</button>
     </div>
   );
