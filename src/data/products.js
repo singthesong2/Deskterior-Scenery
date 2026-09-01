@@ -1,7 +1,7 @@
 const products = [
   {
     id: 1,
-    name: "미니멀 버섯 무선 램프",
+    name: "Minimal Mushroom Wireless Lamp",
     categoryId: "lighting",
     price: 38000,
     imageUrl: "<https://i.ibb.co/Nnxv35Z9/whaudwprj1.webp>",
@@ -9,7 +9,7 @@ const products = [
   },
   {
     id: 2,
-    name: "슬림 모니터 라이트바",
+    name: "Slim Monitor Light Bar",
     categoryId: "lighting",
     price: 42000,
     imageUrl: "<https://i.ibb.co/TnszRpc/whaud2wprj.webp>",
@@ -17,7 +17,7 @@ const products = [
   },
   {
     id: 3,
-    name: "매트 메탈 데스크 스탠드",
+    name: "Matte Metal Desk Lamp",
     categoryId: "lighting",
     price: 54000,
     imageUrl: "<https://i.ibb.co/8nZPXKDW/whaudwprj4.webp>",
@@ -26,7 +26,7 @@ const products = [
   },
   {
     id: 4,
-    name: "앰비언트 선셋 램프",
+    name: "Ambient Sunset Lamp",
     categoryId: "lighting",
     price: 26000,
     imageUrl: "<https://i.ibb.co/0p6ZRKzV/whaudwprj3.webp>",
@@ -34,7 +34,7 @@ const products = [
   },
   {
     id: 5,
-    name: "마그네틱 미니 센서등",
+    name: "Magnetic Mini Sensor Light",
     categoryId: "lighting",
     price: 19000,
     imageUrl: "<https://i.ibb.co/d4d2nxGh/whaudwprj.webp>",
@@ -42,7 +42,7 @@ const products = [
   },
   {
     id: 6,
-    name: "글라스 글로브 테이블 램프",
+    name: "Glass Globe Table Lamp",
     categoryId: "lighting",
     price: 46000,
     imageUrl:
@@ -51,7 +51,7 @@ const products = [
   },
   {
     id: 7,
-    name: "클리어 아크릴 3단 서랍장",
+    name: "Clear Acrylic 3-Drawer Organizer",
     categoryId: "organization",
     price: 28000,
     imageUrl:
@@ -60,7 +60,7 @@ const products = [
   },
   {
     id: 8,
-    name: "알루미늄 슬림 파일 랙",
+    name: "Aluminum Slim File Rack",
     categoryId: "organization",
     price: 22000,
     imageUrl: "<https://i.ibb.co/4Zt0P0jJ/file-lag.webp>",
@@ -68,7 +68,7 @@ const products = [
   },
   {
     id: 9,
-    name: "모듈 데스크 트레이",
+    name: "Modular Desk Tray",
     categoryId: "organization",
     price: 15000,
     imageUrl:
@@ -78,7 +78,7 @@ const products = [
   },
   {
     id: 10,
-    name: "스틸 케이블 매니지먼트 박스",
+    name: "Steel Cable Management Box",
     categoryId: "organization",
     price: 24000,
     imageUrl: "<https://i.ibb.co/VWv7T0Fc/cable.webp>",
@@ -86,7 +86,7 @@ const products = [
   },
   {
     id: 11,
-    name: "폴더블 펠트 데스크 바스켓",
+    name: "Foldable Felt Desk Basket",
     categoryId: "organization",
     price: 16000,
     imageUrl:
@@ -96,7 +96,7 @@ const products = [
   },
   {
     id: 12,
-    name: "미니멀 데스크 페그보드",
+    name: "Minimal Desk Pegboard",
     categoryId: "organization",
     price: 36000,
     imageUrl:
@@ -106,7 +106,7 @@ const products = [
   },
   {
     id: 13,
-    name: "3-in-1 폴더블 무선 충전기",
+    name: "3-in-1 Foldable Wireless Charger",
     categoryId: "digital-electronics",
     price: 48000,
     imageUrl: "<https://i.ibb.co/b5GN3N48/Charger.webp>",
@@ -115,7 +115,7 @@ const products = [
   },
   {
     id: 14,
-    name: "미니멀 블루투스 기계식 키보드",
+    name: "Minimal Bluetooth Mechanical Keyboard",
     categoryId: "digital-electronics",
     price: 79000,
     imageUrl: "<https://i.ibb.co/9mQNqKtd/image.webp>",
@@ -123,7 +123,7 @@ const products = [
   },
   {
     id: 15,
-    name: "무소음 에르고노믹 무선 마우스",
+    name: "Silent Wireless Mouse",
     categoryId: "digital-electronics",
     price: 34000,
     imageUrl: "<https://i.ibb.co/c78MZwG/image.webp>",
@@ -131,7 +131,7 @@ const products = [
   },
   {
     id: 16,
-    name: "알루미늄 큐브 블루투스 스피커",
+    name: "Aluminum Cube Bluetooth Speaker",
     categoryId: "digital-electronics",
     price: 45000,
     imageUrl: "<https://i.ibb.co/gZKyKDhh/1.webp>",
@@ -140,7 +140,7 @@ const products = [
   },
   {
     id: 17,
-    name: "초슬림 마그네틱 보조배터리",
+    name: "Ultra-Slim Magnetic Power Bank",
     categoryId: "digital-electronics",
     price: 32000,
     imageUrl: "<https://i.ibb.co/fzQMM1C2/image.webp>",
@@ -149,7 +149,7 @@ const products = [
   },
   {
     id: 18,
-    name: "로터리 다이얼 데스크 타이머",
+    name: "Rotary Dial Desk Timer",
     categoryId: "digital-electronics",
     price: 21000,
     imageUrl: "<https://i.ibb.co/rKvCnSwL/image.webp>",
@@ -158,7 +158,7 @@ const products = [
   },
   {
     id: 19,
-    name: "비건 레더 와이드 데스크 매트",
+    name: "Vegan Leather Wide Desk Mat",
     categoryId: "desk-accessories",
     price: 24000,
     imageUrl: "<https://i.ibb.co/4Rhk90c0/wprj1.webp>",
@@ -167,7 +167,7 @@ const products = [
   },
   {
     id: 20,
-    name: "솔리드 알루미늄 노트북 스탠드",
+    name: "Solid Aluminum Laptop Stand",
     categoryId: "desk-accessories",
     price: 38000,
     imageUrl: "<https://i.ibb.co/NgHYqp3b/2.webp>",
@@ -175,7 +175,7 @@ const products = [
   },
   {
     id: 21,
-    name: "월넛 우드 팜레스트",
+    name: "Walnut Wood Palm Rest",
     categoryId: "desk-accessories",
     price: 19000,
     imageUrl: "<https://i.ibb.co/s9cTWhhy/wprj3.webp>",
@@ -184,7 +184,7 @@ const products = [
   },
   {
     id: 22,
-    name: "마그네틱 케이블 드롭 홀더",
+    name: "Magnetic Cable Drop Holder",
     categoryId: "desk-accessories",
     price: 12000,
     imageUrl: "<https://i.ibb.co/gFJKygJm/wprj4.webp>",
@@ -193,7 +193,7 @@ const products = [
   },
   {
     id: 23,
-    name: "세라믹 인센스 트레이",
+    name: "Ceramic Incense Tray",
     categoryId: "desk-accessories",
     price: 23000,
     imageUrl: "<https://i.ibb.co/xSNMvzD7/wprj5.webp>",
@@ -201,7 +201,7 @@ const products = [
   },
   {
     id: 24,
-    name: "스테인리스 스틸 코스터 세트",
+    name: "Stainless Steel Coaster Set",
     categoryId: "desk-accessories",
     price: 14000,
     imageUrl: "<https://i.ibb.co/PGgvKWC4/wprj6.webp>",
@@ -209,7 +209,7 @@ const products = [
   },
   {
     id: 25,
-    name: "미니멀 그리드 하드커버 저널",
+    name: "Minimal Grid Hardcover Journal",
     categoryId: "objects-stationery",
     price: 14000,
     imageUrl:
@@ -219,7 +219,7 @@ const products = [
   },
   {
     id: 26,
-    name: "매트 메탈 젤 잉크 펜",
+    name: "Matte Metal Gel Ink Pen",
     categoryId: "objects-stationery",
     price: 18000,
     imageUrl:
@@ -228,7 +228,7 @@ const products = [
   },
   {
     id: 27,
-    name: "뉴트럴 인덱스 스티키 탭",
+    name: "Neutral Index Sticky Tabs",
     categoryId: "objects-stationery",
     price: 6500,
     imageUrl:
@@ -237,7 +237,7 @@ const products = [
   },
   {
     id: 28,
-    name: "알루미늄 커팅 룰러 (30cm)",
+    name: "Aluminum Cutting Ruler",
     categoryId: "objects-stationery",
     price: 9500,
     imageUrl:
@@ -247,7 +247,7 @@ const products = [
   },
   {
     id: 29,
-    name: "원터치 미니 테이프 디스펜서",
+    name: "One-Touch Mini Tape Dispenser",
     categoryId: "objects-stationery",
     price: 13000,
     imageUrl:
@@ -256,7 +256,7 @@ const products = [
   },
   {
     id: 30,
-    name: "아크릴 펜 레스트 & 페이퍼웨이트",
+    name: "Acrylic Pen Rest & Paperweight",
     categoryId: "objects-stationery",
     price: 11000,
     imageUrl:
