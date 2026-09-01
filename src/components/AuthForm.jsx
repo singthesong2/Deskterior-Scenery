@@ -1,18 +1,34 @@
 import { useState } from "react";
 import { checkId } from "../api/authApi";
 import { useForm } from "react-hook-form";
-import { Form, Label, Input, Button, Message } from "../styles/AuthForm.styles";
+import {
+  Form,
+  Label,
+  Input,
+  Button,
+  Message,
+  NameGroup,
+  AllTerms,
+  TermsGroup,
+  ErrorMessage,
+  Required,
+} from "../styles/AuthForm.styles";
 
 function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   const [idCheck, setIdCheck] = useState(false);
   const [message, setMessage] = useState("");
 
-  const { register, handleSubmit, reset, getValues } = useForm({
-    defaultValues: {
-      id: "",
-      password: "",
+  const { register, handleSubmit, reset, getValues, watch, setValue } = useForm(
+    {
+      defaultValues: {
+        id: "",
+        password: "",
+        terms: false,
+        privacy: false,
+        marketing: false,
+      },
     },
-  });
+  );
 
   const submitForm = async (data) => {
     if (mode === "signup") {
@@ -82,13 +98,46 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
     setMessage("");
   };
 
+  const terms = watch("terms");
+  const privacy = watch("privacy");
+  const marketing = watch("marketing");
+
+  const isAllChecked = terms && privacy && marketing;
+
+  const handleAllCheck = (e) => {
+    const checked = e.target.checked;
+
+    setValue("terms", checked);
+    setValue("privacy", checked);
+    setValue("marketing", checked);
+  };
+
   return (
     <>
       <Form onSubmit={handleSubmit(submitForm)}>
+        {mode === "signup" && (
+          <NameGroup>
+            <Label>
+              <span>
+                First Name <Required>*</Required>
+              </span>
+              <Input type="text" placeholder="홍" />
+            </Label>
+
+            <Label>
+              <span>
+                Last Name <Required>*</Required>
+              </span>
+              <Input type="text" placeholder="길동" />
+            </Label>
+          </NameGroup>
+        )}
+
         <Label>
-          ID
+          <span>ID {mode === "signup" && <Required>*</Required>}</span>
           <Input
             type="text"
+            placeholder={mode === "signup" ? "ID" : ""}
             {...register("id", {
               onChange: () => {
                 setIdCheck(false);
@@ -98,16 +147,17 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
           />
         </Label>
 
-        {mode === "signup" && (
+        {/*{mode === "signup" && (
           <Button type="button" onClick={handleIdCheck}>
             아이디 중복 확인
           </Button>
-        )}
+        )}*/}
 
         <Label>
-          Password
+          <span>Password {mode === "signup" && <Required>*</Required>}</span>
           <Input
             type="password"
+            placeholder={mode === "signup" ? "Password" : ""}
             {...register("password", {
               onChange: () => {
                 setMessage("");
@@ -116,17 +166,64 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
           />
         </Label>
 
-        {message && <Message>{message}</Message>}
-
-        <Button type="submit">
-          {mode === "signup" ? "Sign Up" : "Log in"}
-        </Button>
-
         {/*{mode === "login" && (
           <Button type="button" onClick={handleLogOut}>
             로그아웃
           </Button>
         )}*/}
+
+        {mode === "signup" && (
+          <>
+            <Label>
+              Contact
+              <Input type="tel" placeholder="010-0000-0000" />
+            </Label>
+
+            <Label>
+              Address
+              <Input type="text" placeholder="주소" />
+            </Label>
+          </>
+        )}
+
+        {mode === "signup" && (
+          <TermsGroup>
+            <p>약관 동의</p>
+            <AllTerms>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={isAllChecked}
+                  onChange={handleAllCheck}
+                />
+                전체 동의
+              </label>
+            </AllTerms>
+
+            <label>
+              <input type="checkbox" {...register("terms")} />
+              [필수] 이용약관 동의
+            </label>
+
+            <label>
+              <input type="checkbox" {...register("privacy")} />
+              [필수] 개인정보 수집 및 이용 동의
+            </label>
+
+            <label>
+              <input type="checkbox" {...register("marketing")} />
+              [선택] 마케팅 정보 수신 동의
+            </label>
+          </TermsGroup>
+        )}
+
+        {message && <Message>{message}</Message>}
+
+        {/*<ErrorMessage></ErrorMessage>*/}
+
+        <Button type="submit">
+          {mode === "signup" ? "Sign Up" : "Log in"}
+        </Button>
 
         {/*}Button type="button" onClick={handleCancel}>
           취소
