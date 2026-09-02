@@ -13,7 +13,7 @@ import {
   SelectAllLabel,
   ClearAllButton,
   ItemListSection,
-} from "../../styles/CartPage.styles";
+} from "../../styles/CartStyles/CartPage.styles";
 
 const CartPage = () => {
   /* 로컬 스토리지 */
