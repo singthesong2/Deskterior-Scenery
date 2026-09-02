@@ -56,4 +56,8 @@ export const reset = css`
   button:disabled {
     cursor: not-allowed;
   }
+  /* 임의 배경색 지워야함 */
+  body {
+    background-color: #f8f7f2;
+  }
 `;

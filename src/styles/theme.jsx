@@ -1,6 +1,6 @@
 // 색상
 const colors = {
-  background: "#F9F7F3", //전체 배경색 흰색은 fDfDfD임
+  background: "#F8F7F2", //전체 배경색 흰색은 fDfDfD임
   cards: "#fDfDfD", //상품 카드배경 및 어두운 배경
   imagePlaceholder: "#E8E6DF", //이미지 들어갈자리 표시용
   textMain: "#1F211F", //텍스트 본문색, 버튼 배경색
