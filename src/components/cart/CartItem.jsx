@@ -14,7 +14,7 @@ import {
   TotalPrice,
   TotalPriceText,
   DeleteButton,
-} from "../../styles/CartItem.styles";
+} from "../../styles/CartStyles/CartItem.styles";
 
 const CartItem = ({
   item,

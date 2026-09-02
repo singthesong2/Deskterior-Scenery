@@ -7,7 +7,7 @@ import {
   ButtonGroup,
   CancelButton,
   ConfirmButton,
-} from "../../styles/Modal.styles";
+} from "../../styles/CommonStyles/Modal.styles";
 
 const Modal = ({ title, description, confirmText, onClose, onConfirm }) => {
   return (
