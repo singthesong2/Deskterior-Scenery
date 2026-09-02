@@ -41,11 +41,11 @@ const Modal = ({ title, description, confirmText, onClose, onConfirm }) => {
           </svg>
         </IconWrapper>
 
-        {/* 텍스트 영역 */}
+        {/* 텍스트 */}
         <ModalTitle>{title}</ModalTitle>
         <ModalDescription>{description}</ModalDescription>
 
-        {/* 버튼 영역 */}
+        {/* 버튼 */}
         <ButtonGroup>
           <CancelButton onClick={onClose}>Cancel</CancelButton>
           <ConfirmButton onClick={onConfirm}>{confirmText}</ConfirmButton>

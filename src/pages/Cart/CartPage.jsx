@@ -4,6 +4,16 @@ import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
 import Modal from "../../components/common/Modal";
+import {
+  CartContainer,
+  TitleWrapper,
+  Course,
+  PageTitle,
+  ActionBar,
+  SelectAllLabel,
+  ClearAllButton,
+  ItemListSection,
+} from "../../styles/CartPage.styles";
 
 const CartPage = () => {
   /* 로컬 스토리지 */
@@ -123,41 +133,49 @@ const CartPage = () => {
 
   /* 화면 */
   return (
-    <div>
-      <h1>Cart</h1>
+    <CartContainer>
+      <TitleWrapper>
+        <Course>Home &gt; Cart</Course>
+        <PageTitle>Cart</PageTitle>
+      </TitleWrapper>
 
       {cartItems.length > 0 && (
-        <div>
+        <ActionBar>
           {/* 전체 선택 체크박스 */}
-          <label>
+          <SelectAllLabel>
             <input
               type="checkbox"
               checked={isAllChecked}
               onChange={handleToggleAllCheck}
             />
             Selected All
-          </label>
+          </SelectAllLabel>
 
           {/* 전체 삭제 버튼 */}
-          <button onClick={() => setIsClearModalOpen(true)}>All Delete</button>
-        </div>
+          <ClearAllButton onClick={() => setIsClearModalOpen(true)}>
+            All Delete
+          </ClearAllButton>
+        </ActionBar>
       )}
 
       {cartItems.length === 0 ? (
         <EmptyCart />
       ) : (
         <div>
-          {cartItems.map((item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              isChecked={checkedItems.includes(item.id)}
-              onToggleCheck={handleToggleCheck}
-              onIncrease={handleIncrease}
-              onDecrease={handleDecrease}
-              onDelete={handleDelete}
-            />
-          ))}
+          <ItemListSection>
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                isChecked={checkedItems.includes(item.id)}
+                onToggleCheck={handleToggleCheck}
+                onIncrease={handleIncrease}
+                onDecrease={handleDecrease}
+                onDelete={handleDelete}
+              />
+            ))}
+          </ItemListSection>
+
           <CartSummary
             subtotal={subtotal}
             deliveryFee={deliveryFee}
@@ -174,7 +192,7 @@ const CartPage = () => {
           onConfirm={confirmClearAll}
         />
       )}
-    </div>
+    </CartContainer>
   );
 };
 
