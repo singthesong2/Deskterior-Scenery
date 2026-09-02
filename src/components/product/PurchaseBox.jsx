@@ -1,5 +1,5 @@
 import { HeartIcon } from "../icons/Icons";
-import * as S from "../../styles/PurchaseBox.styles";
+import * as S from "../../styles/ProductDetail/PurchaseBox.styles";
 
 const PurchaseBox = ({
   quantity = 1,

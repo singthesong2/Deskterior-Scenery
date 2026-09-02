@@ -1,4 +1,4 @@
-import * as S from "../../styles/SceneryBox.styles";
+import * as S from "../../styles/ProductDetail/SceneryBox.styles";
 
 /**
  * 이미지가 없거나 로딩에 실패했을 때 자리를 채우는 박스.

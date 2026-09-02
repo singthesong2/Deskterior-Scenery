@@ -1,5 +1,5 @@
 import StarRating from "../common/StarRating";
-import * as S from "../../styles/ProductInfo.styles";
+import * as S from "../../styles/ProductDetail/ProductInfo.styles";
 
 const ProductInfo = ({
   name,

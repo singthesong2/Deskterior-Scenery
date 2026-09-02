@@ -7,7 +7,7 @@ import PurchaseBox from "../../components/product/PurchaseBox";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
-import * as S from "../../styles/ProductDetailPage.styles";
+import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
 const ProductDetailPage = ({
   product = mockProduct,

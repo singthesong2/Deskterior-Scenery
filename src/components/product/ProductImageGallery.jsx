@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SafeImage from "../common/SafeImage";
 import SceneryBox from "../common/SceneryBox";
-import * as S from "../../styles/ProductImageGallery.styles";
+import * as S from "../../styles/ProductDetail/ProductImageGallery.styles";
 
 const ProductImageGallery = ({ images, alt }) => {
   const [current, setCurrent] = useState(0);
