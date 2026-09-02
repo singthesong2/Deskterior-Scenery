@@ -74,9 +74,7 @@ const LightingPage = ({ products = lightingProducts }) => {
         {filteredProducts.length === 0 ? (
           <S.EmptyState>
             <S.StyledNoResultIcon width={64} height={64} />
-            <S.EmptyTitle>
-              "{search}"에 대한 검색 결과가 없습니다
-            </S.EmptyTitle>
+            <S.EmptyTitle>"{search}"에 대한 검색 결과가 없습니다</S.EmptyTitle>
             <S.EmptySubtitle>
               검색어를 확인하거나 다시 입력해주세요
             </S.EmptySubtitle>
