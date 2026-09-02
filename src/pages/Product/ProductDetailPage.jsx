@@ -7,6 +7,7 @@ import PurchaseBox from "../../components/product/PurchaseBox";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
+import * as S from "../../styles/ProductDetailPage.styles";
 
 const ProductDetailPage = ({
   product = mockProduct,
@@ -87,36 +88,22 @@ const ProductDetailPage = ({
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 1080,
-        margin: "0 auto",
-        padding: 24,
-        textAlign: "left",
-      }}
-    >
+    <S.Page>
       <ProductBreadcrumb
         category={product.category}
         productName={product.name}
       />
 
-      <div style={{ display: "flex", gap: 40, flexWrap: "wrap" }}>
-        <div style={{ flex: "1 1 360px" }}>
+      <S.TopSection>
+        <S.GalleryColumn>
           <ProductImageGallery
             key={product.id}
             images={product.images}
             alt={product.name}
           />
-        </div>
+        </S.GalleryColumn>
 
-        <div
-          style={{
-            flex: "1 1 360px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-          }}
-        >
+        <S.InfoColumn>
           <ProductInfo
             name={product.name}
             category={product.category}
@@ -124,7 +111,6 @@ const ProductDetailPage = ({
             reviewCount={reviewCount}
             price={product.price}
             description={product.description}
-            details={product.details}
           />
           <PurchaseBox
             quantity={quantity}
@@ -134,8 +120,8 @@ const ProductDetailPage = ({
             isWished={isWished}
             onToggleWish={handleToggleWish}
           />
-        </div>
-      </div>
+        </S.InfoColumn>
+      </S.TopSection>
 
       <ProductDetailContent sections={product.detailSections} />
 
@@ -150,7 +136,7 @@ const ProductDetailPage = ({
       />
 
       <ScrollTopButton />
-    </div>
+    </S.Page>
   );
 };
 

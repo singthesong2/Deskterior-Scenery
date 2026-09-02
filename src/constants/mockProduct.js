@@ -10,15 +10,6 @@ export const mockProduct = {
     "버섯을 닮은 무선 무드등입니다. 3단계 밝기 조절과 USB-C 충전을 지원해 침대 옆이나 책상 어디에나 두고 쓸 수 있어요.",
   category: "Lighting",
   images,
-  details: [
-    "크기: 지름 120 x 높이 150 (mm)",
-    "무게: 240g",
-    "배터리: 1800mAh 내장 (USB-C 충전)",
-    "사용 시간: 최대 12시간 (최저 밝기 기준)",
-    "밝기: 3단계 조절",
-    "소재: 실리콘 갓 + ABS 본체",
-  ],
-
   detailSections: [
     {
       id: 1,

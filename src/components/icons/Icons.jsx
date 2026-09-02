@@ -78,6 +78,14 @@ export const HeartIcon = ({ filled = false, ...props }) => (
   </svg>
 );
 
+// 상세페이지 상단 뒤로가기 화살표 (←)
+export const ArrowLeftIcon = (props) => (
+  <svg {...base} {...props}>
+    <line x1="19" y1="12" x2="5" y2="12" />
+    <polyline points="12 19 5 12 12 5" />
+  </svg>
+);
+
 export const ChevronLeftIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

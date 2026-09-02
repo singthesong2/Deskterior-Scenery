@@ -10,6 +10,12 @@ const colors = {
   mutedText: "#6B7280",
 };
 
+// 폰트 패밀리 (공통)
+const fontFamily = {
+  base: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+  display: "'DM Serif Text', Georgia, 'Times New Roman', serif", // 제목용
+};
+
 // 폰트 크기
 const fontSize = {
   xs: "0.75rem", // 12px
@@ -71,6 +77,7 @@ const media = {
 
 export const theme = {
   colors,
+  fontFamily,
   fontSize,
   fontWeight,
   spacing,
