@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SafeImage from "../common/SafeImage";
 import SceneryBox from "../common/SceneryBox";
+import * as S from "../../styles/ProductImageGallery.styles";
 
 const ProductImageGallery = ({ images, alt }) => {
   const [current, setCurrent] = useState(0);
@@ -12,62 +13,44 @@ const ProductImageGallery = ({ images, alt }) => {
   return (
     <div>
       {/* 큰 사진 (없거나 실패하면 SCENERY) */}
-      <SafeImage
-        src={images[safeCurrent]}
-        alt={alt}
-        fallback={
-          <SceneryBox
-            fontSize={24}
-            radius={8}
-            label="등록된 이미지가 없습니다"
-          />
-        }
-        style={{
-          width: "100%",
-          aspectRatio: "1 / 1",
-          objectFit: "cover",
-          borderRadius: 8,
-          background: "#f2f2f2",
-        }}
-      />
+      <S.MainImageFrame>
+        <SafeImage
+          src={images[safeCurrent]}
+          alt={alt}
+          fallback={
+            <SceneryBox
+              label="등록된 이미지가 없습니다"
+              aspectRatio="25 / 27"
+              big
+            />
+          }
+          style={S.mainImage}
+        />
+      </S.MainImageFrame>
 
       {/* 큰 사진 밑 작은 사진들 */}
-      <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+      <S.ThumbRow>
         {images.map((src, i) => {
           const selected = i === safeCurrent;
           return (
-            <button
+            <S.ThumbButton
               key={i}
               type="button"
+              $active={selected}
               onClick={() => setCurrent(i)}
               aria-current={selected ? "true" : undefined}
               aria-label={`${alt} ${i + 1}번 이미지 보기`}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                padding: 0,
-                lineHeight: 0,
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-              }}
             >
               <SafeImage
                 src={src}
                 alt=""
-                fallback={<SceneryBox fontSize={9} />}
-                style={{
-                  width: "100%",
-                  aspectRatio: "1 / 1",
-                  objectFit: "cover",
-                  borderRadius: 4,
-                  display: "block",
-                }}
+                fallback={<SceneryBox />}
+                style={S.fillImage}
               />
-            </button>
+            </S.ThumbButton>
           );
         })}
-      </div>
+      </S.ThumbRow>
     </div>
   );
 };

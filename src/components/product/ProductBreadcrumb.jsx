@@ -1,4 +1,5 @@
-import { ChevronLeftIcon } from "../icons/Icons";
+import { ArrowLeftIcon } from "../icons/Icons";
+import * as S from "../../styles/ProductBreadcrumb.styles";
 
 /**
  * 상단 네비 — 뒤로가기 + "Home > Category > 상품명" 경로.
@@ -17,27 +18,26 @@ const ProductBreadcrumb = ({ category, productName }) => {
   };
 
   return (
-    <nav aria-label="현재 위치">
-      <button type="button" onClick={handleBack}>
-        <ChevronLeftIcon aria-hidden="true" focusable="false" />
+    <S.Nav aria-label="현재 위치">
+      <S.BackButton type="button" onClick={handleBack}>
+        <ArrowLeftIcon aria-hidden="true" focusable="false" />
         Prev
-      </button>
+      </S.BackButton>
 
-      <ol>
+      <S.Trail>
         {trail.map((label, index) => {
           const isLast = index === trail.length - 1;
           return (
-            <li
+            <S.Crumb
               key={index}
-              className={index > 0 ? "breadcrumb-item" : undefined}
               aria-current={isLast ? "page" : undefined}
             >
               {label}
-            </li>
+            </S.Crumb>
           );
         })}
-      </ol>
-    </nav>
+      </S.Trail>
+    </S.Nav>
   );
 };
 

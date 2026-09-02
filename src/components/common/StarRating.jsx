@@ -1,11 +1,14 @@
 import { useId } from "react";
 
-// viewBox 0 0 24 24 기준 5각 별
+// viewBox 0 0 18 17 기준 5각 별 (피그마 export)
+const STAR_VIEWBOX = "0 0 18 17";
+const STAR_W = 18;
+const STAR_H = 17;
 const STAR_PATH =
-  "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
+  "M8.94255 2.33325L10.327 6.59431H14.8074L11.1827 9.22779L12.5672 13.4889L8.94255 10.8554L5.31787 13.4889L6.70237 9.22779L3.0777 6.59431H7.55804L8.94255 2.33325Z";
 
-const FILLED = "#FF5722";
-const EMPTY = "#d9d5cc";
+const FILLED = "#EB6923";
+const EMPTY = "#E8E6DF";
 
 // 화면엔 안 보이고 스크린리더만 읽는 스타일
 const srOnly = {
@@ -29,6 +32,10 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
   const uid = useId();
   const selectable = typeof onChange === "function";
   const score = Math.max(0, Math.min(5, Number(value) || 0));
+
+  // 피그마 별 비율 18:17 유지 (size 는 가로 기준)
+  const w = size;
+  const h = (size * STAR_H) / STAR_W;
 
   if (selectable) {
     const rounded = Math.round(score);
@@ -55,15 +62,13 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
               aria-label={`${star}점`}
               style={srOnly}
             />
-            <svg
-              width={size}
-              height={size}
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
+            <svg width={w} height={h} viewBox={STAR_VIEWBOX} aria-hidden="true">
               <path
                 d={STAR_PATH}
                 fill={star <= rounded ? FILLED : EMPTY}
+                stroke={star <= rounded ? FILLED : EMPTY}
+                strokeWidth={2}
+                strokeLinecap="round"
               />
             </svg>
           </label>
@@ -84,9 +89,9 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
         return (
           <svg
             key={i}
-            width={size}
-            height={size}
-            viewBox="0 0 24 24"
+            width={w}
+            height={h}
+            viewBox={STAR_VIEWBOX}
             aria-hidden="true"
           >
             <defs>
@@ -95,7 +100,13 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
                 <stop offset={`${pct}%`} stopColor={EMPTY} />
               </linearGradient>
             </defs>
-            <path d={STAR_PATH} fill={`url(#${gradId})`} />
+            <path
+              d={STAR_PATH}
+              fill={`url(#${gradId})`}
+              stroke={`url(#${gradId})`}
+              strokeWidth={2}
+              strokeLinecap="round"
+            />
           </svg>
         );
       })}

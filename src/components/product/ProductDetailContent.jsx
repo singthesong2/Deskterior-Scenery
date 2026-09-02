@@ -1,8 +1,8 @@
 import SafeImage from "../common/SafeImage";
 import SceneryBox from "../common/SceneryBox";
 
-const ProductDetailContent = ({ sections }) => {
-  if (!sections?.length) return null;
+const ProductDetailContent = ({ sections = [] }) => {
+  if (!sections.length) return null;
 
   return (
     <section
@@ -24,9 +24,9 @@ const ProductDetailContent = ({ sections }) => {
               fallback={
                 <SceneryBox
                   aspectRatio="3 / 2"
-                  fontSize={20}
                   radius={8}
                   label="이미지를 불러올 수 없습니다"
+                  big
                 />
               }
               style={{ width: "100%", borderRadius: 8, display: "block" }}
