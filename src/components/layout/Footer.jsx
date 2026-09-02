@@ -7,6 +7,7 @@ import {
   FooterSupport,
   SupportTitle,
   SupportText,
+  Copyright,
 } from "../../styles/Footer.styles";
 
 function Footer() {
@@ -31,6 +32,7 @@ function Footer() {
           <SupportText>Contact</SupportText>
         </FooterSupport>
       </FooterInner>
+      <Copyright>© 2026 SCENERY</Copyright>
     </FooterContainer>
   );
 }
