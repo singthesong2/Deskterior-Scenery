@@ -43,7 +43,7 @@ const Header = ({ activeLink }) => {
         </IconButton>
 
         <IconButton>
-          <BasketIcon />
+          <BasketIcon width={30} height={30} />
         </IconButton>
       </IconContainer>
     </HeaderSection>

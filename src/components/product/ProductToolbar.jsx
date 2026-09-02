@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "../icons/Icons";
-import * as S from "./ProductToolbar.styles";
+import * as S from "../../styles/ProductToolbar.styles";
 
 export const SORT_OPTIONS = [
   { value: "name", label: "이름순" },
