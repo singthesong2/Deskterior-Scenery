@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BasketIcon, HeartIcon } from "../icons/Icons";
+import * as S from "../../styles/ProductCard.styles";
 
 const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
   const [liked, setLiked] = useState(!!product.liked);
@@ -13,56 +14,44 @@ const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
     onToggleLike?.(product.id);
   };
 
+  const handleAddToCart = () => onAddToCart?.(product.id);
+
   return (
-    <div style={{ textAlign: "left" }}>
-      <div
-        style={{
-          width: "100%",
-          aspectRatio: "1 / 1",
-          background: "#e9e5db",
-          overflow: "hidden",
-        }}
-      >
+    <S.Card>
+      <S.ImageWrapper>
+        {product.soldOut && <S.SoldOutBadge>Sold out</S.SoldOutBadge>}
+
         {product.imageUrl && (
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+          <S.ProductImage src={product.imageUrl} alt={product.name} />
         )}
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          marginTop: 12,
-        }}
-      >
-        <strong style={{ fontSize: 15 }}>{product.name}</strong>
-        <div style={{ display: "flex", gap: 10, color: "#0d0c0a" }}>
-          <BasketIcon
-            style={{ cursor: "pointer" }}
-            onClick={() => onAddToCart?.(product.id)}
-          />
-          <HeartIcon
-            filled={liked}
-            style={{ cursor: "pointer" }}
+        <S.IconStack>
+          <S.LikeButton
+            type="button"
+            aria-pressed={liked}
+            aria-label="찜하기"
             onClick={handleToggleLike}
-          />
-        </div>
-      </div>
+          >
+            <HeartIcon filled={liked} width={20} height={20} />
+          </S.LikeButton>
+          <S.CartButton
+            type="button"
+            aria-label="장바구니 담기"
+            onClick={handleAddToCart}
+          >
+            <BasketIcon width={16} height={16} />
+          </S.CartButton>
+        </S.IconStack>
+      </S.ImageWrapper>
 
-      <p style={{ fontSize: 14, color: "#4a463f", margin: "4px 0" }}>
-        ₩ {safePrice.toLocaleString("ko-KR")}
-      </p>
-
-      <p style={{ fontSize: 13, color: "#a19d92" }}>
-        <span style={{ color: "#e08a3c" }}>★</span> {safeRating.toFixed(1)}(
-        {safeCount})
-      </p>
-    </div>
+      <S.Info>
+        <S.ProductName>{product.name}</S.ProductName>
+        <S.Price>₩ {safePrice.toLocaleString("ko-KR")}</S.Price>
+        <S.Rating>
+          <S.Star>★</S.Star> {safeRating.toFixed(1)}({safeCount})
+        </S.Rating>
+      </S.Info>
+    </S.Card>
   );
 };
 

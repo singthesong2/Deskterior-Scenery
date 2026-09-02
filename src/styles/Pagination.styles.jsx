@@ -9,21 +9,21 @@ export const PaginationWrapper = styled.div(({ theme }) => ({
   margin: `${theme.spacing["2xl"]} 0`,
 }));
 
+const forwardNonTransientProp = (prop) => !prop.startsWith("$");
+
 const chevronStyle = ({ theme, $disabled }) => ({
   cursor: $disabled ? "default" : "pointer",
   pointerEvents: $disabled ? "none" : "auto",
   color: $disabled ? theme.colors.secondText : theme.colors.textMain,
   padding: theme.spacing["2xs"],
-
-  "&:focus-visible": {
-    outline: `2px solid ${theme.colors.textMain}`,
-    outlineOffset: "2px",
-    borderRadius: theme.radius.full,
-  },
 });
 
-export const StyledChevronLeftIcon = styled(ChevronLeftIcon)(chevronStyle);
-export const StyledChevronRightIcon = styled(ChevronRightIcon)(chevronStyle);
+export const StyledChevronLeftIcon = styled(ChevronLeftIcon, {
+  shouldForwardProp: forwardNonTransientProp,
+})(chevronStyle);
+export const StyledChevronRightIcon = styled(ChevronRightIcon, {
+  shouldForwardProp: forwardNonTransientProp,
+})(chevronStyle);
 
 export const Ellipsis = styled.span(({ theme }) => ({
   color: theme.colors.secondText,
@@ -42,10 +42,5 @@ export const PageButton = styled.button(({ theme, $active }) => ({
 
   "&:hover": {
     background: $active ? theme.colors.textMain : theme.colors.subtle,
-  },
-
-  "&:focus-visible": {
-    outline: `2px solid ${theme.colors.textMain}`,
-    outlineOffset: "2px",
   },
 }));

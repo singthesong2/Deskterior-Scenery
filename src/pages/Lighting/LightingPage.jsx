@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { mockLighting } from "../../constants/mockLighting";
+import allProducts from "../../data/products";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
-import { NoResultIcon } from "../../components/icons/Icons";
+import * as S from "../../styles/LightingPage.styles";
 
 const TOTAL_PAGES = 2;
 
@@ -14,7 +14,16 @@ const SORT_COMPARATORS = {
   reviewCount: (a, b) => b.reviewCount - a.reviewCount,
 };
 
-const LightingPage = ({ products = mockLighting }) => {
+const stripAngleBrackets = (url) => url.replace(/^<|>$/g, "");
+
+const lightingProducts = allProducts
+  .filter((product) => product.categoryId === "lighting")
+  .map((product) => ({
+    ...product,
+    imageUrl: stripAngleBrackets(product.imageUrl),
+  }));
+
+const LightingPage = ({ products = lightingProducts }) => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("name");
@@ -46,45 +55,14 @@ const LightingPage = ({ products = mockLighting }) => {
 
   return (
     <div>
-      <main style={{ padding: "40px 32px", textAlign: "left" }}>
-        <h1
-          style={{
-            fontFamily: "Georgia, 'Times New Roman', serif",
-            fontSize: 36,
-            fontWeight: 700,
-            margin: "0 0 24px",
-          }}
-        >
-          Take your SCENERY
-        </h1>
+      <S.Main>
+        <S.PageTitle>Take your SCENERY</S.PageTitle>
 
-        <div
-          style={{
-            width: "100%",
-            height: 220,
-            background: "#e9e5db",
-          }}
-        />
+        <S.HeroPlaceholder />
 
-        <hr
-          style={{
-            border: "none",
-            borderTop: "1px solid #ece9e2",
-            margin: "40px 0",
-          }}
-        />
+        <S.Divider />
 
-        <h2
-          style={{
-            fontFamily: "Georgia, 'Times New Roman', serif",
-            fontSize: 24,
-            fontWeight: 700,
-            textAlign: "center",
-            margin: "0 0 32px",
-          }}
-        >
-          Lighting
-        </h2>
+        <S.SectionTitle>Lighting</S.SectionTitle>
 
         <ProductToolbar
           search={search}
@@ -94,42 +72,17 @@ const LightingPage = ({ products = mockLighting }) => {
         />
 
         {filteredProducts.length === 0 ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "120px 0",
-            }}
-          >
-            <NoResultIcon width={64} height={64} style={{ color: "#e2ded3" }} />
-            <p
-              style={{
-                marginTop: 20,
-                fontSize: 15,
-                color: "#1F211F",
-              }}
-            >
+          <S.EmptyState>
+            <S.StyledNoResultIcon width={64} height={64} />
+            <S.EmptyTitle>
               "{search}"에 대한 검색 결과가 없습니다
-            </p>
-            <p
-              style={{
-                marginTop: 6,
-                fontSize: 13,
-                color: "#a19d92",
-              }}
-            >
+            </S.EmptyTitle>
+            <S.EmptySubtitle>
               검색어를 확인하거나 다시 입력해주세요
-            </p>
-          </div>
+            </S.EmptySubtitle>
+          </S.EmptyState>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 24,
-            }}
-          >
+          <S.ProductGrid>
             {pagedProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -137,7 +90,7 @@ const LightingPage = ({ products = mockLighting }) => {
                 onAddToCart={handleAddToCart}
               />
             ))}
-          </div>
+          </S.ProductGrid>
         )}
 
         <Pagination
@@ -145,7 +98,7 @@ const LightingPage = ({ products = mockLighting }) => {
           totalPages={TOTAL_PAGES}
           onPageChange={setCurrentPage}
         />
-      </main>
+      </S.Main>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { SearchIcon } from "../icons/Icons";
+import { SearchIcon } from "../components/icons/Icons";
 
 export const StyledSearchIcon = styled(SearchIcon)`
   color: ${({ theme }) => theme.colors.secondText};
