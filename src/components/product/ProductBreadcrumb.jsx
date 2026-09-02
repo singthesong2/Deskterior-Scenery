@@ -1,5 +1,5 @@
 import { ArrowLeftIcon } from "../icons/Icons";
-import * as S from "../../styles/ProductBreadcrumb.styles";
+import * as S from "../../styles/ProductDetail/ProductBreadcrumb.styles";
 
 /**
  * 상단 네비 — 뒤로가기 + "Home > Category > 상품명" 경로.
