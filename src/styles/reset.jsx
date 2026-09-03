@@ -12,6 +12,7 @@ export const reset = css`
 
   /* 부스, 덜컹방지 */
   html {
+    font-size: 16px;
     scroll-behavior: smooth;
     overflow-y: scroll;
   }
