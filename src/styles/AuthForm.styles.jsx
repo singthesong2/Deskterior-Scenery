@@ -90,6 +90,7 @@ export const TermsGroup = styled.label({
   },
   "& input[type='checkbox']": {
     margin: 0,
+    transform: "translateY(3px)",
   },
 });
 
