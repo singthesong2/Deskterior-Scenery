@@ -1,5 +1,6 @@
 import { useState } from "react";
-import StarRating from "../common/StarRating";
+import ReviewStars from "./ReviewStars";
+import * as S from "../../styles/ProductDetail/Review.styles";
 
 /**
  * defaultValue 를 주면 "수정" 모드, 없으면 "작성" 모드.
@@ -50,54 +51,56 @@ const ReviewForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <span>별점</span>
-        <StarRating
-          value={rating}
-          onChange={
-            isLoggedIn && !submitting
-              ? (nextRating) => {
-                  setRating(nextRating);
-                  setError("");
-                }
-              : undefined
+    <S.Form onSubmit={handleSubmit}>
+      <S.FormRow>
+        <S.RatingBox>
+          <S.RatingLabel>{rating.toFixed(1)}</S.RatingLabel>
+          <ReviewStars
+            value={rating}
+            onChange={
+              isLoggedIn && !submitting
+                ? (nextRating) => {
+                    setRating(nextRating);
+                    setError("");
+                  }
+                : undefined
+            }
+          />
+          {!isLoggedIn && <S.RatingHint>로그인 후 별점 선택</S.RatingHint>}
+        </S.RatingBox>
+
+        <S.Textarea
+          value={content}
+          disabled={!isLoggedIn || submitting}
+          placeholder={
+            isLoggedIn
+              ? "리뷰를 작성해 주세요"
+              : "로그인 후 리뷰를 작성할 수 있어요"
           }
+          onChange={(event) => {
+            setContent(event.target.value);
+            setError("");
+          }}
         />
-        {!isLoggedIn && <span>로그인 후 별점 선택</span>}
-      </div>
+      </S.FormRow>
 
-      <textarea
-        value={content}
-        disabled={!isLoggedIn || submitting}
-        placeholder={
-          isLoggedIn
-            ? "리뷰를 작성해 주세요"
-            : "로그인 후 리뷰를 작성할 수 있어요"
-        }
-        onChange={(event) => {
-          setContent(event.target.value);
-          setError("");
-        }}
-      />
+      {error && <S.ErrorText role="alert">{error}</S.ErrorText>}
 
-      {error && <p role="alert">{error}</p>}
-
-      <div>
+      <S.FormActions>
         {isEditing && (
-          <button
+          <S.CancelButton
             type="button"
             disabled={submitting}
             onClick={() => onCancel?.()}
           >
             취소
-          </button>
+          </S.CancelButton>
         )}
-        <button type="submit" disabled={!isLoggedIn || submitting}>
+        <S.SubmitButton type="submit" disabled={!isLoggedIn || submitting}>
           {submitting ? "저장 중..." : isEditing ? "수정" : "Submit"}
-        </button>
-      </div>
-    </form>
+        </S.SubmitButton>
+      </S.FormActions>
+    </S.Form>
   );
 };
 

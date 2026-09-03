@@ -2,6 +2,7 @@ import { useState } from "react";
 import ReviewForm from "./ReviewForm";
 import ReviewSummary from "./ReviewSummary";
 import ReviewList from "./ReviewList";
+import * as S from "../../styles/ProductDetail/Review.styles";
 
 /**
  * 리뷰 영역 UI.
@@ -44,11 +45,13 @@ const ReviewSection = ({
   };
 
   return (
-    <section>
-      <h2>Reviews</h2>
-      <p>
-        구매한 상품에 대한 평가를 남기고 다른 사용자의 리뷰를 확인해 보세요.
-      </p>
+    <S.Section>
+      <S.Header>
+        <S.Title>Reviews</S.Title>
+        <S.Subtitle>
+          구매한 상품에 대한 평가를 남기고 다른 사용자의 리뷰를 확인해 보세요.
+        </S.Subtitle>
+      </S.Header>
 
       <ReviewForm
         key={editingId ?? "new"}
@@ -66,7 +69,7 @@ const ReviewSection = ({
         onEdit={setEditingId}
         onDelete={handleDelete}
       />
-    </section>
+    </S.Section>
   );
 };
 
