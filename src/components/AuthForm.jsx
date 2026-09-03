@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { checkId } from "../api/authApi";
 import { useForm } from "react-hook-form";
+import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import {
   Form,
   Label,
@@ -14,11 +15,14 @@ import {
   ErrorMessage,
   ErrorIcon,
   Required,
+  PasswordGroup,
+  PasswordHidenButton,
 } from "../styles/AuthForm.styles";
 
 function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   const [idCheck, setIdCheck] = useState("");
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -104,6 +108,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       }
       setIdCheck("");
       setMessage(error.message);
+      setFocus("id");
       //setMessage("이미 사용 중인 아이디입니다."); 삭제 X
     }
   };
@@ -229,24 +234,37 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
         <Label>
           <span>Password {mode === "signup" && <Required>*</Required>}</span>
-          <Input
-            type="password"
-            placeholder={mode === "signup" ? "Password (4자 이상)" : ""}
-            {...register("password", {
-              required: "비밀번호를 입력해주세요.",
-              ...(mode === "signup" && {
-                minLength: {
-                  value: 4,
-                  message: "비밀번호는 4자 이상 입력해주세요.",
+          <PasswordGroup>
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder={mode === "signup" ? "Password (4자 이상)" : ""}
+              {...register("password", {
+                required: "비밀번호를 입력해주세요.",
+                ...(mode === "signup" && {
+                  minLength: {
+                    value: 4,
+                    message: "비밀번호는 4자 이상 입력해주세요.",
+                  },
+                  validate: (value) =>
+                    !/\s/.test(value) ||
+                    "비밀번호에 공백을 입력할 수 없습니다.",
+                }),
+                onChange: () => {
+                  setMessage("");
                 },
-                validate: (value) =>
-                  !/\s/.test(value) || "비밀번호에 공백을 입력할 수 없습니다.",
-              }),
-              onChange: () => {
-                setMessage("");
-              },
-            })}
-          />
+              })}
+            />
+            <PasswordHidenButton
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <IconEyeClosed size={25} />
+              ) : (
+                <IconEye size={25} />
+              )}
+            </PasswordHidenButton>
+          </PasswordGroup>
         </Label>
 
         {/*{mode === "login" && (
