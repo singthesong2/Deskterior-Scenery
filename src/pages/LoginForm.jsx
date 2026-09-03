@@ -10,7 +10,7 @@ import {
 
 function LoginForm({ setIsLoggedIn, setUserInfo }) {
   const handleLogin = async (data) => {
-    const result = await login(id, password);
+    const result = await login(data);
 
     localStorage.setItem("token", result.token);
     localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
