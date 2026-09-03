@@ -5,7 +5,9 @@ import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
 import * as S from "../../styles/LightingPage.styles";
 
-const TOTAL_PAGES = 2;
+const PAGE_SIZE = 6;
+
+const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
 const SORT_COMPARATORS = {
   name: (a, b) => a.name.localeCompare(b.name),
@@ -34,20 +36,17 @@ const LightingPage = ({ products = lightingProducts }) => {
     )
     .sort(SORT_COMPARATORS[sortBy]);
 
-  const duplicateProducts = products.map((product) => ({
-    ...product,
-    id: `${product.id}-copy`,
-  }));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / PAGE_SIZE),
+  );
 
-  const pagedProducts =
-    currentPage === 1
-      ? filteredProducts
-      : duplicateProducts
-          .filter((product) =>
-            product.name.toLowerCase().includes(search.toLowerCase()),
-          )
-          .sort(SORT_COMPARATORS[sortBy])
-          .reverse();
+  const pagedProducts = filteredProducts.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
+
+  const placeholderCount = PAGE_SIZE - pagedProducts.length;
 
   const handleAddToCart = (productId) => {
     console.log("장바구니 담기", { productId });
@@ -66,14 +65,17 @@ const LightingPage = ({ products = lightingProducts }) => {
 
         <ProductToolbar
           search={search}
-          onSearchChange={setSearch}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setCurrentPage(1);
+          }}
           sortBy={sortBy}
           onSortChange={setSortBy}
         />
 
         {filteredProducts.length === 0 ? (
           <S.EmptyState>
-            <S.StyledNoResultIcon width={64} height={64} />
+            <S.StyledNoResultIcon width={64} height={64} aria-hidden="true" />
             <S.EmptyTitle>"{search}"에 대한 검색 결과가 없습니다</S.EmptyTitle>
             <S.EmptySubtitle>
               검색어를 확인하거나 다시 입력해주세요
@@ -88,12 +90,17 @@ const LightingPage = ({ products = lightingProducts }) => {
                 onAddToCart={handleAddToCart}
               />
             ))}
+            {Array.from({ length: placeholderCount }).map((_, index) => (
+              <S.GridPlaceholder key={`placeholder-${index}`} aria-hidden="true">
+                <ProductCard product={PLACEHOLDER_PRODUCT} />
+              </S.GridPlaceholder>
+            ))}
           </S.ProductGrid>
         )}
 
         <Pagination
           currentPage={currentPage}
-          totalPages={TOTAL_PAGES}
+          totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
       </S.Main>
