@@ -71,6 +71,33 @@ export const IdCheckButton = styled.button({
   cursor: "pointer",
 });
 
+export const PasswordGroup = styled.div({
+  display: "flex",
+  alignItems: "center",
+  width: "100%",
+  borderBottom: "2px solid #e6e6e6",
+  "& input": {
+    flex: 1,
+    minWidth: 0,
+    width: "auto",
+    borderBottom: "none",
+  },
+  "&:focus-within": {
+    borderBottomColor: "#000",
+  },
+});
+
+export const PasswordHidenButton = styled.button({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+  padding: "6px",
+  border: "none",
+  backgroundColor: "transparent",
+  cursor: "pointer",
+});
+
 export const TermsGroup = styled.label({
   display: "flex",
   flexDirection: "column",
