@@ -1,21 +1,18 @@
 import { clientApi } from "./clientApi";
 
-export async function signUp(id, password) {
+export async function signUp(data) {
   return clientApi("/auth/signup", {
     method: "POST",
-    body: JSON.stringify({
-      id,
-      password,
-    }),
+    body: JSON.stringify(data),
   });
 }
 
-export async function login(id, password) {
+export async function login(data) {
   return clientApi("/auth/login", {
     method: "POST",
     body: JSON.stringify({
-      id,
-      password,
+      id: data.id,
+      password: data.password,
     }),
   });
 }

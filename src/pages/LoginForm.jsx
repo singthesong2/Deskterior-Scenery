@@ -9,7 +9,7 @@ import {
 } from "../styles/LoginForm.styles";
 
 function LoginForm({ setIsLoggedIn, setUserInfo }) {
-  const handleLogin = async (id, password) => {
+  const handleLogin = async (data) => {
     const result = await login(id, password);
 
     localStorage.setItem("token", result.token);
