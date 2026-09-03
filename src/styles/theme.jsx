@@ -12,8 +12,8 @@ const colors = {
 
 // 폰트 패밀리 (공통)
 const fontFamily = {
-  base: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-  display: "'DM Serif Text', Georgia, 'Times New Roman', serif", // 제목용
+  base: "'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", // 프리텐다드 -> 애플 -> 윈도우 -> 시스템 기본
+  display: "'DM Serif Text', serif",
 };
 
 // 폰트 크기

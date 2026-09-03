@@ -10,7 +10,7 @@ export const MockCartData = [
   },
   {
     id: 2,
-    name: "강장공장공장장은강공장장이다",
+    name: "간장공장공장장은강공장장이고 공장장은 간장공장공장장이다",
     price: 120000,
     quantity: 2,
     imageUrl:

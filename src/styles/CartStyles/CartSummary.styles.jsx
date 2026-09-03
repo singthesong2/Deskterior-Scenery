@@ -44,11 +44,28 @@ export const LabelText = styled.span(({ theme }) => ({
 
 // 툴팁
 export const IconWrapper = styled.div({
+  position: "relative",
   display: "flex",
   alignItems: "center",
   marginLeft: "5px",
+  paddingTop: "2px",
+  paddingRight: "4px",
   cursor: "pointer",
 });
+
+// 툴팁 박스
+export const TooltipBox = styled.div(({ theme }) => ({
+  position: "absolute",
+  left: "20px", //오른쪽
+  backgroundColor: theme.colors.subtle,
+  padding: "8px 12px",
+  borderRadius: theme.radius.sm,
+  fontSize: theme.fontSize.xs,
+  fontWeight: theme.fontWeight.regular,
+  color: theme.colors.secondText,
+  whiteSpace: "nowrap",
+  zIndex: 9,
+}));
 
 // 소계 배송비 가격
 export const PriceText = styled.span(({ theme }) => ({
@@ -87,4 +104,9 @@ export const CheckoutButton = styled.button(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  //Sold out
+  "&:disabled": {
+    opacity: 0.5,
+    cursor: "not-allowed",
+  },
 }));

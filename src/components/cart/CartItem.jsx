@@ -2,8 +2,10 @@ import Badge from "../common/Badge";
 import {
   ItemWrapper,
   ItemLeft,
+  ItemCheckbox,
   ImageBox,
   ItemImage,
+  ImageOverlay,
   InfoBox,
   ItemName,
   ItemPrice,
@@ -28,7 +30,7 @@ const CartItem = ({
     <ItemWrapper>
       {/* 체크박스, 이미지(뺏지), 상품*/}
       <ItemLeft>
-        <input
+        <ItemCheckbox
           type="checkbox"
           checked={isChecked}
           onChange={() => onToggleCheck(item.id)}
@@ -36,8 +38,9 @@ const CartItem = ({
         />
 
         <ImageBox>
-          {item.isSoldOut && <Badge text="Sold out" top="8px" left="8px" />}
           <ItemImage src={item.imageUrl} alt={item.name} />
+          {item.isSoldOut && <ImageOverlay />}
+          {item.isSoldOut && <Badge text="Sold out" top="8px" left="8px" />}
         </ImageBox>
 
         <InfoBox>

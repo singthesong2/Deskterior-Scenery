@@ -12,25 +12,52 @@ export const ItemWrapper = styled.div(({ theme }) => ({
   },
 }));
 
+// 체크박스
+export const ItemCheckbox = styled.input(({ theme }) => ({
+  width: "20px",
+  height: "20px",
+  accentColor: theme.colors.emphasis,
+  cursor: "pointer",
+  // 비활성화
+  "&:disabled": {
+    cursor: "not-allowed",
+    opacity: 0.35,
+  },
+}));
+
 // 좌
 export const ItemLeft = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "flex-start",
   gap: theme.spacing.lg,
 }));
+
 // 이미지
-export const ImageBox = styled.div({
+export const ImageBox = styled.div(({ theme }) => ({
   position: "relative",
   width: "132px",
   height: "132px",
   flexShrink: 0,
-});
+  borderRadius: theme.radius.md,
+  overflow: "hidden",
+}));
 
 // 이미지 태그 스타일
 export const ItemImage = styled.img(({ theme }) => ({
   width: "100%",
   height: "100%",
   objectFit: "cover",
+}));
+
+// 솔드아웃 이미지 블러
+export const ImageOverlay = styled.div(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: theme.colors.textMain,
+  opacity: 0.35,
 }));
 
 // 인포
