@@ -3,9 +3,11 @@ import allProducts from "../../data/products";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
-import * as S from "../../styles/LightingPage.styles";
+import * as S from "../../styles/ListPageStyles/LightingPage.styles";
 
 const PAGE_SIZE = 6;
+
+const BREADCRUMB_TRAIL = ["Home", "Lighting"];
 
 const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
@@ -55,13 +57,24 @@ const LightingPage = ({ products = lightingProducts }) => {
   return (
     <div>
       <S.Main>
-        <S.PageTitle>Take your SCENERY</S.PageTitle>
-
-        <S.HeroPlaceholder />
-
-        <S.Divider />
-
-        <S.SectionTitle>Lighting</S.SectionTitle>
+        <S.Header>
+          <S.Breadcrumb aria-label="현재 위치">
+            <S.Trail>
+              {BREADCRUMB_TRAIL.map((label, index) => (
+                <S.Crumb
+                  key={label}
+                  aria-current={
+                    index === BREADCRUMB_TRAIL.length - 1 ? "page" : undefined
+                  }
+                >
+                  {label}
+                </S.Crumb>
+              ))}
+            </S.Trail>
+          </S.Breadcrumb>
+          <S.PageTitle>Lighting</S.PageTitle>
+          <S.PageSubtitle>Take Your SCENERY</S.PageSubtitle>
+        </S.Header>
 
         <ProductToolbar
           search={search}
@@ -91,7 +104,10 @@ const LightingPage = ({ products = lightingProducts }) => {
               />
             ))}
             {Array.from({ length: placeholderCount }).map((_, index) => (
-              <S.GridPlaceholder key={`placeholder-${index}`} aria-hidden="true">
+              <S.GridPlaceholder
+                key={`placeholder-${index}`}
+                aria-hidden="true"
+              >
                 <ProductCard product={PLACEHOLDER_PRODUCT} />
               </S.GridPlaceholder>
             ))}

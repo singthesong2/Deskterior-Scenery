@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { NoResultIcon } from "../components/icons/Icons";
+import { NoResultIcon } from "../../components/icons/Icons";
 
 const headingStyle = (theme) => ({
   fontFamily: theme.fontFamily.display,
@@ -7,33 +7,57 @@ const headingStyle = (theme) => ({
 });
 
 export const Main = styled.main(({ theme }) => ({
+  display: "flex",
+  width: "100%",
+  maxWidth: "1024px",
+  flexDirection: "column",
+  alignItems: "stretch",
+  margin: "0 auto",
   padding: theme.spacing.xl,
   fontFamily: theme.fontFamily.base,
 }));
 
+export const Header = styled.div(({ theme }) => ({
+  display: "flex",
+  padding: `${theme.spacing.xl} 0`,
+  flexDirection: "column",
+  alignItems: "center",
+  gap: theme.spacing.sm,
+  borderBottom: `1px solid ${theme.colors.subtle}`,
+  background: theme.colors.background,
+}));
+
+export const Breadcrumb = styled.nav({
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const Trail = styled.ol(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  fontSize: theme.fontSize.xs,
+  color: theme.colors.secondText,
+}));
+
+export const Crumb = styled.li(({ theme }) => ({
+  "&:not(:first-of-type)::before": {
+    content: '">"',
+    margin: `0 ${theme.spacing["2xs"]}`,
+  },
+}));
+
 export const PageTitle = styled.h1(({ theme }) => ({
   ...headingStyle(theme),
-  fontSize: theme.fontSize["4xl"],
-  margin: `0 0 ${theme.spacing.lg}`,
-}));
-
-export const HeroPlaceholder = styled.div(({ theme }) => ({
-  width: "100%",
-  aspectRatio: "16 / 3",
-  background: theme.colors.imagePlaceholder,
-}));
-
-export const Divider = styled.hr(({ theme }) => ({
-  border: "none",
-  borderTop: `1px solid ${theme.colors.subtle}`,
-  margin: `${theme.spacing.xl} 0`,
-}));
-
-export const SectionTitle = styled.h2(({ theme }) => ({
-  ...headingStyle(theme),
-  fontSize: theme.fontSize["2xl"],
+  fontSize: theme.fontSize.dpMd,
   textAlign: "center",
-  margin: `0 0 ${theme.spacing.xl}`,
+  margin: 0,
+}));
+
+export const PageSubtitle = styled.p(({ theme }) => ({
+  fontSize: theme.fontSize.sm,
+  color: theme.colors.textMain,
+  textAlign: "center",
+  margin: 0,
 }));
 
 export const EmptyState = styled.div(({ theme }) => ({

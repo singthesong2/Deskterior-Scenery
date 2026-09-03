@@ -1,4 +1,4 @@
-import * as S from "../../styles/Pagination.styles";
+import * as S from "../../styles/ListPageStyles/Pagination.styles";
 
 const getPageList = (currentPage, totalPages) => {
   if (totalPages <= 5) {
