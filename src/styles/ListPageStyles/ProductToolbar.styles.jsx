@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { SearchIcon } from "../components/icons/Icons";
+import { SearchIcon } from "../../components/icons/Icons";
 
 export const StyledSearchIcon = styled(SearchIcon)`
   color: ${({ theme }) => theme.colors.secondText};
@@ -10,7 +10,8 @@ export const ToolbarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  margin: ${({ theme }) => theme.spacing.xl} 0
+    ${({ theme }) => theme.spacing.lg};
 `;
 
 export const SearchBox = styled.div`
@@ -21,7 +22,7 @@ export const SearchBox = styled.div`
     ${({ theme }) => theme.colors.subtle};
   border-radius: ${({ theme }) => theme.radius.full};
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  width: 280px;
+  width: 260px;
 `;
 
 export const SearchInput = styled.input`

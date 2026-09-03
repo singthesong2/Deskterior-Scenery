@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ChevronLeftIcon, ChevronRightIcon } from "../components/icons/Icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "../../components/icons/Icons";
 
 export const PaginationWrapper = styled.div(({ theme }) => ({
   display: "flex",

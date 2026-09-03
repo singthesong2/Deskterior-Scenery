@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { BasketIcon, HeartIcon } from "../icons/Icons";
-import * as S from "../../styles/ProductCard.styles";
+import { BasketIcon, HeartIcon, StarIcon } from "../icons/Icons";
+import * as S from "../../styles/ListPageStyles/ProductCard.styles";
 
 const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
   const [liked, setLiked] = useState(!!product.liked);
@@ -48,7 +48,10 @@ const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>₩ {safePrice.toLocaleString("ko-KR")}</S.Price>
         <S.Rating>
-          <S.Star>★</S.Star> {safeRating.toFixed(1)}({safeCount})
+          <S.Star>
+            <StarIcon width={12} height={12} />
+          </S.Star>{" "}
+          {safeRating.toFixed(1)}({safeCount})
         </S.Rating>
       </S.Info>
     </S.Card>

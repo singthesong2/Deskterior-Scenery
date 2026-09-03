@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "../icons/Icons";
-import * as S from "../../styles/ProductToolbar.styles";
+import * as S from "../../styles/ListPageStyles/ProductToolbar.styles";
 
 export const SORT_OPTIONS = [
   { value: "name", label: "이름순" },
@@ -43,12 +43,12 @@ const ProductToolbar = ({
   return (
     <S.ToolbarWrapper>
       <S.SearchBox>
-        <S.StyledSearchIcon />
         <S.SearchInput
           value={search}
           onChange={(e) => onSearchChange?.(e.target.value)}
           placeholder="search..."
         />
+        <S.StyledSearchIcon />
       </S.SearchBox>
 
       <S.SortBox ref={sortBoxRef} onClick={() => setIsOpen((prev) => !prev)}>

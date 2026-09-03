@@ -96,5 +96,7 @@ export const Rating = styled.p({
 });
 
 export const Star = styled.span({
+  display: "inline-flex",
   color: "#e08a3c",
+  verticalAlign: "-1px",
 });

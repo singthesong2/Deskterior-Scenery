@@ -9,10 +9,17 @@ const base = {
   strokeLinejoin: "round",
 };
 
+// 상품 목록 페이지 검색 아이콘
 export const SearchIcon = (props) => (
-  <svg {...base} {...props}>
-    <circle cx="11" cy="11" r="7" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    viewBox="0 0 16 16"
+    {...props}
+  >
+    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
   </svg>
 );
 
@@ -78,6 +85,20 @@ export const HeartIcon = ({ filled = false, ...props }) => (
   </svg>
 );
 
+// 상품 카드 별점 아이콘
+export const StarIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    viewBox="0 0 16 16"
+    {...props}
+  >
+    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+  </svg>
+);
+
 // 상세페이지 상단 뒤로가기 화살표 (←)
 export const ArrowLeftIcon = (props) => (
   <svg {...base} {...props}>
@@ -117,32 +138,79 @@ export const ChevronRightIcon = (props) => (
     />
   </svg>
 );
-
+// 상품목록 페이지 정렬 드롭다운 아래 화살표 아이콘
 export const ChevronDownIcon = (props) => (
-  <svg {...base} {...props}>
-    <polyline points="6 9 12 15 18 9" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    viewBox="0 0 16 16"
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+    />
   </svg>
 );
 
+// 없는 상품 검색시 나오는 돋보기 아이콘
 export const NoResultIcon = (props) => (
   <svg
     viewBox="0 0 64 64"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.6"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
   >
-    <circle cx="26" cy="26" r="16" />
-    <line x1="37.5" y1="37.5" x2="50" y2="50" />
-    <line x1="19" y1="19" x2="25" y2="25" />
-    <line x1="25" y1="19" x2="19" y2="25" />
-    <line x1="29" y1="19" x2="35" y2="25" />
-    <line x1="35" y1="19" x2="29" y2="25" />
-    <path d="M18 33c3 3 13 3 16 0" />
-    <line x1="44" y1="10" x2="41" y2="15" />
-    <line x1="52" y1="14" x2="47" y2="17" />
-    <line x1="54" y1="22" x2="48" y2="22" />
+    <circle cx="24" cy="24" r="15" />
+
+    <path d="M15 19 L21 25 M15 25 L21 19" strokeWidth="2" />
+
+    <path d="M27 19 L33 25 M27 25 L33 19" strokeWidth="2" />
+
+    <path d="M15 30c3 3 15 3 18 0" strokeWidth="2" />
+
+    <rect
+      x="0"
+      y="-4"
+      width="20"
+      height="8"
+      rx="4"
+      fill="currentColor"
+      stroke="none"
+      transform="translate(34 34) rotate(45)"
+    />
+
+    <ellipse
+      cx="46"
+      cy="8"
+      rx="3.5"
+      ry="1.4"
+      fill="currentColor"
+      stroke="none"
+      transform="rotate(-30 46 8)"
+    />
+    <ellipse
+      cx="54"
+      cy="14"
+      rx="3"
+      ry="1.2"
+      fill="currentColor"
+      stroke="none"
+      transform="rotate(0 54 14)"
+    />
+    <ellipse
+      cx="55"
+      cy="24"
+      rx="2.6"
+      ry="1.1"
+      fill="currentColor"
+      stroke="none"
+      transform="rotate(30 55 24)"
+    />
   </svg>
 );
