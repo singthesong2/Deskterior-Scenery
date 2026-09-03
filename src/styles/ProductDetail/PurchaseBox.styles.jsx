@@ -14,24 +14,23 @@ export const Stepper = styled.div(({ theme }) => ({
 }));
 
 export const StepButton = styled.button(({ theme }) => ({
+  width: "35px",
+  height: "35px",
   display: "flex",
-  width: "2.5rem",
-  height: "2.5rem",
-  padding: "0 0.4375rem 0.125rem",
-  flexDirection: "column",
-  justifyContent: "center",
   alignItems: "center",
-  gap: "0.625rem",
-  borderRadius: theme.radius.full, // 피그마 62.4375rem = 완전 원형
+  justifyContent: "center",
+  padding: "0 0 3.5px 0",
+  cursor: "pointer",
+  backgroundColor: theme.colors.cards,
   border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
-  background: "#fff",
-  fontSize: theme.fontSize.md, // 1rem
-  fontWeight: theme.fontWeight.regular, // 400
-  lineHeight: "normal",
+  borderRadius: theme.radius.full,
   color: theme.colors.textMain,
-
+  fontSize: theme.fontSize.md,
+  fontWeight: theme.fontWeight.regular,
+  lineHeight: "normal",
+  // 비활성
   "&:disabled": {
-    color: theme.colors.secondText,
+    color: theme.colors.subtle,
     cursor: "not-allowed",
   },
 }));
