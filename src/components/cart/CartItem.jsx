@@ -42,7 +42,7 @@ const CartItem = ({
 
         <InfoBox>
           <ItemName>{item.name}</ItemName>
-          <ItemPrice>₩{item.price.toLocaleString()}원</ItemPrice>
+          <ItemPrice>₩ {item.price.toLocaleString()}원</ItemPrice>
         </InfoBox>
       </ItemLeft>
 
@@ -66,7 +66,7 @@ const CartItem = ({
 
         <TotalPrice>
           <TotalPriceText>
-            ₩{(item.price * item.quantity).toLocaleString()}
+            ₩ {(item.price * item.quantity).toLocaleString()}
           </TotalPriceText>
         </TotalPrice>
 
