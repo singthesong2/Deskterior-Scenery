@@ -15,7 +15,9 @@ export const TitleWrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
-  marginBottom: "36px",
+  paddingBottom: "36px",
+  borderBottom: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+  marginBottom: theme.spacing.xl,
 }));
 
 // 경로
@@ -28,6 +30,7 @@ export const Course = styled.span(({ theme }) => ({
 
 // Cart
 export const PageTitle = styled.h1(({ theme }) => ({
+  fontFamily: theme.fontFamily.display,
   fontSize: theme.fontSize.dpMd,
   fontWeight: theme.fontWeight.regular,
   color: theme.colors.textMain,
@@ -42,6 +45,7 @@ export const ActionBar = styled.div(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   marginBottom: theme.spacing.xl,
+  paddingLeft: theme.spacing.md,
 }));
 
 // 전체
@@ -49,9 +53,17 @@ export const SelectAllLabel = styled.label(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: theme.spacing.xs,
-  fontSize: theme.fontSize.md,
+  fontSize: theme.fontSize.lg,
   fontWeight: theme.fontWeight.medium,
   color: theme.colors.secondText,
+  cursor: "pointer",
+}));
+
+// 전체 선택 체크박스
+export const SelectAllCheckbox = styled.input(({ theme }) => ({
+  width: "18px",
+  height: "18px",
+  accentColor: theme.colors.emphasis,
   cursor: "pointer",
 }));
 
@@ -61,7 +73,7 @@ export const ClearAllButton = styled.button(({ theme }) => ({
   border: "none",
   cursor: "pointer",
   padding: 0,
-  fontSize: theme.fontSize.md,
+  fontSize: theme.fontSize.lg,
   fontWeight: theme.fontWeight.medium,
   color: "#EE2E2E",
 }));
@@ -72,4 +84,6 @@ export const ItemListSection = styled.section(({ theme }) => ({
   flexDirection: "column",
   padding: `0 ${theme.spacing.md}`,
   backgroundColor: theme.colors.cards,
+  borderRadius: theme.radius.md,
+  overflow: "hidden",
 }));

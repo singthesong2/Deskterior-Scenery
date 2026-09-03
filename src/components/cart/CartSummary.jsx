@@ -7,13 +7,14 @@ import {
   TotalRow,
   LabelText,
   IconWrapper,
+  TooltipBox,
   PriceText,
   TotalLabel,
   TotalPriceText,
   CheckoutButton,
 } from "../../styles/CartStyles/CartSummary.styles";
 
-const CartSummary = ({ subtotal, deliveryFee, total }) => {
+const CartSummary = ({ subtotal, deliveryFee, total, isAllSoldOut }) => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   return (
@@ -29,7 +30,7 @@ const CartSummary = ({ subtotal, deliveryFee, total }) => {
         <DeliveryRow>
           <LabelText>
             Delivery Fee
-            <span
+            <IconWrapper
               onMouseEnter={() => setIsTooltipOpen(true)}
               onMouseLeave={() => setIsTooltipOpen(false)}
             >
@@ -61,13 +62,13 @@ const CartSummary = ({ subtotal, deliveryFee, total }) => {
               </svg>
 
               {isTooltipOpen && (
-                <div>
+                <TooltipBox>
                   80,000원 이상 구매 시 무료로 배송되며,
                   <br />
                   미만 주문 건은 기본 배송비 3,000원이 부과됩니다.
-                </div>
+                </TooltipBox>
               )}
-            </span>
+            </IconWrapper>
           </LabelText>
           <PriceText>₩ {deliveryFee.toLocaleString()}</PriceText>
         </DeliveryRow>
@@ -80,7 +81,9 @@ const CartSummary = ({ subtotal, deliveryFee, total }) => {
       </SummaryInfoBox>
 
       {/* 결제 버튼 */}
-      <CheckoutButton>Checkout</CheckoutButton>
+      <CheckoutButton disabled={isAllSoldOut}>
+        {isAllSoldOut ? "Sold Out" : "Checkout"}
+      </CheckoutButton>
     </SummaryContainer>
   );
 };

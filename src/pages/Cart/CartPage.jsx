@@ -11,6 +11,7 @@ import {
   PageTitle,
   ActionBar,
   SelectAllLabel,
+  SelectAllCheckbox,
   ClearAllButton,
   ItemListSection,
 } from "../../styles/CartStyles/CartPage.styles";
@@ -31,9 +32,9 @@ const CartPage = () => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // 체크박스(체크로시작)
+  // 체크박스(체크로시작, 솔드아웃은 체크해제시작)
   const [checkedItems, setCheckedItems] = useState(() => {
-    return cartItems.map((item) => item.id);
+    return cartItems.filter((item) => !item.isSoldOut).map((item) => item.id);
   });
 
   // 모달
@@ -131,6 +132,11 @@ const CartPage = () => {
   // 총합
   const total = subtotal + deliveryFee;
 
+  // 모든 상품이 품절인지 확인
+  const isAllSoldOut = useMemo(() => {
+    return cartItems.length > 0 && cartItems.every((item) => item.isSoldOut);
+  }, [cartItems]);
+
   /* 화면 */
   return (
     <CartContainer>
@@ -143,7 +149,7 @@ const CartPage = () => {
         <ActionBar>
           {/* 전체 선택 체크박스 */}
           <SelectAllLabel>
-            <input
+            <SelectAllCheckbox
               type="checkbox"
               checked={isAllChecked}
               onChange={handleToggleAllCheck}
@@ -180,6 +186,7 @@ const CartPage = () => {
             subtotal={subtotal}
             deliveryFee={deliveryFee}
             total={total}
+            isAllSoldOut={isAllSoldOut}
           />
         </div>
       )}

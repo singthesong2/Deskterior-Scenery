@@ -1,6 +1,26 @@
 import { css } from "@emotion/react";
 
 export const reset = css`
+  /* 폰트 */
+
+  @font-face {
+    font-family: "Pretendard";
+    font-weight: 300 700;
+    font-display: swap;
+    src: url("https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/woff2/PretendardVariable.woff2")
+      format("woff2-variations");
+  }
+
+  /* 🌟 DM Serif Text */
+  @font-face {
+    font-family: "DM Serif Text";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("https://cdn.jsdelivr.net/fontsource/fonts/dm-serif-text@latest/latin-400-normal.woff2")
+      format("woff2");
+  }
+
   /* 박스 크기 통일 */
   *,
   *::before,
@@ -37,6 +57,17 @@ export const reset = css`
     height: auto;
   }
 
+  /* 폰트 상속 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
   /* 브라우저 스타일 초기화 */
   input,
   button,
@@ -60,5 +91,7 @@ export const reset = css`
   /* 임의 배경색 지워야함 */
   body {
     background-color: #f8f7f2;
+    font-family:
+      "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   }
 `;

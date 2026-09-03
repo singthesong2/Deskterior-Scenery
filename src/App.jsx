@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Global, ThemeProvider } from "@emotion/react";
-import { theme } from "./styles/theme";
+import { Global } from "@emotion/react";
 import { reset } from "./styles/reset";
 import { Routes, Route } from "react-router";
 import SignupForm from "./pages/SignupForm";
@@ -47,7 +46,7 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Global styles={reset} />
       {/*<div>{isLoggedIn ? "로그인 상태" : "로그아웃 상태"}</div>*/}
       {/* 나중에 로그인 로그아웃 상태 체크 코드 삭제 X */}
@@ -82,7 +81,7 @@ function App() {
       />
       <NotFoundPage />
       <LightingPage />
-    </ThemeProvider>
+    </>
   );
 }
 
