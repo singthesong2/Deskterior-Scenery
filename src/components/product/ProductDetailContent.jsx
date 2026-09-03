@@ -12,7 +12,20 @@ const ProductDetailContent = ({ sections = [] }) => {
         padding: "0 40px",
       }}
     >
-      <h2 style={{ fontSize: 22, marginBottom: 24 }}>Item Detail</h2>
+      <h2
+        style={{
+          margin: "0 0 24px",
+          fontFamily: "'DM Serif Text', Georgia, 'Times New Roman', serif", // font-family-display
+          fontSize: "3rem", // m-display-md-size
+          fontStyle: "normal",
+          fontWeight: 400,
+          lineHeight: "normal",
+          letterSpacing: "-0.01em", // letter-spacing-default
+          color: "#1F211F", // color-text-primary
+        }}
+      >
+        Item Detail
+      </h2>
 
       {sections.map((section) => (
         <article key={section.id} style={{ marginBottom: 56 }}>
@@ -34,13 +47,37 @@ const ProductDetailContent = ({ sections = [] }) => {
           )}
 
           {section.title && (
-            <h3 style={{ margin: "20px 0 8px", fontSize: 18 }}>
+            <h3
+              style={{
+                margin: "20px 0 8px",
+                fontFamily: "'Pretendard Variable', system-ui, sans-serif",
+                fontSize: "0.875rem",
+                fontStyle: "normal",
+                fontWeight: 500, // Label/MD
+                lineHeight: "normal",
+                letterSpacing: "-0.00875rem",
+                color: "#1F211F", // color-text-primary
+              }}
+            >
               {section.title}
             </h3>
           )}
 
           {section.body && (
-            <p style={{ lineHeight: 1.7, color: "#444" }}>{section.body}</p>
+            <p
+              style={{
+                margin: 0,
+                fontFamily: "'Pretendard Variable', system-ui, sans-serif",
+                fontSize: "0.875rem",
+                fontStyle: "normal",
+                fontWeight: 400, // Body/MD
+                lineHeight: "normal",
+                letterSpacing: "-0.00875rem",
+                color: "#74766F", // color-text-secondary
+              }}
+            >
+              {section.body}
+            </p>
           )}
         </article>
       ))}
