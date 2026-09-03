@@ -23,6 +23,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   const [idCheck, setIdCheck] = useState("");
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [shakingButton, setShakingButton] = useState(false);
 
   const {
     register,
@@ -53,6 +54,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
       if (idCheck !== data.id) {
         setMessage("아이디 중복 확인을 해주세요.");
+        setShakingButton(true);
         setFocus("id");
         return;
       }
@@ -62,6 +64,8 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
         if (!terms) setFocus("terms");
         else setFocus("privacy");
+
+        setShakingButton(true);
 
         return;
       }
@@ -74,6 +78,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       resetUser();
     } catch (error) {
       setMessage(error.message);
+      setShakingButton(true);
     }
   };
 
@@ -81,6 +86,8 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
     const firstError = Object.values(error)[0];
 
     if (firstError) setMessage(firstError.message);
+
+    setShakingButton(true);
   };
 
   const handleIdCheck = async () => {
@@ -89,6 +96,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
     if (!id) {
       setMessage("아이디를 입력해주세요.");
       setFocus("id");
+      setShakingButton(true);
       return;
     }
 
@@ -109,6 +117,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       setIdCheck("");
       setMessage(error.message);
       setFocus("id");
+      setShakingButton(true);
       //setMessage("이미 사용 중인 아이디입니다."); 삭제 X
     }
   };
@@ -344,7 +353,11 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
           </ErrorMessage>
         )}
 
-        <Button type="submit">
+        <Button
+          type="submit"
+          className={shakingButton ? "shake" : ""}
+          onAnimationEnd={() => setShakingButton(false)}
+        >
           {mode === "signup" ? "Sign Up" : "Log in"}
         </Button>
 
