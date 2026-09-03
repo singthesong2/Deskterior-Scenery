@@ -8,8 +8,8 @@ import {
 } from "../styles/SignupForm.styles";
 
 function SignupForm() {
-  const handleSignUp = async (id, password) => {
-    const result = await signUp(id, password);
+  const handleSignUp = async (data) => {
+    const result = await signUp(data);
 
     console.log("회원가입 성공:", result);
   };

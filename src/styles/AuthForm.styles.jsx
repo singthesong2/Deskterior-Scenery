@@ -43,6 +43,34 @@ export const Input = styled.input({
   },
 });
 
+export const InputIdGroup = styled.div({
+  display: "flex",
+  alignItems: "center",
+  width: "100%",
+  borderBottom: "2px solid #e6e6e6",
+  "& input": {
+    flex: 1,
+    width: "auto",
+    borderBottom: "none",
+  },
+
+  "&:focus-within": {
+    borderBottomColor: "#000000",
+  },
+});
+
+export const IdCheckButton = styled.button({
+  flexShrink: 0,
+  padding: "6px 14px",
+  border: "none",
+  borderRadius: "20px",
+  backgroundColor: "#000000",
+  color: "#ffffff",
+  fontSize: "12px",
+  lineHeight: 1,
+  cursor: "pointer",
+});
+
 export const TermsGroup = styled.label({
   display: "flex",
   flexDirection: "column",
@@ -65,11 +93,43 @@ export const TermsGroup = styled.label({
   },
 });
 
-export const ErrorMessage = styled.p({
+export const ErrorMessage = styled.div({
   width: "100%",
-  marginTop: "20px",
-  border: "1px solid #000000",
-  minHeight: "30px",
+  display: "flex",
+  alignItems: "center",
+  marginTop: "15px",
+  gap: "12px",
+  padding: "8px 10px",
+  boxSizing: "border-box",
+  backgroundColor: "#f8d1bd",
+  borderRadius: "6px",
+  fontSize: "14px",
+  color: "#000000",
+  textAlign: "left",
+});
+
+export const ErrorIcon = styled.span({
+  position: "relative",
+  width: "20px",
+  height: "20px",
+  flexShrink: 0,
+  border: "1.5px solid #e32626",
+  borderRadius: "50%",
+  "&::before, &::after": {
+    content: '""',
+    position: "absolute",
+    top: "50%",
+    left: "52%",
+    width: "9px",
+    height: "1.5px",
+    backgroundColor: "#e32626",
+  },
+  "&::before": {
+    transform: "translate(-50%, -50%) rotate(45deg)",
+  },
+  "&::after": {
+    transform: "translate(-50%, -50%) rotate(-45deg)",
+  },
 });
 
 export const Button = styled.button({

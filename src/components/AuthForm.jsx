@@ -6,11 +6,13 @@ import {
   Label,
   Input,
   Button,
-  Message,
+  InputIdGroup,
+  IdCheckButton,
   NameGroup,
   AllTerms,
   TermsGroup,
   ErrorMessage,
+  ErrorIcon,
   Required,
 } from "../styles/AuthForm.styles";
 
@@ -21,8 +23,12 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   const { register, handleSubmit, reset, getValues, watch, setValue } = useForm(
     {
       defaultValues: {
+        firstName: "",
+        lastName: "",
         id: "",
         password: "",
+        contact: "",
+        address: "",
         terms: false,
         privacy: false,
         marketing: false,
@@ -32,24 +38,41 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
   const submitForm = async (data) => {
     if (mode === "signup") {
-      if (!data.id) {
-        setMessage("아이디를 입력해주세요.");
+      if (!data.firstName) {
+        setMessage("First Name을 입력해주세요.");
         return;
       }
 
-      if (!data.password) {
-        setMessage("비밀번호를 입력해주세요.");
+      if (!data.lastName) {
+        setMessage("Last Name을 입력해주세요.");
         return;
       }
+    }
 
+    if (!data.id) {
+      setMessage("아이디를 입력해주세요.");
+      return;
+    }
+
+    if (!data.password) {
+      setMessage("비밀번호를 입력해주세요.");
+      return;
+    }
+
+    if (mode === "signup") {
       if (!idCheck) {
         setMessage("아이디 중복 확인을 해주세요.");
+        return;
+      }
+
+      if (!terms || !privacy) {
+        setMessage("필수 약관에 동의해 주세요.");
         return;
       }
     }
 
     try {
-      await onSubmit(data.id, data.password);
+      await onSubmit(data);
 
       resetUser();
     } catch (error) {
@@ -69,10 +92,12 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       const result = await checkId(id);
 
       setIdCheck(true);
-      setMessage(result.message);
+      setMessage("");
+      //setMessage(result.message); 삭제 X
     } catch (error) {
       setIdCheck(false);
       setMessage(error.message);
+      //setMessage("이미 사용 중인 아이디입니다."); 삭제 X
     }
   };
 
@@ -121,37 +146,51 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
               <span>
                 First Name <Required>*</Required>
               </span>
-              <Input type="text" placeholder="홍" />
+              <Input
+                type="text"
+                placeholder="홍"
+                {...register("firstName", {
+                  onChange: () => setMessage(""),
+                })}
+              />
             </Label>
 
             <Label>
               <span>
                 Last Name <Required>*</Required>
               </span>
-              <Input type="text" placeholder="길동" />
+              <Input
+                type="text"
+                placeholder="길동"
+                {...register("lastName", {
+                  onChange: () => setMessage(""),
+                })}
+              />
             </Label>
           </NameGroup>
         )}
 
         <Label>
           <span>ID {mode === "signup" && <Required>*</Required>}</span>
-          <Input
-            type="text"
-            placeholder={mode === "signup" ? "ID" : ""}
-            {...register("id", {
-              onChange: () => {
-                setIdCheck(false);
-                setMessage("");
-              },
-            })}
-          />
-        </Label>
+          <InputIdGroup>
+            <Input
+              type="text"
+              placeholder={mode === "signup" ? "ID" : ""}
+              {...register("id", {
+                onChange: () => {
+                  setIdCheck(false);
+                  setMessage("");
+                },
+              })}
+            />
 
-        {/*{mode === "signup" && (
-          <Button type="button" onClick={handleIdCheck}>
-            아이디 중복 확인
-          </Button>
-        )}*/}
+            {mode === "signup" && (
+              <IdCheckButton type="button" onClick={handleIdCheck}>
+                중복 확인
+              </IdCheckButton>
+            )}
+          </InputIdGroup>
+        </Label>
 
         <Label>
           <span>Password {mode === "signup" && <Required>*</Required>}</span>
@@ -176,12 +215,16 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
           <>
             <Label>
               Contact
-              <Input type="tel" placeholder="010-0000-0000" />
+              <Input
+                type="tel"
+                placeholder="010-0000-0000"
+                {...register("contact")}
+              />
             </Label>
 
             <Label>
               Address
-              <Input type="text" placeholder="주소" />
+              <Input type="text" placeholder="주소" {...register("address")} />
             </Label>
           </>
         )}
@@ -217,9 +260,12 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
           </TermsGroup>
         )}
 
-        {message && <Message>{message}</Message>}
-
-        {/*<ErrorMessage></ErrorMessage>*/}
+        {message && (
+          <ErrorMessage>
+            <ErrorIcon />
+            <span>{message}</span>
+          </ErrorMessage>
+        )}
 
         <Button type="submit">
           {mode === "signup" ? "Sign Up" : "Log in"}
