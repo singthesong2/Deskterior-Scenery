@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReviewStars from "./ReviewStars";
+import Modal from "../common/Modal";
 import * as S from "../../styles/ProductDetail/Review.styles";
 
 /**
@@ -11,6 +12,7 @@ const ReviewForm = ({
   defaultValue,
   onSubmit,
   onCancel,
+  onRequireLogin,
 }) => {
   const isEditing = Boolean(defaultValue);
 
@@ -18,11 +20,18 @@ const ReviewForm = ({
   const [content, setContent] = useState(defaultValue?.content ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!isLoggedIn || submitting) return;
+    if (submitting) return;
+
+    // 비로그인 상태에서도 버튼은 눌리되, 여기서 로그인 안내 모달로 분기
+    if (!isLoggedIn) {
+      setLoginModalOpen(true);
+      return;
+    }
 
     if (rating === 0) {
       setError("별점을 선택해 주세요.");
@@ -51,56 +60,72 @@ const ReviewForm = ({
   };
 
   return (
-    <S.Form onSubmit={handleSubmit}>
-      <S.FormRow>
-        <S.RatingBox>
-          <S.RatingLabel>{rating.toFixed(1)}</S.RatingLabel>
-          <ReviewStars
-            value={rating}
-            onChange={
-              isLoggedIn && !submitting
-                ? (nextRating) => {
-                    setRating(nextRating);
-                    setError("");
-                  }
-                : undefined
-            }
-          />
-          {!isLoggedIn && <S.RatingHint>로그인 후 별점 선택</S.RatingHint>}
-        </S.RatingBox>
+    <>
+      <S.Form onSubmit={handleSubmit}>
+        <S.FormRow>
+          <S.RatingBox>
+            <S.RatingLabel>{rating.toFixed(1)}</S.RatingLabel>
+            <ReviewStars
+              value={rating}
+              onChange={
+                isLoggedIn && !submitting
+                  ? (nextRating) => {
+                      setRating(nextRating);
+                      setError("");
+                    }
+                  : undefined
+              }
+            />
+            {!isLoggedIn && <S.RatingHint>로그인 후 별점 선택</S.RatingHint>}
+          </S.RatingBox>
 
-        <S.Textarea
-          value={content}
-          disabled={!isLoggedIn || submitting}
-          placeholder={
-            isLoggedIn
-              ? "리뷰를 작성해 주세요"
-              : "로그인 후 리뷰를 작성할 수 있어요"
-          }
-          onChange={(event) => {
-            setContent(event.target.value);
-            setError("");
+          <S.Textarea
+            value={content}
+            disabled={!isLoggedIn || submitting}
+            placeholder={
+              isLoggedIn
+                ? "리뷰를 작성해 주세요"
+                : "로그인 후 리뷰를 작성할 수 있어요"
+            }
+            onChange={(event) => {
+              setContent(event.target.value);
+              setError("");
+            }}
+          />
+        </S.FormRow>
+
+        {error && <S.ErrorText role="alert">{error}</S.ErrorText>}
+
+        <S.FormActions>
+          {isEditing && (
+            <S.CancelButton
+              type="button"
+              disabled={submitting}
+              onClick={() => onCancel?.()}
+            >
+              Cancel
+            </S.CancelButton>
+          )}
+          <S.SubmitButton type="submit" disabled={submitting}>
+            {submitting ? "Saving..." : isEditing ? "Edit" : "Submit"}
+          </S.SubmitButton>
+        </S.FormActions>
+      </S.Form>
+
+      {loginModalOpen && (
+        <Modal
+          title="Login Required"
+          description="별점 등록과 리뷰 작성을 하려면 먼저 로그인해 주세요."
+          confirmText="Login"
+          onClose={() => setLoginModalOpen(false)}
+          onConfirm={() => {
+            setLoginModalOpen(false);
+            // 실제 로그인 이동 배선은 추후(API 연결 시) onRequireLogin 으로 연결
+            onRequireLogin?.();
           }}
         />
-      </S.FormRow>
-
-      {error && <S.ErrorText role="alert">{error}</S.ErrorText>}
-
-      <S.FormActions>
-        {isEditing && (
-          <S.CancelButton
-            type="button"
-            disabled={submitting}
-            onClick={() => onCancel?.()}
-          >
-            취소
-          </S.CancelButton>
-        )}
-        <S.SubmitButton type="submit" disabled={!isLoggedIn || submitting}>
-          {submitting ? "저장 중..." : isEditing ? "수정" : "Submit"}
-        </S.SubmitButton>
-      </S.FormActions>
-    </S.Form>
+      )}
+    </>
   );
 };
 
