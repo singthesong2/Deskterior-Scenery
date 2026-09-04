@@ -72,8 +72,7 @@ const products = [
     name: "Clear Acrylic 3-Drawer Organizer",
     categoryId: "organization",
     price: 28000,
-    imageUrl:
-      "https://i.ibb.co/w8M6hk0/Chat-GPT-Image-2026-8-26-03-26-55.webp",
+    imageUrl: "https://i.ibb.co/w8M6hk0/Chat-GPT-Image-2026-8-26-03-26-55.webp",
     description: "군더더기 없는 투명한 구조로 데스크 소품을 정돈하는 미니 서랍",
   },
   {
@@ -285,8 +284,7 @@ const products = [
     name: "Neutral Index Sticky Tabs",
     categoryId: "objects-stationery",
     price: 6500,
-    imageUrl:
-      "https://i.ibb.co/KdWFmnb/Chat-GPT-Image-2026-8-27-02-18-27.webp",
+    imageUrl: "https://i.ibb.co/KdWFmnb/Chat-GPT-Image-2026-8-27-02-18-27.webp",
     description: "차분한 뉴트럴 톤으로 서류와 책의 위치를 정돈하는 점착 플래그",
   },
   {
@@ -349,7 +347,7 @@ const products = [
     name: "Classic Gold Fountain Pen",
     categoryId: "objects-stationery",
     price: 45000,
-    imageUrl: "<https://i.ibb.co/pjD1MDss/pen.webp>",
+    imageUrl: "https://i.ibb.co/pjD1MDss/pen.webp",
     description:
       "고급스러운 골드 포인트와 부드러운 필기감으로 데스크 위 깊이 있는 아날로그 기록을 완성하는 만년필",
   },
