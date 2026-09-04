@@ -115,11 +115,16 @@ export const TermsGroup = styled.label({
     alignItems: "center",
     gap: "10px",
   },
-  "& input[type='checkbox']": {
-    margin: 0,
-    transform: "translateY(3px)",
-  },
 });
+
+export const ItemCheckbox = styled.input(({ theme }) => ({
+  width: "20px",
+  height: "20px",
+  margin: 0,
+  transform: "translateY(1px)",
+  accentColor: theme.colors.emphasis,
+  cursor: "pointer",
+}));
 
 export const ErrorMessage = styled.div({
   width: "100%",

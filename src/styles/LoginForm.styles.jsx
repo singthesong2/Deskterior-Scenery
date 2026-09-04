@@ -22,11 +22,12 @@ export const LoginCard = styled.section({
   backgroundColor: "#fff",
 });
 
-export const Title = styled.h1({
+export const Title = styled.h1(({ theme }) => ({
+  fontFamily: theme.fontFamily.display,
   margin: "0 0 40px",
   textAlign: "center",
   fontSize: "40px",
-});
+}));
 
 export const SignupLink = styled(Link)({
   display: "block",
