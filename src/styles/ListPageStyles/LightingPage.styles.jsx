@@ -35,7 +35,11 @@ export const Breadcrumb = styled.nav({
 export const Trail = styled.ol(({ theme }) => ({
   display: "flex",
   alignItems: "center",
+  fontFamily: theme.fontFamily.base,
   fontSize: theme.fontSize.xs,
+  fontWeight: theme.fontWeight.regular,
+  lineHeight: "normal",
+  letterSpacing: "-0.12px",
   color: theme.colors.secondText,
 }));
 
@@ -49,13 +53,21 @@ export const Crumb = styled.li(({ theme }) => ({
 export const PageTitle = styled.h1(({ theme }) => ({
   ...headingStyle(theme),
   fontSize: theme.fontSize.dpMd,
+  fontWeight: theme.fontWeight.regular,
+  lineHeight: "normal",
+  letterSpacing: "-1px",
+  color: "#000",
   textAlign: "center",
   margin: 0,
 }));
 
 export const PageSubtitle = styled.p(({ theme }) => ({
+  fontFamily: theme.fontFamily.base,
   fontSize: theme.fontSize.sm,
-  color: theme.colors.textMain,
+  fontWeight: theme.fontWeight.regular,
+  lineHeight: "normal",
+  letterSpacing: "-0.14px",
+  color: "#000",
   textAlign: "center",
   margin: 0,
 }));
@@ -84,9 +96,12 @@ export const EmptySubtitle = styled.p(({ theme }) => ({
 }));
 
 export const ProductGrid = styled.div(({ theme }) => ({
-  display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gap: theme.spacing.lg,
+  display: "flex",
+  flexWrap: "wrap",
+  width: "896px",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: theme.spacing.md,
 }));
 
 export const GridPlaceholder = styled.div({
