@@ -28,7 +28,6 @@ export const Title = styled.h2(({ theme }) => ({
 
 export const Subtitle = styled.p(({ theme }) => ({
   margin: 0,
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm, // 0.875rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
@@ -79,7 +78,6 @@ export const RatingBox = styled.div(({ theme }) => ({
 }));
 
 export const RatingLabel = styled.span(({ theme }) => ({
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.lg, // 1.125rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.semiBold, // 600
@@ -89,7 +87,6 @@ export const RatingLabel = styled.span(({ theme }) => ({
 }));
 
 export const RatingHint = styled.span(({ theme }) => ({
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.xs, // 0.75rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
@@ -106,7 +103,6 @@ export const Textarea = styled.textarea(({ theme }) => ({
   border: "none",
   background: theme.colors.background,
   resize: "none",
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm, // 0.875rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
@@ -152,7 +148,6 @@ export const SubmitButton = styled.button(({ theme }) => ({
   background: theme.colors.textMain,
   color: "#FFF",
   textAlign: "center",
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm, // 0.875rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.medium, // 500
@@ -173,7 +168,6 @@ export const CancelButton = styled.button(({ theme }) => ({
   border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
   background: "#fff",
   color: theme.colors.textMain,
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.medium,
   letterSpacing: "-0.00875rem",
@@ -191,7 +185,6 @@ export const Summary = styled.div(({ theme }) => ({
 
 export const SummaryTitle = styled.h3(({ theme }) => ({
   margin: 0,
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.xl, // 1.25rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.semiBold, // 600
@@ -201,7 +194,6 @@ export const SummaryTitle = styled.h3(({ theme }) => ({
 }));
 
 export const SummaryMeta = styled.span(({ theme }) => ({
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm, // 0.875rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.medium, // 500
@@ -244,7 +236,6 @@ export const EmptyIcon = styled.svg({
 
 export const EmptyText = styled.p(({ theme }) => ({
   margin: 0,
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.md, // 1rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
@@ -276,7 +267,6 @@ export const ItemHeader = styled.div(({ theme }) => ({
 }));
 
 export const Author = styled.span(({ theme }) => ({
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.md, // 1rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.medium, // 500
@@ -290,7 +280,6 @@ export const Stars = styled.span({
 });
 
 export const Score = styled.span(({ theme }) => ({
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm, // 0.875rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.medium, // 500
@@ -318,7 +307,6 @@ export const ActionButton = styled.button(({ theme }) => ({
 export const Content = styled.p(({ theme }) => ({
   margin: 0,
   alignSelf: "stretch",
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.sm, // 0.875rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
@@ -331,7 +319,6 @@ export const Content = styled.p(({ theme }) => ({
 
 export const DateText = styled.time(({ theme }) => ({
   alignSelf: "flex-end",
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.xs, // 0.75rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
@@ -358,7 +345,6 @@ export const MoreButton = styled.button(({ theme }) => ({
   background: theme.colors.cards,
   opacity: "var(--Review-Fade-Opacity, 1)",
 
-  fontFamily: `'Pretendard Variable', ${theme.fontFamily.base}`,
   fontSize: theme.fontSize.xl, // 1.25rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.semiBold, // 600
