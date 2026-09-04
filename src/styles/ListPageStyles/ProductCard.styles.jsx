@@ -1,9 +1,17 @@
 import styled from "@emotion/styled";
 
 export const Card = styled.div(({ theme }) => ({
+  display: "flex",
+  width: "280px",
+  minHeight: "414px",
+  paddingBottom: theme.spacing.md,
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: theme.spacing.sm,
+  flexShrink: 0,
   textAlign: "left",
   background: theme.colors.cards,
-  borderRadius: theme.radius.lg,
+  borderRadius: theme.radius.md,
   overflow: "hidden",
 }));
 
@@ -11,6 +19,8 @@ export const ImageWrapper = styled.div(({ theme }) => ({
   position: "relative",
   width: "100%",
   aspectRatio: "1 / 1",
+  flexShrink: 0,
+  overflow: "hidden",
   background: theme.colors.imagePlaceholder,
 }));
 
@@ -20,16 +30,14 @@ export const ProductImage = styled.img({
   objectFit: "cover",
 });
 
-export const SoldOutBadge = styled.span(({ theme }) => ({
+export const ImageOverlay = styled.div(({ theme }) => ({
   position: "absolute",
-  top: theme.spacing.sm,
-  left: theme.spacing.sm,
-  padding: "2px 10px",
-  borderRadius: theme.radius.sm,
-  background: theme.colors.Emphasis,
-  color: "#fff",
-  fontSize: theme.fontSize.xs,
-  fontWeight: theme.fontWeight.medium,
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: theme.colors.textMain,
+  opacity: 0.35,
 }));
 
 export const IconStack = styled.div(({ theme }) => ({
@@ -44,29 +52,27 @@ export const IconStack = styled.div(({ theme }) => ({
 
 export const LikeButton = styled.button(({ theme }) => ({
   display: "flex",
-  alignItems: "center",
+  width: "30px",
+  height: "30px",
   justifyContent: "center",
-  flexShrink: 0,
-  width: 32,
-  height: 32,
-  padding: 0,
+  alignItems: "center",
+  gap: "10px",
   border: "none",
-  borderRadius: theme.radius.full,
-  background: theme.colors.cards,
+  borderRadius: "15px",
+  background: "rgba(253, 253, 253, 0.75)",
   color: theme.colors.textMain,
   cursor: "pointer",
 }));
 
 export const CartButton = styled.button(({ theme }) => ({
   display: "flex",
-  alignItems: "center",
+  width: "30px",
+  height: "30px",
   justifyContent: "center",
-  flexShrink: 0,
-  width: 32,
-  height: 32,
-  padding: 0,
+  alignItems: "center",
+  gap: "10px",
   border: "none",
-  borderRadius: theme.radius.full,
+  borderRadius: "15px",
   background: theme.colors.textMain,
   color: "#fff",
   cursor: "pointer",
@@ -77,7 +83,12 @@ export const Info = styled.div(({ theme }) => ({
 }));
 
 export const ProductName = styled.strong(({ theme }) => ({
-  display: "block",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  lineHeight: 1.3,
+  minHeight: `calc(${theme.fontSize.xl} * 1.3 * 2)`,
   fontSize: theme.fontSize.xl,
   fontWeight: theme.fontWeight.bold,
   color: theme.colors.textMain,

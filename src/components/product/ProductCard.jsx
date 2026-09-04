@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BasketIcon, HeartIcon, StarIcon } from "../icons/Icons";
+import Badge from "../common/Badge";
 import * as S from "../../styles/ListPageStyles/ProductCard.styles";
 
 const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
@@ -19,7 +20,8 @@ const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
   return (
     <S.Card>
       <S.ImageWrapper>
-        {product.soldOut && <S.SoldOutBadge>Sold out</S.SoldOutBadge>}
+        {product.soldOut && <S.ImageOverlay />}
+        {product.soldOut && <Badge text="Sold out" top="8px" left="8px" />}
 
         {product.imageUrl && (
           <S.ProductImage src={product.imageUrl} alt={product.name} />
