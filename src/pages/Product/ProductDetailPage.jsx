@@ -19,6 +19,11 @@ const ProductDetailPage = ({
   const [isWished, setIsWished] = useState(false);
   const [reviews, setReviews] = useState(product.reviews ?? []);
 
+  // TODO(임시): 로그인 상태 리뷰 CSS 작업용. API 연결 시 이 블록 삭제
+  const forceLoggedIn = true;
+  const reviewIsLoggedIn = forceLoggedIn || isLoggedIn;
+  const reviewUserId = forceLoggedIn ? "me" : currentUserId;
+
   /* 상품이 바뀌면(라우터로 다른 상세페이지 이동 등) 상품별 state 초기화 */
   const [shownProductId, setShownProductId] = useState(product.id);
   if (product.id !== shownProductId) {
@@ -65,7 +70,7 @@ const ProductDetailPage = ({
     setReviews((prev) => [
       {
         id: crypto.randomUUID(),
-        authorId: currentUserId,
+        authorId: reviewUserId, // TODO(임시): API 연결 시 currentUserId 로 원복
         author: currentUserName || "익명",
         rating,
         content,
@@ -129,8 +134,8 @@ const ProductDetailPage = ({
         <ReviewSection
           key={product.id}
           reviews={reviews}
-          isLoggedIn={isLoggedIn}
-          currentUserId={currentUserId}
+          isLoggedIn={reviewIsLoggedIn}
+          currentUserId={reviewUserId}
           onCreate={handleCreateReview}
           onUpdate={handleUpdateReview}
           onDelete={handleDeleteReview}

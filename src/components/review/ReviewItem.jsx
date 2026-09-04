@@ -1,4 +1,6 @@
+import { useState } from "react";
 import ReviewStars from "./ReviewStars";
+import Modal from "../common/Modal";
 import * as S from "../../styles/ProductDetail/Review.styles";
 
 /** "2026.08.15" 또는 ISO 문자열 → "2026.08.15" 로 표기 */
@@ -17,44 +19,58 @@ const ReviewItem = ({ review, isMine = false, onEdit, onDelete }) => {
   const rating = review.rating ?? 0;
   const dateLabel = formatDate(review.date);
 
-  const handleDelete = () => {
-    if (!window.confirm("리뷰를 삭제할까요?")) return;
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const confirmDelete = () => {
+    setDeleteModalOpen(false);
     onDelete?.(review.id);
   };
 
   return (
-    <S.Item>
-      <S.ItemHeader>
-        <S.Author>{authorName}</S.Author>
-        <S.Stars>
-          <ReviewStars value={rating} variant="display" size={16} />
-        </S.Stars>
-        <S.Score>{rating.toFixed(1)}</S.Score>
+    <>
+      <S.Item $mine={isMine}>
+        <S.ItemHeader>
+          <S.Author $mine={isMine}>{authorName}</S.Author>
+          <S.Stars>
+            <ReviewStars value={rating} variant="display" size={16} />
+          </S.Stars>
+          <S.Score>{rating.toFixed(1)}</S.Score>
 
-        {isMine && (
-          <S.ItemActions>
-            <S.ActionButton
-              type="button"
-              aria-label={`${authorName} 리뷰 수정`}
-              onClick={() => onEdit?.(review.id)}
-            >
-              Edit
-            </S.ActionButton>
-            <S.ActionButton
-              type="button"
-              aria-label={`${authorName} 리뷰 삭제`}
-              onClick={handleDelete}
-            >
-              Delete
-            </S.ActionButton>
-          </S.ItemActions>
-        )}
-      </S.ItemHeader>
+          {isMine && (
+            <S.ItemActions>
+              <S.ActionButton
+                type="button"
+                aria-label={`${authorName} 리뷰 수정`}
+                onClick={() => onEdit?.(review.id)}
+              >
+                Edit
+              </S.ActionButton>
+              <S.ActionButton
+                type="button"
+                aria-label={`${authorName} 리뷰 삭제`}
+                onClick={() => setDeleteModalOpen(true)}
+              >
+                Delete
+              </S.ActionButton>
+            </S.ItemActions>
+          )}
+        </S.ItemHeader>
 
-      <S.Content>{review.content}</S.Content>
+        <S.Content>{review.content}</S.Content>
 
-      {dateLabel && <S.DateText>{dateLabel}</S.DateText>}
-    </S.Item>
+        {dateLabel && <S.DateText>{dateLabel}</S.DateText>}
+      </S.Item>
+
+      {deleteModalOpen && (
+        <Modal
+          title="Delete?"
+          description="이 리뷰를 삭제하시겠습니까?"
+          confirmText="Delete"
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
+        />
+      )}
+    </>
   );
 };
 

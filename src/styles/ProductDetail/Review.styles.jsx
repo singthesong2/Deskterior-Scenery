@@ -245,18 +245,24 @@ export const EmptyText = styled.p(({ theme }) => ({
 }));
 
 /*리뷰 아이템*/
-export const Item = styled.li(({ theme }) => ({
+
+export const Item = styled.li(({ theme, $mine }) => ({
   display: "flex",
-  minHeight: "9.375rem", // 내용 길면 늘어나도록
   flexDirection: "column",
-  justifyContent: "center",
   alignItems: "flex-end",
   gap: theme.spacing.md,
-  flexShrink: 0,
   alignSelf: "stretch",
   padding: `${theme.spacing.md} ${theme.spacing.lg}`,
   borderRadius: theme.radius.md,
-  background: theme.colors.cards,
+  background: theme.colors.cards, // #FDFDFD
+
+  ...($mine
+    ? {}
+    : {
+        height: "9.375rem",
+        flexShrink: 0,
+        justifyContent: "center",
+      }),
 }));
 
 export const ItemHeader = styled.div(({ theme }) => ({
@@ -266,13 +272,13 @@ export const ItemHeader = styled.div(({ theme }) => ({
   gap: theme.spacing.xs,
 }));
 
-export const Author = styled.span(({ theme }) => ({
+export const Author = styled.span(({ theme, $mine }) => ({
   fontSize: theme.fontSize.md, // 1rem
   fontStyle: "normal",
   fontWeight: theme.fontWeight.medium, // 500
   lineHeight: "normal",
   letterSpacing: "-0.01rem",
-  color: theme.colors.textMain, // #1F211F
+  color: $mine ? theme.colors.emphasis : theme.colors.textMain, // Me: #EB6923
 }));
 
 export const Stars = styled.span({
@@ -295,13 +301,19 @@ export const ItemActions = styled.div(({ theme }) => ({
 }));
 
 export const ActionButton = styled.button(({ theme }) => ({
-  height: "1.75rem",
-  padding: `0 ${theme.spacing.sm}`,
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing.xs,
+  padding: `0.375rem ${theme.spacing.md}`,
   borderRadius: theme.radius.full,
-  background: theme.colors.textMain,
-  color: "#fff",
-  fontSize: theme.fontSize.xs,
-  fontWeight: theme.fontWeight.medium,
+  background: "#FCE9DE",
+
+  color: "#404040",
+  textAlign: "center",
+  fontSize: theme.fontSize.xs, // 0.75rem
+  fontWeight: theme.fontWeight.medium, // 500
+  lineHeight: "normal",
+  letterSpacing: "-0.0075rem",
 }));
 
 export const Content = styled.p(({ theme }) => ({
