@@ -12,6 +12,7 @@ import {
   NameGroup,
   AllTerms,
   TermsGroup,
+  ItemCheckbox,
   ErrorMessage,
   ErrorIcon,
   Required,
@@ -320,7 +321,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
             <p>약관 동의</p>
             <AllTerms>
               <label>
-                <input
+                <ItemCheckbox
                   type="checkbox"
                   checked={isAllChecked}
                   onChange={handleAllCheck}
@@ -330,17 +331,17 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
             </AllTerms>
 
             <label>
-              <input type="checkbox" {...register("terms")} />
+              <ItemCheckbox type="checkbox" {...register("terms")} />
               [필수] 이용약관 동의
             </label>
 
             <label>
-              <input type="checkbox" {...register("privacy")} />
+              <ItemCheckbox type="checkbox" {...register("privacy")} />
               [필수] 개인정보 수집 및 이용 동의
             </label>
 
             <label>
-              <input type="checkbox" {...register("marketing")} />
+              <ItemCheckbox type="checkbox" {...register("marketing")} />
               [선택] 마케팅 정보 수신 동의
             </label>
           </TermsGroup>
