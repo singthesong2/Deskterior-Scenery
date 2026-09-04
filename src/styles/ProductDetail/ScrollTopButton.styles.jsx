@@ -8,9 +8,9 @@ export const Button = styled.button(({ theme }) => ({
   cursor: "pointer",
 
   display: "flex",
-  width: "3.5rem",
-  height: "3.5rem",
-  padding: theme.spacing.xs,
+  width: "40px",
+  height: "40px",
+  padding: 0,
   justifyContent: "center",
   alignItems: "center",
   gap: theme.spacing.xs,
@@ -20,7 +20,7 @@ export const Button = styled.button(({ theme }) => ({
 }));
 
 export const Icon = styled.svg({
-  width: "2.25rem",
-  height: "2.25rem",
+  width: "1.5rem", // 24px — 40px 버튼에 맞춤
+  height: "1.5rem",
   flexShrink: 0,
 });

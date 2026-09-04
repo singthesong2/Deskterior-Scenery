@@ -88,55 +88,57 @@ const ProductDetailPage = ({
   };
 
   return (
-    <S.Page>
-      <ProductBreadcrumb
-        category={product.category}
-        productName={product.name}
-      />
+    <S.Wrapper>
+      <S.Page>
+        <ProductBreadcrumb
+          category={product.category}
+          productName={product.name}
+        />
 
-      <S.TopSection>
-        <S.GalleryColumn>
-          <ProductImageGallery
-            key={product.id}
-            images={product.images}
-            alt={product.name}
-          />
-        </S.GalleryColumn>
+        <S.TopSection>
+          <S.GalleryColumn>
+            <ProductImageGallery
+              key={product.id}
+              images={product.images}
+              alt={product.name}
+            />
+          </S.GalleryColumn>
 
-        <S.InfoColumn>
-          <ProductInfo
-            name={product.name}
-            category={product.category}
-            rating={averageRating}
-            reviewCount={reviewCount}
-            price={product.price}
-            description={product.description}
-          />
-          <PurchaseBox
-            quantity={quantity}
-            onQuantityChange={setQuantity}
-            onAddToCart={handleAddToCart}
-            onCheckout={handleCheckout}
-            isWished={isWished}
-            onToggleWish={handleToggleWish}
-          />
-        </S.InfoColumn>
-      </S.TopSection>
+          <S.InfoColumn>
+            <ProductInfo
+              name={product.name}
+              category={product.category}
+              rating={averageRating}
+              reviewCount={reviewCount}
+              price={product.price}
+              description={product.description}
+            />
+            <PurchaseBox
+              quantity={quantity}
+              onQuantityChange={setQuantity}
+              onAddToCart={handleAddToCart}
+              onCheckout={handleCheckout}
+              isWished={isWished}
+              onToggleWish={handleToggleWish}
+            />
+          </S.InfoColumn>
+        </S.TopSection>
 
-      <ProductDetailContent sections={product.detailSections} />
+        <ProductDetailContent sections={product.detailSections} />
 
-      <ReviewSection
-        key={product.id}
-        reviews={reviews}
-        isLoggedIn={isLoggedIn}
-        currentUserId={currentUserId}
-        onCreate={handleCreateReview}
-        onUpdate={handleUpdateReview}
-        onDelete={handleDeleteReview}
-      />
+        <ReviewSection
+          key={product.id}
+          reviews={reviews}
+          isLoggedIn={isLoggedIn}
+          currentUserId={currentUserId}
+          onCreate={handleCreateReview}
+          onUpdate={handleUpdateReview}
+          onDelete={handleDeleteReview}
+        />
 
-      <ScrollTopButton />
-    </S.Page>
+        <ScrollTopButton />
+      </S.Page>
+    </S.Wrapper>
   );
 };
 

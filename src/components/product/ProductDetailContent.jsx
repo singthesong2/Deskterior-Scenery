@@ -1,87 +1,47 @@
 import SafeImage from "../common/SafeImage";
 import SceneryBox from "../common/SceneryBox";
+import * as S from "../../styles/ProductDetail/ProductDetailContent.styles";
 
 const ProductDetailContent = ({ sections = [] }) => {
   if (!sections.length) return null;
 
   return (
-    <section
-      style={{
-        maxWidth: 700,
-        margin: "48px auto 0",
-        padding: "0 40px",
-      }}
-    >
-      <h2
-        style={{
-          margin: "0 0 24px",
-          fontFamily: "'DM Serif Text', Georgia, 'Times New Roman', serif", // font-family-display
-          fontSize: "3rem", // m-display-md-size
-          fontStyle: "normal",
-          fontWeight: 400,
-          lineHeight: "normal",
-          letterSpacing: "-0.01em", // letter-spacing-default
-          color: "#1F211F", // color-text-primary
-        }}
-      >
-        Item Detail
-      </h2>
+    <S.Section>
+      <S.Inner>
+        <S.Title>Item Detail</S.Title>
 
-      {sections.map((section) => (
-        <article key={section.id} style={{ marginBottom: 56 }}>
-          {section.image && (
-            <SafeImage
-              src={section.image}
-              alt={section.title || ""}
-              loading="lazy"
-              fallback={
-                <SceneryBox
-                  aspectRatio="3 / 2"
-                  radius={8}
-                  label="이미지를 불러올 수 없습니다"
-                  big
-                />
-              }
-              style={{ width: "100%", borderRadius: 8, display: "block" }}
-            />
-          )}
+        {sections.map((section) => (
+          <S.Article key={section.id}>
+            {section.image && (
+              <SafeImage
+                src={section.image}
+                alt={section.title || ""}
+                loading="lazy"
+                fallback={
+                  <SceneryBox
+                    aspectRatio="3 / 2"
+                    radius={8}
+                    label="이미지를 불러올 수 없습니다"
+                    big
+                  />
+                }
+                style={{
+                  display: "block",
+                  maxWidth: "100%", // 컨테이너보다 크면 축소만 (확대 X)
+                  height: "auto", // 축소 시 비율 유지
+                  margin: "0 auto", // 가운데 정렬
+                  borderRadius: 8,
+                }}
+              />
+            )}
 
-          {section.title && (
-            <h3
-              style={{
-                margin: "20px 0 8px",
-                fontFamily: "'Pretendard Variable', system-ui, sans-serif",
-                fontSize: "0.875rem",
-                fontStyle: "normal",
-                fontWeight: 500, // Label/MD
-                lineHeight: "normal",
-                letterSpacing: "-0.00875rem",
-                color: "#1F211F", // color-text-primary
-              }}
-            >
-              {section.title}
-            </h3>
-          )}
+            {section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
 
-          {section.body && (
-            <p
-              style={{
-                margin: 0,
-                fontFamily: "'Pretendard Variable', system-ui, sans-serif",
-                fontSize: "0.875rem",
-                fontStyle: "normal",
-                fontWeight: 400, // Body/MD
-                lineHeight: "normal",
-                letterSpacing: "-0.00875rem",
-                color: "#74766F", // color-text-secondary
-              }}
-            >
-              {section.body}
-            </p>
-          )}
-        </article>
-      ))}
-    </section>
+            {section.body && <S.SectionBody>{section.body}</S.SectionBody>}
+          </S.Article>
+        ))}
+      </S.Inner>
+    </S.Section>
   );
 };
 

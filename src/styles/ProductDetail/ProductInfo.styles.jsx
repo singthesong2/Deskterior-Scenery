@@ -22,7 +22,7 @@ export const Category = styled.p(({ theme }) => ({
 }));
 
 export const Title = styled.h1(({ theme }) => ({
-  fontFamily: theme.fontFamily.display, // DM Serif Text
+  fontFamily: theme.fontFamily.display,
   fontSize: theme.fontSize["5xl"], // 2.5rem
   fontWeight: theme.fontWeight.regular, // 400
   lineHeight: "normal",

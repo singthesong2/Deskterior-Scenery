@@ -13,7 +13,7 @@ export const Box = styled.div(({ theme, $radius, $aspectRatio }) => ({
 }));
 
 export const Label = styled.span(({ theme, $big }) => ({
-  fontFamily: theme.fontFamily.display, // DM Serif Text
+  fontFamily: theme.fontFamily.display,
   fontWeight: theme.fontWeight.regular, // 400
   lineHeight: "normal",
   whiteSpace: "nowrap",
