@@ -10,6 +10,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
 import LightingPage from "./pages/Lighting/LightingPage";
 import HomePage from "./pages/Home/HomePage";
+import Toast from "./components/common/Toast";
 import CommonLayout from "./pages/CommonLayout";
 
 function App() {
@@ -51,16 +52,14 @@ function App() {
       {/*<div>{isLoggedIn ? "로그인 상태" : "로그아웃 상태"}</div>*/}
       {/* 나중에 로그인 로그아웃 상태 체크 코드 삭제 X */}
 
-      {isLoggedIn && userInfo && <p>{userInfo.name}님</p>}
+      {/*{isLoggedIn && userInfo && <p>{userInfo.name}님</p>}*/}
 
-      <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
-      <SignupForm />
-      <HomePage />
-
-      {/*<Routes>
+      <Toast />
+      <Routes>
         <Route element={<CommonLayout />}>
+          <Route path="/" element={<HomePage />} />
           <Route
-            path="/"
+            path="/login"
             element={
               <LoginForm
                 setIsLoggedIn={setIsLoggedIn}
@@ -69,9 +68,26 @@ function App() {
             }
           />
           <Route path="/signup" element={<SignupForm />} />
+          <Route path="/lightingpage" element={<LightingPage />} />
+          <Route
+            path="/detailpage"
+            element={
+              <ProductDetailPage
+                isLoggedIn={isLoggedIn}
+                currentUserId={userInfo?.id ?? null}
+                currentUserName={userInfo?.name ?? ""}
+              />
+            }
+          />
+          <Route path="/cartpage" element={<CartPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-      </Routes>*/}
+      </Routes>
       {/* 페이지 이동 및 Outlet 적용 코드, 삭제 X */}
+
+      <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
+      <SignupForm />
+      <HomePage />
 
       <CartPage />
       <ProductDetailPage

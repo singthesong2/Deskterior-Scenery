@@ -69,6 +69,9 @@ export const IdCheckButton = styled.button({
   fontSize: "12px",
   lineHeight: 1,
   cursor: "pointer",
+  "&:hover": {
+    filter: "brightness(1.5)",
+  },
 });
 
 export const PasswordGroup = styled.div({
@@ -175,7 +178,7 @@ export const Button = styled.button({
   color: "#fff",
   cursor: "pointer",
   "&:hover": {
-    filter: "brightness(1.2)",
+    filter: "brightness(1.5)",
   },
   "@media (prefers-reduced-motion: no-preference)": {
     "&.shake": {
