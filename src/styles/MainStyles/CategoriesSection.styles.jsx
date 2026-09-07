@@ -25,6 +25,7 @@ export const CategoryItem = styled.div(({ theme }) => ({
   width: "150px",
   alignItems: "center",
   gap: theme.spacing.xs, // 8px
+  cursor: "pointer",
 }));
 
 export const CategoryImage = styled.img(({ theme }) => ({
