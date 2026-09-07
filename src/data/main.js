@@ -27,7 +27,7 @@ const main = [
   {
     id: 6,
     styleId: "minimal",
-    name: "Minimal,"
+    name: "Minimal",
     imageUrl: "https://i.ibb.co/XZwBHb6M/minimal-2.webp",
     products: [3, 39, 31, 16],
   },
