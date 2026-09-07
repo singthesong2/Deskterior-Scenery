@@ -79,7 +79,13 @@ export const CartButton = styled.button(({ theme }) => ({
 }));
 
 export const Info = styled.div(({ theme }) => ({
-  padding: theme.spacing.lg,
+  display: "flex",
+  width: "280px",
+  padding: `0 ${theme.spacing.md}`,
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: theme.spacing.xs,
+  flex: "1 0 0",
 }));
 
 export const ProductName = styled.strong(({ theme }) => ({
@@ -87,17 +93,18 @@ export const ProductName = styled.strong(({ theme }) => ({
   WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
   overflow: "hidden",
-  lineHeight: 1.3,
-  minHeight: `calc(${theme.fontSize.xl} * 1.3 * 2)`,
-  fontSize: theme.fontSize.xl,
-  fontWeight: theme.fontWeight.bold,
+  lineHeight: "normal",
+  fontFamily: theme.fontFamily.base,
+  fontSize: theme.fontSize.lg,
+  fontWeight: theme.fontWeight.semiBold,
+  letterSpacing: "-0.18px",
   color: theme.colors.textMain,
 }));
 
 export const Price = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.md,
   color: theme.colors.secondText,
-  margin: "8px 0 4px",
+  margin: 0,
 }));
 
 export const Rating = styled.p({

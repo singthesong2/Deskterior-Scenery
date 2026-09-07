@@ -12,7 +12,6 @@ export const ToolbarWrapper = styled.div(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "flex-start",
   alignSelf: "stretch",
-  margin: `${theme.spacing.xl} 0 ${theme.spacing.lg}`,
 }));
 
 export const SearchBox = styled.div(({ theme }) => ({

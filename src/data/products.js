@@ -12,7 +12,7 @@ const products = [
     name: "Slim Monitor Light Bar",
     categoryId: "lighting",
     price: 42000,
-    imageUrl: "https://i.ibb.co/TnszRpc/whaud2wprj.webp",
+    imageUrl: "https://i.ibb.co/8nZPXKDW/whaudwprj4.webp",
     description: "눈부심 없이 데스크 작업 영역만 미니멀하게 밝히는 스크린바",
   },
   {
@@ -20,7 +20,7 @@ const products = [
     name: "Matte Metal Desk Lamp",
     categoryId: "lighting",
     price: 54000,
-    imageUrl: "https://i.ibb.co/8nZPXKDW/whaudwprj4.webp",
+    imageUrl: "https://i.ibb.co/0p6ZRKzV/whaudwprj3.webp",
     description:
       "직선적인 알루미늄 바디와 정교한 각도 조절이 가능한 작업용 조명",
   },
@@ -29,7 +29,7 @@ const products = [
     name: "Ambient Sunset Lamp",
     categoryId: "lighting",
     price: 26000,
-    imageUrl: "https://i.ibb.co/0p6ZRKzV/whaudwprj3.webp",
+    imageUrl: "https://i.ibb.co/TnszRpc/whaud2wprj.webp",
     description: "벽면에 은은한 빛을 투사해 공간의 무드를 바꾸는 감성 램프",
   },
   {

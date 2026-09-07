@@ -19,10 +19,12 @@ export const Main = styled.main(({ theme }) => ({
 
 export const Header = styled.div(({ theme }) => ({
   display: "flex",
-  padding: `${theme.spacing.xl} 0`,
+  height: "233px",
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} 48px ${theme.spacing["3xl"]}`,
   flexDirection: "column",
   alignItems: "center",
-  gap: theme.spacing.sm,
+  gap: "16px",
+  alignSelf: "stretch",
   borderBottom: `1px solid ${theme.colors.subtle}`,
   background: theme.colors.background,
 }));
@@ -72,6 +74,15 @@ export const PageSubtitle = styled.p(({ theme }) => ({
   margin: 0,
 }));
 
+export const Content = styled.div(({ theme }) => ({
+  display: "flex",
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]}`,
+  flexDirection: "column",
+  alignItems: "center",
+  gap: theme.spacing.xl,
+  alignSelf: "stretch",
+}));
+
 export const EmptyState = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -101,7 +112,8 @@ export const ProductGrid = styled.div(({ theme }) => ({
   width: "896px",
   justifyContent: "center",
   alignItems: "center",
-  gap: theme.spacing.md,
+  rowGap: theme.spacing["2xl"],
+  columnGap: theme.spacing.md,
 }));
 
 export const GridPlaceholder = styled.div({
