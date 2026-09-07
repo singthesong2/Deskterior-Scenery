@@ -3,20 +3,20 @@ import { HeroSection } from "../../components/home/HeroSection";
 import { DeskCurationSection } from "../../components/home/DeskCurationSection";
 import { ProductSection } from "../../components/home/ProductSection";
 import { useEffect } from "react";
-import { getMain } from "../../api/mainApi";
+import main from "../../data/main";
 
 export default function HomePage() {
-  useEffect(() => {
-    async function fetchMainData() {
-      try {
-        const data = await getMain();
-        console.log("GET /main 응답:", data);
-      } catch (error) {
-        console.log("GET /main 요청 실패:", error);
-      }
-    }
-    fetchMainData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchMainData() {
+  //     try {
+  //       const data = await getMain();
+  //       console.log("GET /main 응답:", data);
+  //     } catch (error) {
+  //       console.log("GET /main 요청 실패:", error);
+  //     }
+  //   }
+  //   fetchMainData();
+  // }, []);
   
   return (
     <>
