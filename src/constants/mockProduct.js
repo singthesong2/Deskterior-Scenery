@@ -19,6 +19,7 @@ export const mockProduct = {
   ...base,
   id: 101,
   category,
+  soldOut: false, // 품절 UI 확인 시 true 로
   images,
   detailSections: [
     {

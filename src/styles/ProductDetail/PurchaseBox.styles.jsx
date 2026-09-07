@@ -63,6 +63,7 @@ export const CartButton = styled.button(({ theme }) => ({
   lineHeight: "normal",
   letterSpacing: "-0.00875rem",
 
+  "&:hover": { filter: "brightness(1.2)" }, // 팀 공통 버튼 호버
   "&:disabled": { opacity: 0.5, cursor: "not-allowed" },
 }));
 
@@ -91,5 +92,6 @@ export const CheckoutButton = styled.button(({ theme }) => ({
   lineHeight: "normal",
   letterSpacing: "-0.01rem",
 
+  "&:not(:disabled):hover": { filter: "brightness(1.2)" }, // 팀 공통 버튼 호버
   "&:disabled": { opacity: 0.5, cursor: "not-allowed" },
 }));

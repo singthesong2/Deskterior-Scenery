@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReviewStars from "./ReviewStars";
-import Modal from "../common/Modal";
+import ReviewDeleteModal from "./ReviewDeleteModal";
 import * as S from "../../styles/ProductDetail/Review.styles";
 
 /** "2026.08.15" 또는 ISO 문자열 → "2026.08.15" 로 표기 */
@@ -62,10 +62,7 @@ const ReviewItem = ({ review, isMine = false, onEdit, onDelete }) => {
       </S.Item>
 
       {deleteModalOpen && (
-        <Modal
-          title="Delete?"
-          description="이 리뷰를 삭제하시겠습니까?"
-          confirmText="Delete"
+        <ReviewDeleteModal
           onClose={() => setDeleteModalOpen(false)}
           onConfirm={confirmDelete}
         />

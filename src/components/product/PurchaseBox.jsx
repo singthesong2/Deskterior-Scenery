@@ -10,6 +10,7 @@ const PurchaseBox = ({
   onToggleWish,
   maxQuantity = 99,
   isSubmitting = false,
+  soldOut = false,
 }) => {
   const safeQty = Math.min(
     maxQuantity,
@@ -62,9 +63,9 @@ const PurchaseBox = ({
       <S.CheckoutButton
         type="button"
         onClick={onCheckout}
-        disabled={isSubmitting}
+        disabled={isSubmitting || soldOut}
       >
-        CheckOut
+        {soldOut ? "Sold Out" : "CheckOut"}
       </S.CheckoutButton>
     </S.Wrapper>
   );
