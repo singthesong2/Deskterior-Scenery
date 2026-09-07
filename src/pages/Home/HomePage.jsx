@@ -17,13 +17,15 @@ export default function HomePage() {
   //   }
   //   fetchMainData();
   // }, []);
+  const categoryItems = main.slice(0, 5);
+  const styleItems = main.filter((item) => item.styleId);
   
   return (
     <>
       <main>
         <HeroSection />
-        <CategoriesSection />
-        <DeskCurationSection />
+        <CategoriesSection items={categoryItems} />
+        <DeskCurationSection items={styleItems} />
         <ProductSection />
       </main>
     </>

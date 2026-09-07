@@ -1,12 +1,12 @@
 import {
   HeroContainer,
-  HeroTitle,
+  HeroMedia,
 } from "../../styles/MainStyles/HeroSection.styles";
 
 function HeroSection() {
   return (
     <HeroContainer>
-        <HeroTitle>HeroSection</HeroTitle>
+        <HeroMedia>HeroMedia Area</HeroMedia>
     </HeroContainer>
   )
 }
