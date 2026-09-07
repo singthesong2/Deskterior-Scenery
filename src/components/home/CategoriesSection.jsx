@@ -5,7 +5,7 @@ import {
     CategoryItem,
     CategoryName,
     ImagePlaceholder,
-} from "../../styles/CategoriesSection.styles";
+} from "../../styles/MainStyles/CategoriesSection.styles";
 
 const categories = [
     "Lighting",

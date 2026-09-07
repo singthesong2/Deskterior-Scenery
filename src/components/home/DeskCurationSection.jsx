@@ -5,7 +5,7 @@ import {
   ClickableProductMap,
   DeskArea,
   ProductArea,
-} from "../../styles/DeskCurationSection.styles";
+} from "../../styles/MainStyles/DeskCurationSection.styles";
 
 function DeskCurationSection() {
   return (
