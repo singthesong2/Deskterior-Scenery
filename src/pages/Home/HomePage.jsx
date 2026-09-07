@@ -17,12 +17,13 @@ export default function HomePage() {
   //   }
   //   fetchMainData();
   // }, []);
+  const categoryItems = main.slice(0, 5);
   
   return (
     <>
       <main>
         <HeroSection />
-        <CategoriesSection />
+        <CategoriesSection items={categoryItems} />
         <DeskCurationSection />
         <ProductSection />
       </main>

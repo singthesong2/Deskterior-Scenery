@@ -4,27 +4,30 @@ import {
     CategoryList,
     CategoryItem,
     CategoryName,
-    ImagePlaceholder,
+    CategoryImage,
 } from "../../styles/MainStyles/CategoriesSection.styles";
 
-const categories = [
-    "Lighting",
-    "Organization",
-    "Digital / Electronics",
-    "Desk Accessories",
-    "Stationery",
-];
+const categoryNames = {
+  lighting: "Lighting",
+  organization: "Organization",
+  "digital-electronics": "Digital / Electronics",
+  "desk-accessories": "Desk Accessories",
+  "objects-stationery": "Stationery",
+};
 
-function CategoriesSection() {
+function CategoriesSection({items = [] }) {
   return (
     <CategoriesContainer>
         <SectionTitle>CATEGORIES</SectionTitle>
 
         <CategoryList>
-            {categories.map((category) => (
-                <CategoryItem key={category}>
-                    <ImagePlaceholder />
-                    <CategoryName>{category}</CategoryName>
+            {items.map((item) => (
+                <CategoryItem key={item.id}>
+                    <CategoryImage
+                    src={item.imageUrl}
+                    alt={`${categoryNames[item.categoryId]} 카테고리`}
+                    />
+                    <CategoryName>{categoryNames[item.categoryId]}</CategoryName>
                 </CategoryItem>
             ))}
         </CategoryList>

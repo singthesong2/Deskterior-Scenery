@@ -2,37 +2,42 @@ import styled from "@emotion/styled";
 
 export const CategoriesContainer = styled.section(({ theme }) => ({
   width: "100%",
-  padding: theme.spacing["3xl"],
+  padding: theme.spacing["3xl"], // 64px
   backgroundColor: theme.colors.cards,
 }));
 
 export const SectionTitle = styled.h2(({ theme }) => ({
-  fontSize: theme.fontSize["4xl"],
+  paddingBottom: theme.spacing.xl, // 32px
+  fontFamily: theme.fontFamily.display,
+  fontSize: theme.fontSize["4xl"], // 32px
+  fontWeight: theme.fontWeight.regular,
   color: theme.colors.textMain,
 }));
 
 export const CategoryList = styled.div(({ theme }) => ({
   display: "flex",
-  gap: theme.spacing.xl,
+  gap: theme.spacing.xl, // 32px
 }));
 
 export const CategoryItem = styled.div(({ theme }) => ({
   display: "flex",
-  width: "150px",
   flexDirection: "column",
+  width: "150px",
   alignItems: "center",
-  gap: theme.spacing.xs,
+  gap: theme.spacing.xs, // 8px
 }));
 
-export const ImagePlaceholder = styled.div(({ theme }) => ({
+export const CategoryImage = styled.img(({ theme }) => ({
   width: "150px",
   height: "150px",
   borderRadius: theme.radius.full,
-  backgroundColor: theme.colors.imagePlaceholder,
+  objectFit: "cover",
 }));
 
 export const CategoryName = styled.div(({ theme }) => ({
-  fontSize: theme.fontSize.sm,
+  fontFamily: theme.fontFamily.base,
+  fontSize: theme.fontSize.sm, // 14px
+  fontWeight: theme.fontWeight.semiBold,
   color: theme.colors.textMain,
   textAlign: "center",
 }));
