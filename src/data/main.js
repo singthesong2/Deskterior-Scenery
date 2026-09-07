@@ -42,8 +42,8 @@ const main = [
         y: 48.2,
       },
       {productId: 16, 
-        x: 64.7,
-        y: 44.8,
+        x: 74.3,
+        y: 37.7,
       },
       {productId: 31, 
         x: 49.9,
@@ -59,25 +59,25 @@ const main = [
     coordinate: [
       {
         productId: 7,
-        x: 25.8,
-        y: 17.8,
+        x: 30.6,
+        y: 14.1,
       },
       {
         productId: 28,
-        x: 30.6,
-        y: 24.2,
+        x: 18.8,
+        y: 56.8,
       },
       {
         productId: 30,
-        x: 76.6,
-        y: 44.1,
+        x: 76.3,
+        y: 54.2,
       },
       {
         productId: 17,
-        x: 88.5,
-        y: 70.5,
+        x: 83.7,
+        y: 68.5,
       },
-    ]
+    ],
   },
   {
     id: 8,
@@ -87,8 +87,8 @@ const main = [
     coordinate: [
       {
         productId: 19,
-        x: 42.2,
-        y: 75.9,
+        x: 46.4,
+        y: 73.3,
       },
       {
         productId: 38,
@@ -105,23 +105,23 @@ const main = [
     coordinate: [
       {
         productId: 2,
-        x: 37.2,
-        y: 8.3,
+        x: 43.1,
+        y: 6.3,
       },
       {
         productId: 29,
-        x: 11.3,
+        x: 19.6,
         y: 63.3,
       },
       {
         productId: 20,
-        x: 77.6,
+        x: 74.4,
         y: 50.2,
       },
       {
         productId: 27,
-        x: 83,
-        y: 82.2,
+        x: 76.2,
+        y: 86.6,
       }
     ]
   },
@@ -133,8 +133,8 @@ const main = [
     coordinate: [
       {
         productId: 26,
-        x: 32.3,
-        y: 59.2,
+        x: 38.4,
+        y: 81.3,
       },
       {
         productId: 14,
@@ -143,8 +143,8 @@ const main = [
       },
       {
         productId: 13,
-        x: 80.5,
-        y: 57.9,
+        x: 84.9,
+        y: 77.3,
       },
     ],
   },
@@ -156,18 +156,18 @@ const main = [
     coordinate: [
       {
         productId: 9,
-        x: 24.9,
-        y: 32.2,
+        x: 14.1,
+        y: 23.2,
       },
       {
         productId: 37,
-        x: 40.4,
-        y: 46.2,
+        x: 42.9,
+        y: 49.1,
       },
       {
         productId: 22,
-        x: 78.4,
-        y: 39.8,
+        x: 83.6,
+        y: 40.5,
       },
       {
         productId: 35,
@@ -184,8 +184,8 @@ const main = [
     coordinate: [
       {
         productId: 23,
-        x: 9,
-        y: 51.6,
+        x: 20.5,
+        y: 52.2,
       },
       {
         productId: 12,
@@ -194,8 +194,8 @@ const main = [
       },
       {
         productId: 18,
-        x: 19,
-        y: 77.5,
+        x: 33.4,
+        y: 78.9,
       },
     ],
   },
