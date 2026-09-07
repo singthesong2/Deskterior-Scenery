@@ -80,8 +80,8 @@ function App() {
             }
           />
           <Route path="/cartpage" element={<CartPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       {/* 페이지 이동 및 Outlet 적용 코드, 삭제 X */}
 
