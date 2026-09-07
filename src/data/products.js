@@ -327,7 +327,7 @@ const products = [
   {
     id: 38,
     name: "Matte Black 3-Tier Pen Organizer",
-    categoryId: "Organization",
+    categoryId: "organization",
     price: 19000,
     imageUrl: "https://i.ibb.co/hw8bS2y/Desk-Accessories.webp",
     description:

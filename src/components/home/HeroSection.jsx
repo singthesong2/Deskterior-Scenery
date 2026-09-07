@@ -1,7 +1,7 @@
 import {
   HeroContainer,
   HeroTitle,
-} from "../../styles/HeroSection.styles";
+} from "../../styles/MainStyles/HeroSection.styles";
 
 function HeroSection() {
   return (

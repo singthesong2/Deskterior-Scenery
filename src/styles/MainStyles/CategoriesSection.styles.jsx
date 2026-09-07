@@ -28,7 +28,7 @@ export const ImagePlaceholder = styled.div(({ theme }) => ({
   width: "150px",
   height: "150px",
   borderRadius: theme.radius.full,
-  backgroundColor: theme.colors.imagePlacholder,
+  backgroundColor: theme.colors.imagePlaceholder,
 }));
 
 export const CategoryName = styled.div(({ theme }) => ({

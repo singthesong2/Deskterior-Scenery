@@ -5,8 +5,8 @@ export const CurationSection = styled.section(({theme}) => ({
 }))
 
 export const CurationTitle = styled.h2(({theme}) => ({
-  fontsize: theme.fontSize["4xl"],
-  fontweight: theme.fontWeight.regular,
+  fontSize: theme.fontSize["4xl"],
+  fontWeight: theme.fontWeight.regular,
   color: theme.colors.textMain,
 }));
 

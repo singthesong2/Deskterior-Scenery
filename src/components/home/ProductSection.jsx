@@ -3,7 +3,7 @@ import {
     ProductContainer,
     ProductTitle,
     ProductCards,
-} from "../../styles/ProductSection.styles";
+} from "../../styles/MainStyles/ProductSection.styles";
 
 function ProductSection() {
   return (
