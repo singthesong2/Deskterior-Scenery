@@ -68,11 +68,35 @@ export const ClickableProductMap = styled.div(({theme}) => ({
 }));
 
 export const DeskArea = styled.div(({theme}) => ({
+  position: "relative",
   height: "700px",
   flex: 2,
+  overflow: "hidden",
   backgroundColor: theme.colors.imagePlaceholder,
   borderRadius: theme.radius.md,
 }));
+
+export const HotspotButton = styled.button(({theme}) => ({
+  position: "absolute",
+  transform: "translate(-50%, -50%)",
+  width: "40px",
+  height: "40px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: theme.colors.cards,
+  borderRadius: theme.radius.full,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.semiBold,
+  colors: theme.colors.textMain,
+  cursor: "pointer",
+}))
+
+export const DeskImage = styled.img({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+})
 
 export const ProductArea = styled.div(({theme}) => ({
   height: "700px",

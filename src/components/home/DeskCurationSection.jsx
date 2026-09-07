@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CurationSection,
   CurationTitleBox,
@@ -9,6 +9,8 @@ import {
   KeywordChipContainer,
   KeywordButton,
   ClickableProductMap,
+  DeskImage,
+  HotspotButton,
   DeskArea,
   ProductArea,
 } from "../../styles/MainStyles/DeskCurationSection.styles";
@@ -17,6 +19,31 @@ function DeskCurationSection({items = [] }) {
   const [selectedStyleId, setSelectedStyleId] = useState(null);
   // 아무것도 선택되지 않았을 때 첫 번째 키워드(=Minimal)를 자동으로 선택
   const activeStyleId = selectedStyleId ?? items[0]?.styleId;
+
+  const selectedStyle = items.find(
+    (item) => item.styleId === activeStyleId
+  );
+
+  // 화면이 처음 열릴 때 imageUrl을 미리 저장
+  useEffect(() => {
+    items.forEach((item) => {
+      const image = new Image();
+      image.src = item.imageUrl;
+    });
+  }, [items]);
+
+// handleCoordinate(): 클릭 좌표를 %로 계산하는 함수, getBoundingClientRect()로 상대적인 위치 정보를 제공하는 객체를 반환
+  const handleCoordinate = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    console.log({
+      x: Number(x.toFixed(1)),
+      y: Number(y.toFixed(1)),
+    });
+  };
 
   return (
     <CurationSection>
@@ -48,7 +75,30 @@ function DeskCurationSection({items = [] }) {
       </MoodKeywordBox>
 
         <ClickableProductMap>
-          <DeskArea>Desk Area</DeskArea>
+          <DeskArea onClick={handleCoordinate}>
+            {selectedStyle && (
+              <>
+                <DeskImage
+                src={selectedStyle.imageUrl}
+                alt={`${selectedStyle.name} style desk`}
+                />
+                {/* coordinate(좌표 정보)가 있으면 해당 배열을 사용하고 없으면 빈 배열을 사용함 */}
+                {(selectedStyle.coordinate ?? []).map((product, index) => (
+                  <HotspotButton
+                    key={product.productId}
+                    type="button"
+                    style={{
+                      left: `${product.x}%`,
+                      top: `${product.y}%`,
+                    }}
+                    >
+                      {index + 1}
+                  </HotspotButton>
+                ))}
+              </>
+            )}
+          </DeskArea>
+          
           <ProductArea>Product Area</ProductArea>
         </ClickableProductMap>
     </CurationSection>
