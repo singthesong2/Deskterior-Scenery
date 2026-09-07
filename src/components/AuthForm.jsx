@@ -2,8 +2,7 @@ import { useState } from "react";
 import { checkId } from "../api/authApi";
 import { useForm } from "react-hook-form";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
-import { ShowToast } from "./common/ShowToast";
-import SignupToast from "./common/SignupToast";
+import { showSuccessToast } from "./common/ShowToast";
 import { useNavigate } from "react-router";
 import {
   Form,
@@ -60,7 +59,6 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       if (idCheck !== data.id) {
         setMessage("아이디 중복 확인을 해주세요.");
         setShakingButton(true);
-        ShowToast(<SignupToast />);
         setFocus("id");
         return;
       }
@@ -82,8 +80,10 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
     try {
       await onSubmit(data);
       resetUser();
-      if (mode === "signup") {
-        ShowToast(<SignupToast />);
+      if (mode === "login") {
+        showSuccessToast("Login successful");
+      } else if (mode === "signup") {
+        showSuccessToast("Sign-up successful");
       }
 
       navigate("/");
