@@ -6,7 +6,6 @@ export const PaginationWrapper = styled.div(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   gap: theme.spacing.md,
-  margin: `${theme.spacing["2xl"]} 0`,
 }));
 
 const forwardNonTransientProp = (prop) => !prop.startsWith("$");

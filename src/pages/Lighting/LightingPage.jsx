@@ -76,49 +76,51 @@ const LightingPage = ({ products = lightingProducts }) => {
           <S.PageSubtitle>Take Your SCENERY</S.PageSubtitle>
         </S.Header>
 
-        <ProductToolbar
-          search={search}
-          onSearchChange={(value) => {
-            setSearch(value);
-            setCurrentPage(1);
-          }}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-        />
+        <S.Content>
+          <ProductToolbar
+            search={search}
+            onSearchChange={(value) => {
+              setSearch(value);
+              setCurrentPage(1);
+            }}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+          />
 
-        {filteredProducts.length === 0 ? (
-          <S.EmptyState>
-            <S.StyledNoResultIcon width={64} height={64} aria-hidden="true" />
-            <S.EmptyTitle>"{search}"에 대한 검색 결과가 없습니다</S.EmptyTitle>
-            <S.EmptySubtitle>
-              검색어를 확인하거나 다시 입력해주세요
-            </S.EmptySubtitle>
-          </S.EmptyState>
-        ) : (
-          <S.ProductGrid>
-            {pagedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-            {Array.from({ length: placeholderCount }).map((_, index) => (
-              <S.GridPlaceholder
-                key={`placeholder-${index}`}
-                aria-hidden="true"
-              >
-                <ProductCard product={PLACEHOLDER_PRODUCT} />
-              </S.GridPlaceholder>
-            ))}
-          </S.ProductGrid>
-        )}
+          {filteredProducts.length === 0 ? (
+            <S.EmptyState>
+              <S.StyledNoResultIcon width={64} height={64} aria-hidden="true" />
+              <S.EmptyTitle>"{search}"에 대한 검색 결과가 없습니다</S.EmptyTitle>
+              <S.EmptySubtitle>
+                검색어를 확인하거나 다시 입력해주세요
+              </S.EmptySubtitle>
+            </S.EmptyState>
+          ) : (
+            <S.ProductGrid>
+              {pagedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+              {Array.from({ length: placeholderCount }).map((_, index) => (
+                <S.GridPlaceholder
+                  key={`placeholder-${index}`}
+                  aria-hidden="true"
+                >
+                  <ProductCard product={PLACEHOLDER_PRODUCT} />
+                </S.GridPlaceholder>
+              ))}
+            </S.ProductGrid>
+          )}
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </S.Content>
       </S.Main>
     </div>
   );
