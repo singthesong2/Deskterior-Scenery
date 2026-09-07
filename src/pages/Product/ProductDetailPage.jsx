@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mockProduct } from "../../constants/mockProduct";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
@@ -9,6 +9,18 @@ import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
 import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
+// 내가 작성한 리뷰를 새로고침 후에도 유지 (API 연결 전 임시 저장소)
+const myReviewsKey = (productId) => `deskterior:my-reviews:${productId}`;
+
+const readMyReviews = (productId) => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(myReviewsKey(productId)));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
 const ProductDetailPage = ({
   product = mockProduct,
   isLoggedIn = false,
@@ -17,7 +29,10 @@ const ProductDetailPage = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
-  const [reviews, setReviews] = useState(product.reviews ?? []);
+
+  // 내가 작성한 리뷰(로컬 저장)
+  const [myReviews, setMyReviews] = useState(() => readMyReviews(product.id));
+  const reviews = [...myReviews, ...(product.reviews ?? [])];
 
   // TODO(임시): 로그인 상태 리뷰 CSS 작업용. API 연결 시 이 블록 삭제
   const forceLoggedIn = true;
@@ -28,10 +43,19 @@ const ProductDetailPage = ({
   const [shownProductId, setShownProductId] = useState(product.id);
   if (product.id !== shownProductId) {
     setShownProductId(product.id);
-    setReviews(product.reviews ?? []);
+    setMyReviews(readMyReviews(product.id));
     setQuantity(1);
     setIsWished(false);
   }
+
+  // 내 리뷰 변경 시 localStorage 동기화
+  useEffect(() => {
+    try {
+      localStorage.setItem(myReviewsKey(product.id), JSON.stringify(myReviews));
+    } catch {
+      // 저장 실패(프라이빗 모드·용량 초과)는 무시
+    }
+  }, [product.id, myReviews]);
 
   /* 별점·리뷰 수는 리뷰 목록에서 실시간 계산 (단일 소스) */
   const reviewCount = reviews.length;
@@ -65,9 +89,9 @@ const ProductDetailPage = ({
     });
   };
 
-  /* 리뷰 CRUD — 나중에 reviewsApi 로 교체 */
+  /* 리뷰 CRUD — 나중에 reviewsApi 로 교체. 내가 쓴 리뷰만 로컬에서 관리 */
   const handleCreateReview = ({ rating, content }) => {
-    setReviews((prev) => [
+    setMyReviews((prev) => [
       {
         id: crypto.randomUUID(),
         authorId: reviewUserId, // TODO(임시): API 연결 시 currentUserId 로 원복
@@ -81,7 +105,7 @@ const ProductDetailPage = ({
   };
 
   const handleUpdateReview = (id, { rating, content }) => {
-    setReviews((prev) =>
+    setMyReviews((prev) =>
       prev.map((review) =>
         review.id === id ? { ...review, rating, content } : review,
       ),
@@ -89,7 +113,7 @@ const ProductDetailPage = ({
   };
 
   const handleDeleteReview = (id) => {
-    setReviews((prev) => prev.filter((review) => review.id !== id));
+    setMyReviews((prev) => prev.filter((review) => review.id !== id));
   };
 
   return (
@@ -106,6 +130,7 @@ const ProductDetailPage = ({
               key={product.id}
               images={product.images}
               alt={product.name}
+              soldOut={product.soldOut}
             />
           </S.GalleryColumn>
 
@@ -125,6 +150,7 @@ const ProductDetailPage = ({
               onCheckout={handleCheckout}
               isWished={isWished}
               onToggleWish={handleToggleWish}
+              soldOut={product.soldOut}
             />
           </S.InfoColumn>
         </S.TopSection>

@@ -48,6 +48,11 @@ const Star = ({ filled, size, shape }) => {
   );
 };
 
+// 리뷰 표시용 별 하나 (모달 등에서 리뷰 목록과 같은 별 모양을 재사용할 때)
+export const ReviewStarIcon = ({ size = 18, filled = true }) => (
+  <Star filled={filled} size={size} shape={DISPLAY_STAR} />
+);
+
 /**
  * 리뷰 영역 전용 별점.
  * - onChange 를 주면 네이티브 radio 로 별점 선택(입력용)

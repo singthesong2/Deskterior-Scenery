@@ -11,6 +11,17 @@ export const MainImageFrame = styled.div(({ theme }) => ({
   background: theme.colors.imagePlaceholder,
 }));
 
+// 품절 시 큰 이미지 위에 덮는 반투명 레이어 (ProductCard·CartItem 과 동일 패턴)
+export const ImageOverlay = styled.div(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundColor: theme.colors.textMain,
+  opacity: 0.35,
+}));
+
 export const ThumbRow = styled.div(({ theme }) => ({
   display: "flex",
   flexWrap: "wrap",

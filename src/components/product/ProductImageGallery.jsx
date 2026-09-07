@@ -1,9 +1,10 @@
 import { useState } from "react";
 import SafeImage from "../common/SafeImage";
 import SceneryBox from "../common/SceneryBox";
+import Badge from "../common/Badge";
 import * as S from "../../styles/ProductDetail/ProductImageGallery.styles";
 
-const ProductImageGallery = ({ images, alt }) => {
+const ProductImageGallery = ({ images, alt, soldOut = false }) => {
   const [current, setCurrent] = useState(0);
 
   if (!images?.length) return null;
@@ -26,6 +27,8 @@ const ProductImageGallery = ({ images, alt }) => {
           }
           style={S.mainImage}
         />
+        {soldOut && <S.ImageOverlay />}
+        {soldOut && <Badge text="Sold out" top="8px" left="8px" />}
       </S.MainImageFrame>
 
       {/* 큰 사진 밑 작은 사진들 */}
