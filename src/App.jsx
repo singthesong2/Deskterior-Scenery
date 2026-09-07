@@ -12,7 +12,6 @@ import LightingPage from "./pages/Lighting/LightingPage";
 import HomePage from "./pages/Home/HomePage";
 import Toast from "./components/common/Toast";
 import CommonLayout from "./pages/CommonLayout";
-import { showFailToast } from "./components/common/ShowToast";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
