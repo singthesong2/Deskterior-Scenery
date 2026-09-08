@@ -80,6 +80,9 @@ const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
       </S.ImageWrapper>
 
       <S.Info>
+        {showCategory && product.categoryName && (
+          <S.CategoryName>{product.categoryName}</S.CategoryName>
+        )}
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>₩ {safePrice.toLocaleString("ko-KR")}</S.Price>
         <S.Rating>

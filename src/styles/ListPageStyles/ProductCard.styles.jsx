@@ -101,6 +101,11 @@ export const ProductName = styled.strong(({ theme }) => ({
   color: theme.colors.textMain,
 }));
 
+export const CategoryName = styled.span(({theme}) => ({
+  color: theme.colors.emphasis,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.medium,
+}))
 export const Price = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.md,
   color: theme.colors.secondText,

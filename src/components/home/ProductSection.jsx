@@ -13,9 +13,18 @@ import {
 } from "../icons/Icons";
 import products from "../../data/products";
 import ProductCard from "../product/ProductCard";
+import categories from "../../data/categories";
 import { useState } from "react";
 
 const ITEMS_PER_PAGE = 3;
+
+// getCategoryname(): 카테고리 이름을 찾는 함수, 일치하는 categoryId를 찾으면 category name을 반환하고 찾지 못하면 categoryId를 반환함
+function getCategoryName(categoryId) {
+    const category = categories.find(
+        (item) => item.id === categoryId
+    );
+    return category?.name ?? categoryId;
+}
 
 function ProductGroup({title, items}) {
     const [currentPage, setCurrentPage] = useState(0);
@@ -75,7 +84,11 @@ function ProductGroup({title, items}) {
                     {visibleProducts.map((product) => (
                     <ProductCard 
                     key={product.id}
-                    product={product}
+                    product={{
+                        ...product,
+                        categoryName: getCategoryName(product.categoryId),
+                    }}
+                    showCategory
                     />
                 ))}
                 </ProductContainer>
@@ -86,7 +99,7 @@ function ProductGroup({title, items}) {
                     aria-label={`${title} 다음 상품`}
                     style={{
                         right: 0,
-                        transform: "translate(=50%, -50%)",
+                        transform: "translate(-50%, -50%)",
                     }}
                 >
                     <ChevronRightIcon width={24} height={24} />
