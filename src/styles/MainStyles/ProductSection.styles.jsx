@@ -47,3 +47,29 @@ export const SliderButton = styled.button(({theme}) => ({
     cursor: "pointer",
     transform: "translateY(-50%)",
 }));
+
+// PageIndicator
+export const PageIndicator = styled.div(({theme}) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: theme.spacing.xs,
+    marginTop: theme.spacing.xl, //32
+    color: theme.colors.secondText,
+}));
+
+export const IndicatorButton = styled.button(({theme}) => ({
+    width: "8px",
+    height: "8px",
+    padding: 0,
+    borderRadius: theme.radius.full,
+    backgroundColor: theme.colors.secondText,
+    cursor: "pointer",
+    transition: "width 0.2s ease, background-color 0.2s ease",
+
+    // 현재 페이지의 indicator 스타일
+    '&[aria-current="page"]': {
+        width: "32px",
+        backgroundColor: theme.colors.textMain,
+    }
+}))

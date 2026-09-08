@@ -4,6 +4,8 @@ import {
     ProductTitle,
     ProductSlider,
     SliderButton,
+    PageIndicator,
+    IndicatorButton,
 } from "../../styles/MainStyles/ProductSection.styles";
 import {
     ChevronLeftIcon,
@@ -24,6 +26,13 @@ function ProductGroup({title, items}) {
     );
     // 제품 개수를 3으로 나누면 페이지 수가 나옴
     const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+
+    // Page Indicator
+    const pageNumbers = [];
+
+    for(let page = 0; page < totalPages; page++) {
+        pageNumbers.push(page);
+    }
 
     // handlePrevious(): 제품 카드의 이전 페이지로 이동하는 함수
     function handlePrevious() {
@@ -56,7 +65,7 @@ function ProductGroup({title, items}) {
                     aria-label={`${title} 이전 상품`}
                     style={{
                         left: 0,
-                        transform: "translate(=50%, -50%)",
+                        transform: "translate(-50%, -50%)",
                     }}
                 >
                     <ChevronLeftIcon width={24} height={24} />
@@ -70,6 +79,7 @@ function ProductGroup({title, items}) {
                     />
                 ))}
                 </ProductContainer>
+
                 <SliderButton
                     type="button"
                     onClick={handleNext}
@@ -82,6 +92,20 @@ function ProductGroup({title, items}) {
                     <ChevronRightIcon width={24} height={24} />
                 </SliderButton>
             </ProductSlider>
+
+            <PageIndicator>
+                {pageNumbers.map((pageIndex) => (
+                    <IndicatorButton
+                        key={pageIndex}
+                        type="button"
+                        aria-label={`${title} ${pageIndex + 1}페이지`}
+                        aria-current={
+                            pageIndex === currentPage ? "page" : undefined
+                        }
+                        onClick={() => setCurrentPage(pageIndex)}
+                    />
+                ))}
+            </PageIndicator>
         </ProductsSection>
     );
 }
