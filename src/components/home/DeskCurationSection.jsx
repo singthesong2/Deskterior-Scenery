@@ -10,31 +10,11 @@ import {
   KeywordChipContainer,
   KeywordButton,
   ClickableProductMap,
-  DeskImage,
-  HotspotButton,
-  DeskArea,
-  ProductArea,
-  ProductTitleBox,
-  ProductTitle,
-  ProductNumber,
-  ProductImage,
-  ProductInfo,
-  ProductName,
-  ProductPrice,
-  ProductDescription,
-  ProductTagContainer,
-  ProductTag,
-  ViewMoreButton,
-  ProductPagination,
-  PaginationButton,
-  PaginationText,
 } from "../../styles/MainStyles/DeskCurationSection.styles";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "../icons/Icons";
 import products from "../../data/products";
 import categories from "../../data/categories";
+import { SelectedProductCard } from "./SelectedProductCard";
+import { DeskProductMap } from "./DeskProductMap";
 
 function DeskCurationSection({items = [] }) {
   const [selectedStyleId, setSelectedStyleId] = useState(null);
@@ -80,18 +60,6 @@ function DeskCurationSection({items = [] }) {
     setSelectedProductNumber(nextProduct.productId);
   };
 
-// handleCoordinate(): 클릭 좌표를 %로 계산하는 함수, getBoundingClientRect()로 상대적인 위치 정보를 제공하는 객체를 반환
-  const handleCoordinate = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-
-    console.log({
-      x: Number(x.toFixed(1)),
-      y: Number(y.toFixed(1)),
-    });
-  };
 
   return (
     <CurationSection>
@@ -128,92 +96,21 @@ function DeskCurationSection({items = [] }) {
         <CurationTitle2>What's on this desk?</CurationTitle2>
 
         <ClickableProductMap>
-          <DeskArea onClick={handleCoordinate}>
-            {selectedStyle && (
-              <>
-                <DeskImage
-                src={selectedStyle.imageUrl}
-                alt={`${selectedStyle.name} style desk`}
-                style={{objectPosition: selectedStyle.objectPosition ?? "center",}}
-                />
-                {/* coordinate(좌표 정보)가 있으면 해당 배열을 사용하고 없으면 빈 배열을 사용함 */}
-                {(selectedStyle.coordinate ?? []).map((product, index) => (
-                  <HotspotButton
-                    key={product.productId}
-                    type="button"
-                    isSelected={product.productId === activeProductNumber}
-                    style={{
-                      left: `${product.x}%`,
-                      top: `${product.y}%`,
-                    }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setSelectedProductNumber(product.productId);
-                    }}
-                    >
-                      {index + 1}
-                  </HotspotButton>
-                ))}
-              </>
-            )}
-          </DeskArea>
-          
-          <ProductArea>
-            <ProductTitleBox>
-              <ProductNumber>
-                {String(activeProductIndex + 1).padStart(2, "0")}
-              </ProductNumber>
-              <ProductTitle>Selected Product</ProductTitle>
-            </ProductTitleBox>
+          <DeskProductMap 
+            selectedStyle={selectedStyle}
+            activeProductNumber={activeProductNumber}
+            onProductSelect={setSelectedProductNumber}
+          />
 
-            {selectedProduct && (
-              <>
-                <ProductImage
-                  src={selectedProduct.imageUrl}
-                  alt={selectedProduct.name}
-                />
-
-                <ProductInfo>
-                  <ProductName>{selectedProduct.name}</ProductName>
-                  <ProductPrice>₩ {selectedProduct.price.toLocaleString()}</ProductPrice>
-                  <ProductDescription>{selectedProduct.description}</ProductDescription>
-                
-                  <ProductTagContainer>
-                    <ProductTag>{selectedCategory.name}</ProductTag>
-                    <ProductTag>{selectedStyle.name}</ProductTag>
-                  </ProductTagContainer>
-                </ProductInfo>
-
-                <ViewMoreButton type="button">View More</ViewMoreButton>
-
-                <ProductPagination>
-                  <PaginationButton
-                  type="button"
-                  onClick={handlePreviousProduct}
-                  disabled={activeProductIndex <= 0}
-                  aria-label="이전 상품"
-                  >
-                    <ChevronLeftIcon width={24} height={24}/>
-                  </PaginationButton>
-
-                  <PaginationText>
-                    {String(activeProductIndex + 1).padStart(2, "0")}
-                    {" / "}
-                    {String(coordinates.length).padStart(2, "0")}                  
-                  </PaginationText>
-
-                  <PaginationButton
-                  type="button"
-                  onClick={handleNextProduct}
-                  disabled={activeProductIndex >= coordinates.length - 1}
-                  aria-label="다음 상품"
-                  >
-                    <ChevronRightIcon width={24} height={24}/>
-                  </PaginationButton>
-                </ProductPagination>
-              </>
-            )}
-          </ProductArea>
+          <SelectedProductCard
+            selectedProduct={selectedProduct}
+            selectedCategory={selectedCategory}
+            selectedStyleName={selectedStyle?.name}
+            activeProductIndex={activeProductIndex}
+            totalProducts={coordinates.length}
+            onPrevious={handlePreviousProduct}
+            onNext={handleNextProduct}
+          />
         </ClickableProductMap>
     </CurationSection>
   );
