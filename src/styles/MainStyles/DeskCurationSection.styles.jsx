@@ -222,7 +222,7 @@ export const ProductPagination = styled.div(({theme}) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  marginTop: theme.spacing.xl, //32
+  marginTop: "auto", //32
 }));
 
 export const PaginationButton = styled.button(({theme}) => ({
