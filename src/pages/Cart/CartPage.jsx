@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { MockCartData } from "../../constants/mockCart";
+import { toast } from "react-toastify";
+import useCartStore from "../../store/cartStore";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
 import Modal from "../../components/common/Modal";
+import FailToast from "../../components/common/FailToast";
+import SuccessToast from "../../components/common/SuccessToast";
 import {
   CartContainer,
   TitleWrapper,
@@ -16,31 +19,58 @@ import {
   ItemListSection,
 } from "../../styles/CartStyles/CartPage.styles";
 
+// 스토어 함수
 const CartPage = () => {
-  /* 로컬 스토리지 */
-  const [cartItems, setCartItems] = useState(() => {
-    try {
-      const savedCart = localStorage.getItem("cartItems");
-      return savedCart ? JSON.parse(savedCart) : MockCartData;
-    } catch {
-      return MockCartData;
-    }
-  });
+  const {
+    cartItems,
+    isLoading,
+    error,
+    fetchCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeItem,
+    clearCart,
+  } = useCartStore();
 
-  /* 로컬 동기화 */
+  // 체크박스
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  // 최초 서버에서 장바구니 조회
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
+    fetchCart();
+  }, [fetchCart]);
 
-  // 체크박스(체크로시작, 솔드아웃은 체크해제시작)
-  const [checkedItems, setCheckedItems] = useState(() => {
-    return cartItems.filter((item) => !item.isSoldOut).map((item) => item.id);
-  });
+  // 체크 초기화 (cartItems가 로드된 후 1회)
+  useEffect(() => {
+    if (cartItems.length > 0 && checkedItems.length === 0) {
+      setCheckedItems(
+        cartItems
+          .filter((item) => !item.isSoldOut)
+          .map((item) => item.cartItemId),
+      );
+    }
+  }, [cartItems]);
 
   // 모달
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
 
-  //  개별 체크박스
+  // 토스트 공통 헬퍼
+  const showFailToast = useCallback((message) => {
+    toast(<FailToast message={message} />);
+  }, []);
+
+  const showSuccessToast = useCallback((message) => {
+    toast(<SuccessToast message={message} />);
+  }, []);
+
+  // fetchCart 실패 시 토스트로 알림
+  useEffect(() => {
+    if (error) {
+      showFailToast(error);
+    }
+  }, [error, showFailToast]);
+
+  // 개별 체크박스
   const handleToggleCheck = useCallback((id) => {
     setCheckedItems((prevChecked) => {
       if (prevChecked.includes(id)) {
@@ -51,13 +81,12 @@ const CartPage = () => {
     });
   }, []);
 
-  // 전체 선택 계산(품절 아닌거 한개라도 있으면 체크할때 모두 체크로 본다)
+  // 전체 선택 계산
   const isAllChecked = useMemo(() => {
     if (cartItems.length === 0) return false;
     const availableItemsCount = cartItems.filter(
       (item) => !item.isSoldOut,
     ).length;
-
     return (
       availableItemsCount > 0 && availableItemsCount === checkedItems.length
     );
@@ -66,64 +95,75 @@ const CartPage = () => {
   // 전체 선택 체크박스
   const handleToggleAllCheck = useCallback(() => {
     if (isAllChecked) {
-      // 다 켜져 있으면 전체 해제
       setCheckedItems([]);
     } else {
-      // 전체 선택
       const availableItemIds = cartItems
         .filter((item) => !item.isSoldOut)
-        .map((item) => item.id);
+        .map((item) => item.cartItemId);
       setCheckedItems(availableItemIds);
     }
   }, [isAllChecked, cartItems]);
 
-  const handleIncrease = useCallback((id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
-      ),
-    );
-  }, []);
+  // 개별 삭제 (서버 반영 후 체크 목록에서도 제거)
+  const handleDelete = useCallback(
+    async (id) => {
+      try {
+        await removeItem(id);
+        setCheckedItems((prevChecked) =>
+          prevChecked.filter((itemId) => itemId !== id),
+        );
+        showSuccessToast("상품이 삭제되었습니다.");
+      } catch (err) {
+        showFailToast(err.message || "삭제에 실패했습니다.");
+      }
+    },
+    [removeItem, showFailToast, showSuccessToast],
+  );
 
-  /* 1 유지 */
-  const handleDecrease = useCallback((id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      ),
-    );
-  }, []);
+  // 전체 삭제 후 모달창도 닫음
+  const confirmClearAll = useCallback(async () => {
+    try {
+      await clearCart();
+      setCheckedItems([]);
+      showSuccessToast("장바구니가 비워졌습니다.");
+    } catch (err) {
+      showFailToast(err.message || "전체 삭제에 실패했습니다.");
+    } finally {
+      setIsClearModalOpen(false);
+    }
+  }, [clearCart, showFailToast, showSuccessToast]);
 
-  // 개별 삭제 (체크 돼도 삭제)
-  const handleDelete = useCallback((id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    setCheckedItems((prevChecked) =>
-      prevChecked.filter((itemId) => itemId !== id),
-    );
-  }, []);
+  // 수량 증가/감소 (실패 시 알림)
+  const handleIncrease = useCallback(
+    async (id) => {
+      try {
+        await increaseQuantity(id);
+      } catch (err) {
+        showFailToast(err.message || "수량 변경에 실패했습니다.");
+      }
+    },
+    [increaseQuantity, showFailToast],
+  );
 
-  // 전체 삭제 (체크 돼도 삭제)
-  const handleClearAll = useCallback(() => {
-    setCartItems([]);
-    setCheckedItems([]);
-  }, []);
-
-  // 모달 삭제 연결
-  const confirmClearAll = () => {
-    handleClearAll();
-    setIsClearModalOpen(false);
-  };
+  const handleDecrease = useCallback(
+    async (id) => {
+      try {
+        await decreaseQuantity(id);
+      } catch (err) {
+        showFailToast(err.message || "수량 변경에 실패했습니다.");
+      }
+    },
+    [decreaseQuantity, showFailToast],
+  );
 
   // 소계
   const subtotal = useMemo(() => {
     return cartItems
-      .filter((item) => checkedItems.includes(item.id))
+      .filter((item) => checkedItems.includes(item.cartItemId))
       .reduce((sum, item) => sum + item.price * item.quantity, 0);
   }, [cartItems, checkedItems]);
 
-  // 배달이여
+  // 배달비
   const deliveryFee = useMemo(() => {
     if (subtotal === 0) return 0;
     return subtotal >= 80000 ? 0 : 3000;
@@ -137,7 +177,18 @@ const CartPage = () => {
     return cartItems.length > 0 && cartItems.every((item) => item.isSoldOut);
   }, [cartItems]);
 
-  /* 화면 */
+  if (isLoading) {
+    return (
+      <CartContainer>
+        <TitleWrapper>
+          <Course>Home &gt; Cart</Course>
+          <PageTitle>Cart</PageTitle>
+        </TitleWrapper>
+        <div>불러오는 중...</div>
+      </CartContainer>
+    );
+  }
+
   return (
     <CartContainer>
       <TitleWrapper>
@@ -147,7 +198,6 @@ const CartPage = () => {
 
       {cartItems.length > 0 && (
         <ActionBar>
-          {/* 전체 선택 체크박스 */}
           <SelectAllLabel>
             <SelectAllCheckbox
               type="checkbox"
@@ -157,7 +207,6 @@ const CartPage = () => {
             Selected All
           </SelectAllLabel>
 
-          {/* 전체 삭제 버튼 */}
           <ClearAllButton onClick={() => setIsClearModalOpen(true)}>
             All Delete
           </ClearAllButton>
@@ -171,9 +220,9 @@ const CartPage = () => {
           <ItemListSection>
             {cartItems.map((item) => (
               <CartItem
-                key={item.id}
+                key={item.cartItemId}
                 item={item}
-                isChecked={checkedItems.includes(item.id)}
+                isChecked={checkedItems.includes(item.cartItemId)}
                 onToggleCheck={handleToggleCheck}
                 onIncrease={handleIncrease}
                 onDecrease={handleDecrease}
