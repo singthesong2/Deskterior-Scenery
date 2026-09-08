@@ -1,18 +1,29 @@
 import { useEffect, useState } from "react";
 import { Global } from "@emotion/react";
 import { reset } from "./styles/reset";
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
-import SignupForm from "./pages/SignupForm";
-import LoginForm from "./pages/LoginForm";
-import CartPage from "./pages/Cart/CartPage";
-import ProductDetailPage from "./pages/Product/ProductDetailPage";
-import NotFoundPage from "./pages/NotFoundPage";
+//import SignupForm from "./pages/SignupForm";
+//import LoginForm from "./pages/LoginForm";
+//import CartPage from "./pages/Cart/CartPage";
+//import ProductDetailPage from "./pages/Product/ProductDetailPage";
+//import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
-import CategoryPage from "./pages/Category/CategoryPage";
+//import CategoryPage from "./pages/Category/CategoryPage";
 import categories from "./data/categories";
-import HomePage from "./pages/Home/HomePage";
+//import HomePage from "./pages/Home/HomePage";
 import Toast from "./components/common/Toast";
 import CommonLayout from "./pages/CommonLayout";
+import Loading from "./components/common/Loading";
+const HomePage = lazy(() => import("./pages/Home/HomePage"));
+const LoginForm = lazy(() => import("./pages/LoginForm"));
+const SignupForm = lazy(() => import("./pages/SignupForm"));
+const CategoryPage = lazy(() => import("./pages/Category/CategoryPage"));
+const ProductDetailPage = lazy(
+  () => import("./pages/Product/ProductDetailPage"),
+);
+const CartPage = lazy(() => import("./pages/Cart/CartPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,43 +66,47 @@ function App() {
 
       {/*{isLoggedIn && userInfo && <p>{userInfo.name}님</p>}*/}
 
+      <Loading />
+
       <Toast />
-      <Routes>
-        <Route element={<CommonLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/login"
-            element={
-              <LoginForm
-                setIsLoggedIn={setIsLoggedIn}
-                setUserInfo={setUserInfo}
-              />
-            }
-          />
-          <Route path="/signup" element={<SignupForm />} />
-          {categories.map((category) => (
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<CommonLayout />}>
+            <Route path="/" element={<HomePage />} />
             <Route
-              key={category.id}
-              path={category.path}
+              path="/login"
               element={
-                <CategoryPage key={category.id} categoryId={category.id} />
+                <LoginForm
+                  setIsLoggedIn={setIsLoggedIn}
+                  setUserInfo={setUserInfo}
+                />
               }
             />
-          ))}
-          <Route
-            path="/detailpage"
-            element={
-              <ProductDetailPage
-                isLoggedIn={isLoggedIn}
-                currentUserId={userInfo?.id ?? null}
-                currentUserName={userInfo?.name ?? ""}
+            <Route path="/signup" element={<SignupForm />} />
+            {categories.map((category) => (
+              <Route
+                key={category.id}
+                path={category.path}
+                element={
+                  <CategoryPage key={category.id} categoryId={category.id} />
+                }
               />
-            }
-          />
-          <Route path="/cartpage" element={<CartPage />} />
-        </Route>
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+            ))}
+            <Route
+              path="/detailpage"
+              element={
+                <ProductDetailPage
+                  isLoggedIn={isLoggedIn}
+                  currentUserId={userInfo?.id ?? null}
+                  currentUserName={userInfo?.name ?? ""}
+                />
+              }
+            />
+            <Route path="/cartpage" element={<CartPage />} />
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
       {/* 페이지 이동 및 Outlet 적용 코드, 삭제 X */}
 
       <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
