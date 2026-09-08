@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import allProducts from "../../data/products";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
@@ -6,8 +7,12 @@ import Pagination from "../../components/product/Pagination";
 import * as S from "../../styles/ListPageStyles/LightingPage.styles";
 
 const PAGE_SIZE = 6;
+const ROW_SIZE = 3;
 
-const BREADCRUMB_TRAIL = ["Home", "Lighting"];
+const BREADCRUMB_TRAIL = [
+  { label: "Home", to: "/" },
+  { label: "Lighting" },
+];
 
 const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
@@ -50,6 +55,20 @@ const LightingPage = ({ products = lightingProducts }) => {
 
   const placeholderCount = PAGE_SIZE - pagedProducts.length;
 
+  const gridItems = [
+    ...pagedProducts.map((product) => ({ key: String(product.id), product })),
+    ...Array.from({ length: placeholderCount }).map((_, index) => ({
+      key: `placeholder-${index}`,
+      product: PLACEHOLDER_PRODUCT,
+      isPlaceholder: true,
+    })),
+  ];
+
+  const rows = [];
+  for (let i = 0; i < gridItems.length; i += ROW_SIZE) {
+    rows.push(gridItems.slice(i, i + ROW_SIZE));
+  }
+
   const handleAddToCart = (productId) => {
     console.log("장바구니 담기", { productId });
   };
@@ -60,16 +79,21 @@ const LightingPage = ({ products = lightingProducts }) => {
         <S.Header>
           <S.Breadcrumb aria-label="현재 위치">
             <S.Trail>
-              {BREADCRUMB_TRAIL.map((label, index) => (
-                <S.Crumb
-                  key={label}
-                  aria-current={
-                    index === BREADCRUMB_TRAIL.length - 1 ? "page" : undefined
-                  }
-                >
-                  {label}
-                </S.Crumb>
-              ))}
+              {BREADCRUMB_TRAIL.map((crumb, index) => {
+                const isCurrent = index === BREADCRUMB_TRAIL.length - 1;
+                return (
+                  <S.Crumb
+                    key={crumb.label}
+                    aria-current={isCurrent ? "page" : undefined}
+                  >
+                    {isCurrent || !crumb.to ? (
+                      crumb.label
+                    ) : (
+                      <Link to={crumb.to}>{crumb.label}</Link>
+                    )}
+                  </S.Crumb>
+                );
+              })}
             </S.Trail>
           </S.Breadcrumb>
           <S.PageTitle>Lighting</S.PageTitle>
@@ -97,20 +121,22 @@ const LightingPage = ({ products = lightingProducts }) => {
             </S.EmptyState>
           ) : (
             <S.ProductGrid>
-              {pagedProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onAddToCart={handleAddToCart}
-                />
-              ))}
-              {Array.from({ length: placeholderCount }).map((_, index) => (
-                <S.GridPlaceholder
-                  key={`placeholder-${index}`}
-                  aria-hidden="true"
-                >
-                  <ProductCard product={PLACEHOLDER_PRODUCT} />
-                </S.GridPlaceholder>
+              {rows.map((row, rowIndex) => (
+                <S.Row key={`row-${rowIndex}`}>
+                  {row.map((item) =>
+                    item.isPlaceholder ? (
+                      <S.GridPlaceholder key={item.key} aria-hidden="true">
+                        <ProductCard product={item.product} />
+                      </S.GridPlaceholder>
+                    ) : (
+                      <ProductCard
+                        key={item.key}
+                        product={item.product}
+                        onAddToCart={handleAddToCart}
+                      />
+                    ),
+                  )}
+                </S.Row>
               ))}
             </S.ProductGrid>
           )}

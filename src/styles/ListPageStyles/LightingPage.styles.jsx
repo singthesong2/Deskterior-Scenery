@@ -108,12 +108,18 @@ export const EmptySubtitle = styled.p(({ theme }) => ({
 
 export const ProductGrid = styled.div(({ theme }) => ({
   display: "flex",
-  flexWrap: "wrap",
+  flexDirection: "column",
   width: "896px",
   justifyContent: "center",
   alignItems: "center",
-  rowGap: theme.spacing["2xl"],
-  columnGap: theme.spacing.md,
+  gap: theme.spacing.md,
+}));
+
+export const Row = styled.div(({ theme }) => ({
+  display: "flex",
+  alignItems: "flex-start",
+  gap: theme.spacing.lg,
+  alignSelf: "stretch",
 }));
 
 export const GridPlaceholder = styled.div({

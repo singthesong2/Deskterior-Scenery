@@ -30,7 +30,9 @@ export const NavList = styled.ul(({theme}) => ({
 
 export const NavItem = styled.li({});
 
-export const NavButton = styled.a(({theme, isActive}) => ({
+export const NavButton = styled("a", {
+  shouldForwardProp: (prop) => prop !== "isActive" && prop !== "as",
+})(({theme, isActive}) => ({
   fontSize: theme.fontSize.sm,
   fontWeight: isActive
     ? theme.fontWeight.semiBold

@@ -87,7 +87,6 @@ function App() {
 
       <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
       <SignupForm />
-      <HomePage />
 
       <CartPage />
       <ProductDetailPage
@@ -95,8 +94,7 @@ function App() {
         currentUserId={userInfo?.id ?? null}
         currentUserName={userInfo?.name ?? ""}
       />
-      <NotFoundPage />
-      <LightingPage />
+      <NotFoundPage autoRedirect={false} />
     </>
   );
 }
