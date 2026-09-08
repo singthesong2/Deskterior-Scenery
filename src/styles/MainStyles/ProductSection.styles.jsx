@@ -1,18 +1,22 @@
 import styled from "@emotion/styled";
 
 export const ProductsSection = styled.section(({theme}) => ({
-    padding: theme.spacing["3xl"],
+    padding: theme.spacing["3xl"], // 64
 }));
 
 export const ProductTitle = styled.h2(({theme}) => ({
-    fontsize: theme.fontSize["4xl"],
+    marginBottom: theme.spacing.xl,
+    fontFamily: theme.fontFamily.display,
+    fontSize: theme.fontSize["4xl"], //32
     color: theme.colors.textMain,
 }));
 
 export const ProductContainer = styled.div(({theme}) => ({
     width: "100%",
     display: "flex",
-    gap: theme.spacing.lg,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: theme.spacing.lg, //24
 }));
 
 export const ProductCards = styled.div(({theme}) => ({
@@ -20,3 +24,26 @@ export const ProductCards = styled.div(({theme}) => ({
     height: "280px",
     background: theme.colors.imagePlaceholder,
 }))
+
+// previous, next slider button
+export const ProductSlider = styled.div({
+    position: "relative",
+    width: "100%",
+});
+
+export const SliderButton = styled.button(({theme}) => ({
+    position: "absolute",
+    top: "50%",
+    width: "44px",
+    height: "44px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 0,
+    border: `1px solid ${theme.colors.subtle}`,
+    borderRadius: theme.radius.full,
+    backgroundColor: theme.colors.cards,
+    color: theme.colors.textMain,
+    cursor: "pointer",
+    transform: "translateY(-50%)",
+}));
