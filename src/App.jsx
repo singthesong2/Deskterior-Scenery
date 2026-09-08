@@ -8,7 +8,8 @@ import CartPage from "./pages/Cart/CartPage";
 import ProductDetailPage from "./pages/Product/ProductDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
-import LightingPage from "./pages/Lighting/LightingPage";
+import CategoryPage from "./pages/Category/CategoryPage";
+import categories from "./data/categories";
 import HomePage from "./pages/Home/HomePage";
 import Toast from "./components/common/Toast";
 import CommonLayout from "./pages/CommonLayout";
@@ -68,7 +69,15 @@ function App() {
             }
           />
           <Route path="/signup" element={<SignupForm />} />
-          <Route path="/lightingpage" element={<LightingPage />} />
+          {categories.map((category) => (
+            <Route
+              key={category.id}
+              path={category.path}
+              element={
+                <CategoryPage key={category.id} categoryId={category.id} />
+              }
+            />
+          ))}
           <Route
             path="/detailpage"
             element={

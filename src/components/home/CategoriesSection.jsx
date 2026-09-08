@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { getCategoryById } from "../../data/categories";
 import {
   SectionTitle,
   CategoriesContainer,
@@ -8,19 +9,6 @@ import {
   CategoryImage,
 } from "../../styles/MainStyles/CategoriesSection.styles";
 
-const categoryNames = {
-  lighting: "Lighting",
-  organization: "Organization",
-  "digital-electronics": "Digital / Electronics",
-  "desk-accessories": "Desk Accessories",
-  "objects-stationery": "Stationery",
-};
-
-const categoryPaths = {
-  lighting: "/lightingpage",
-  // 다른 카테고리 페이지는 추후 추가
-};
-
 function CategoriesSection({ items = [] }) {
   const navigate = useNavigate();
 
@@ -29,24 +17,27 @@ function CategoriesSection({ items = [] }) {
       <SectionTitle>CATEGORIES</SectionTitle>
 
       <CategoryList>
-        {items.map((item) => (
-          <CategoryItem
-            key={item.id}
-            type="button"
-            onClick={() => {
-              const path = categoryPaths[item.categoryId];
-              if (path) {
-                navigate(path);
-              }
-            }}
-          >
-            <CategoryImage
-              src={item.imageUrl}
-              alt={`${categoryNames[item.categoryId]} 카테고리`}
-            />
-            <CategoryName>{categoryNames[item.categoryId]}</CategoryName>
-          </CategoryItem>
-        ))}
+        {items.map((item) => {
+          const category = getCategoryById(item.categoryId);
+
+          return (
+            <CategoryItem
+              key={item.id}
+              type="button"
+              onClick={() => {
+                if (category?.path) {
+                  navigate(category.path);
+                }
+              }}
+            >
+              <CategoryImage
+                src={item.imageUrl}
+                alt={`${category?.name ?? ""} 카테고리`}
+              />
+              <CategoryName>{category?.name}</CategoryName>
+            </CategoryItem>
+          );
+        })}
       </CategoryList>
     </CategoriesContainer>
   );

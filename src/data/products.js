@@ -133,7 +133,7 @@ const products = [
   {
     id: 16,
     name: "Matte Gray Wireless Headphones",
-    categoryId: "organization",
+    categoryId: "digital-electronics",
     price: 129000,
     imageUrl: "https://i.ibb.co/60k4MX5Z/headphone.webp",
     description:
