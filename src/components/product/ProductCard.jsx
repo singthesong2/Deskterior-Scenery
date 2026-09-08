@@ -4,7 +4,7 @@ import { BasketIcon, HeartIcon, StarIcon } from "../icons/Icons";
 import Badge from "../common/Badge";
 import * as S from "../../styles/ListPageStyles/ProductCard.styles";
 
-const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
+const ProductCard = ({ product, onAddToCart, onToggleLike, showCategory = false, }) => {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(!!product.liked);
 
