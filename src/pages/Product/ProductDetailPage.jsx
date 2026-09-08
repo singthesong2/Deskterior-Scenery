@@ -57,6 +57,11 @@ const ProductDetailPage = ({
     }
   }, [product.id, myReviews]);
 
+  // 목록 등에서 넘어올 때 스크롤이 내려가 있던 위치를 이어받지 않도록 최상단으로
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [product.id]);
+
   /* 별점·리뷰 수는 리뷰 목록에서 실시간 계산 (단일 소스) */
   const reviewCount = reviews.length;
   const averageRating =
