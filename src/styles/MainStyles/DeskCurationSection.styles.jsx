@@ -69,8 +69,8 @@ export const ClickableProductMap = styled.div(({theme}) => ({
 
 export const DeskArea = styled.div(({theme}) => ({
   position: "relative",
-  height: "700px",
   flex: 2,
+  aspectRatio: "4 / 3",
   overflow: "hidden",
   backgroundColor: theme.colors.imagePlaceholder,
   borderRadius: theme.radius.md,

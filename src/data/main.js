@@ -42,8 +42,8 @@ const main = [
         y: 48.2,
       },
       {productId: 16, 
-        x: 74.3,
-        y: 37.7,
+        x: 62.1,
+        y: 41.6,
       },
       {productId: 31, 
         x: 49.9,
@@ -59,8 +59,8 @@ const main = [
     coordinate: [
       {
         productId: 7,
-        x: 30.6,
-        y: 14.1,
+        x: 19.3,
+        y: 18.3,
       },
       {
         productId: 28,
@@ -69,8 +69,8 @@ const main = [
       },
       {
         productId: 30,
-        x: 76.3,
-        y: 54.2,
+        x: 87.8,
+        y: 45.6,
       },
       {
         productId: 17,
@@ -102,6 +102,7 @@ const main = [
     styleId: "metallic",
     name: "Metallic",
     imageUrl: "https://i.ibb.co/G4xmxMTR/metallic.webp",
+    objectPosition: "center top",
     coordinate: [
       {
         productId: 2,
@@ -197,6 +198,11 @@ const main = [
         x: 33.4,
         y: 78.9,
       },
+      {
+        productId: 2,
+        x: 50.9,
+        y: 23.9,
+      }
     ],
   },
 ];

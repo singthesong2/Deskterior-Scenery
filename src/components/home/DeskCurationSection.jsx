@@ -81,6 +81,7 @@ function DeskCurationSection({items = [] }) {
                 <DeskImage
                 src={selectedStyle.imageUrl}
                 alt={`${selectedStyle.name} style desk`}
+                style={{objectPosition: selectedStyle.objectPosition ?? "center",}}
                 />
                 {/* coordinate(좌표 정보)가 있으면 해당 배열을 사용하고 없으면 빈 배열을 사용함 */}
                 {(selectedStyle.coordinate ?? []).map((product, index) => (
