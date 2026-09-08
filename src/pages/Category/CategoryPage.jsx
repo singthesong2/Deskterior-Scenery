@@ -1,20 +1,16 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router";
 import allProducts from "../../data/products";
+import { getCategoryById } from "../../data/categories";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
-import * as S from "../../styles/ListPageStyles/LightingPage.styles";
+import * as S from "../../styles/ListPageStyles/CategoryPage.styles";
 
 const PAGE_SIZE = 6;
 const ROW_SIZE = 3;
 
-const BREADCRUMB_TRAIL = [
-  { label: "Home", to: "/" },
-  { label: "Lighting" },
-];
-
-const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
+const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
 const SORT_COMPARATORS = {
   name: (a, b) => a.name.localeCompare(b.name),
@@ -25,19 +21,34 @@ const SORT_COMPARATORS = {
 
 const stripAngleBrackets = (url) => url.replace(/^<|>$/g, "");
 
-const lightingProducts = allProducts
-  .filter((product) => product.categoryId === "lighting")
-  .map((product) => ({
-    ...product,
-    imageUrl: stripAngleBrackets(product.imageUrl),
-  }));
+const CategoryPage = ({ categoryId = "lighting" }) => {
+  const category = getCategoryById(categoryId);
 
-const LightingPage = ({ products = lightingProducts }) => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("name");
 
-  const filteredProducts = products
+  const categoryProducts = useMemo(
+    () =>
+      allProducts
+        .filter((product) => product.categoryId === categoryId)
+        .map((product) => ({
+          ...product,
+          imageUrl: stripAngleBrackets(product.imageUrl),
+        })),
+    [categoryId],
+  );
+
+  if (!category) {
+    return null;
+  }
+
+  const breadcrumbTrail = [
+    { label: "Home", to: "/" },
+    { label: category.name },
+  ];
+
+  const filteredProducts = categoryProducts
     .filter((product) =>
       product.name.toLowerCase().includes(search.toLowerCase()),
     )
@@ -79,8 +90,8 @@ const LightingPage = ({ products = lightingProducts }) => {
         <S.Header>
           <S.Breadcrumb aria-label="현재 위치">
             <S.Trail>
-              {BREADCRUMB_TRAIL.map((crumb, index) => {
-                const isCurrent = index === BREADCRUMB_TRAIL.length - 1;
+              {breadcrumbTrail.map((crumb, index) => {
+                const isCurrent = index === breadcrumbTrail.length - 1;
                 return (
                   <S.Crumb
                     key={crumb.label}
@@ -96,7 +107,7 @@ const LightingPage = ({ products = lightingProducts }) => {
               })}
             </S.Trail>
           </S.Breadcrumb>
-          <S.PageTitle>Lighting</S.PageTitle>
+          <S.PageTitle>{category.name}</S.PageTitle>
           <S.PageSubtitle>Take Your SCENERY</S.PageSubtitle>
         </S.Header>
 
@@ -152,4 +163,4 @@ const LightingPage = ({ products = lightingProducts }) => {
   );
 };
 
-export default LightingPage;
+export default CategoryPage;

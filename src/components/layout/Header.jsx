@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import categories from "../../data/categories";
 import { BasketIcon, LoginIcon } from "../icons/Icons";
 import { HeaderSection,
   Logo,
@@ -10,14 +11,6 @@ import { HeaderSection,
   IconButton,
  } from "../../styles/Header.styles";
 
-const navLinks = [
-  "Lighting",
-  "Organization",
-  "Digital / Electronics",
-  "Desk Accessories",
-  "Stationery",
-];
-
 const Header = ({ activeLink }) => {
   return (
     <HeaderSection>
@@ -25,15 +18,14 @@ const Header = ({ activeLink }) => {
 
       <Navigation>
         <NavList>
-          {navLinks.map((link)=>(
-            <NavItem key={link}>
+          {categories.map((category)=>(
+            <NavItem key={category.id}>
               <NavButton
-              {...(link === "Lighting"
-                ? { as: Link, to: "/lightingpage" }
-                : { type: "button" })}
-              isActive={link === activeLink}
+              as={Link}
+              to={category.path}
+              isActive={category.name === activeLink}
               >
-                {link}
+                {category.name}
               </NavButton>
             </NavItem>
           ))}

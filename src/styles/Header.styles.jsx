@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 
 export const HeaderSection = styled.header(({theme}) => ({
+  position: "sticky",
+  top: 0,
+  zIndex: 50,
   width: "100%",
   height: "80px",
   padding: `0 ${theme.spacing.xl}`,
