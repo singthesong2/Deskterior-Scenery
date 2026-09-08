@@ -67,19 +67,22 @@ const ProductCard = ({ product, onAddToCart, onToggleLike }) => {
             aria-label="찜하기"
             onClick={handleToggleLike}
           >
-            <HeartIcon filled={liked} width={20} height={20} />
+            <HeartIcon filled={liked} width={28} height={28} />
           </S.LikeButton>
           <S.CartButton
             type="button"
             aria-label="장바구니 담기"
             onClick={handleAddToCart}
           >
-            <BasketIcon width={16} height={16} />
+            <BasketIcon width={24} height={24} />
           </S.CartButton>
         </S.IconStack>
       </S.ImageWrapper>
 
       <S.Info>
+        {showCategory && product.categoryName && (
+          <S.CategoryName>{product.categoryName}</S.CategoryName>
+        )}
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>₩ {safePrice.toLocaleString("ko-KR")}</S.Price>
         <S.Rating>

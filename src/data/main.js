@@ -24,7 +24,7 @@ const main = [
   {
     id: 5,
     categoryId: "objects-stationery",
-    imageUrl: "https://i.ibb.co/cS6DNGK5/Stationery.webp",
+    imageUrl: "https://i.ibb.co/W4rv8Y16/Orange-Note.webp",
   },
   {
     id: 6,
