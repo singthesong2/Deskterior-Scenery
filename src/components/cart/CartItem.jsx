@@ -33,7 +33,7 @@ const CartItem = ({
         <ItemCheckbox
           type="checkbox"
           checked={isChecked}
-          onChange={() => onToggleCheck(item.id)}
+          onChange={() => onToggleCheck(item.cartItemId)}
           disabled={item.isSoldOut}
         />
 
@@ -53,14 +53,14 @@ const CartItem = ({
       <ItemRight>
         <QuantityBox>
           <QuantityButton
-            onClick={() => onDecrease(item.id)}
+            onClick={() => onDecrease(item.cartItemId)}
             disabled={item.isSoldOut || item.quantity <= 1}
           >
             -
           </QuantityButton>
           <QuantityText>{item.quantity}</QuantityText>
           <QuantityButton
-            onClick={() => onIncrease(item.id)}
+            onClick={() => onIncrease(item.cartItemId)}
             disabled={item.isSoldOut}
           >
             +
@@ -74,7 +74,7 @@ const CartItem = ({
         </TotalPrice>
 
         <DeleteButton
-          onClick={() => onDelete(item.id)}
+          onClick={() => onDelete(item.cartItemId)}
           aria-label={`${item.name} 삭제`}
         >
           <svg
