@@ -101,7 +101,7 @@ export const PasswordHidenButton = styled.button({
   cursor: "pointer",
 });
 
-export const TermsGroup = styled.label({
+export const TermsGroup = styled.div({
   display: "flex",
   flexDirection: "column",
   fontSize: "15px",
