@@ -37,7 +37,7 @@ const main = [
         x: 20.7,
         y: 16.9,
       },
-      {productId: 32, 
+      {productId: 39, 
         x: 19.1,
         y: 48.2,
       },

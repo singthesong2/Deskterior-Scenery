@@ -25,6 +25,13 @@ export const CurationTitle = styled.h2(({theme}) => ({
   marginBottom: theme.spacing.lg,
 }));
 
+export const CurationTitle2 = styled.h2(({theme}) => ({
+  fontFamily: theme.fontFamily.display,
+  fontSize: theme.fontSize["4xl"], // 32px
+  color: theme.colors.textMain,
+  marginBottom: theme.spacing.lg,
+}));
+
 // mood keyword area
 export const MoodKeywordBox = styled.div(({theme}) => ({
   display: "flex",
@@ -67,7 +74,10 @@ export const ClickableProductMap = styled.div(({theme}) => ({
   gap: theme.spacing.lg,
 }));
 
+
+// DeskArea
 export const DeskArea = styled.div(({theme}) => ({
+  height: "720px",
   position: "relative",
   flex: 2,
   aspectRatio: "4 / 3",
@@ -100,10 +110,140 @@ export const DeskImage = styled.img({
   objectFit: "cover",
 })
 
+
 // ProductArea
 export const ProductArea = styled.div(({theme}) => ({
-  height: "700px",
+  padding: theme.spacing.lg,
+  height: "720px",
+  display: "flex",
+  flexDirection: "column",
   flex: 1,
   backgroundColor: theme.colors.cards,
   borderRadius: theme.radius.md,
+  overflow: "hidden",
 }))
+
+export const ProductTitleBox = styled.div(({theme}) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  gap: theme.spacing.xs,
+  marginBottom: theme.spacing.xl, //32
+}));
+
+export const ProductNumber = styled.div(({theme}) => ({
+  width: "32px",
+  height: "32px",
+  display: "flex",
+  flexShrin: 0,
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: theme.radius.full,
+  backgroundColor: theme.colors.emphasis,
+  color: theme.colors.textMain,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.semiBold,
+}))
+
+export const ProductTitle = styled.h3(({theme}) => ({
+  color: theme.colors.textMain,
+  fontWeight: theme.fontWeight.semiBold,
+  fontSize: theme.fontSize.xl // 20px
+}))
+
+export const ProductImage = styled.img(({theme}) => ({
+  display: "block",
+  width: "100%",
+  objectFit: "cover",
+  objectPosition: "center",
+  aspectRatio: "16 / 9",
+  marginBottom: theme.spacing.xl, //32
+}));
+
+export const ProductInfo = styled.div(({theme}) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.spacing.lg, // 24px
+}))
+
+export const ProductName = styled.h4(({theme}) => ({
+  color: theme.colors.textMain,
+  fontWeight: theme.fontWeight.semiBold,
+  fontSize: theme.fontSize["2xl"],
+}));
+
+export const ProductPrice = styled.p(({theme}) => ({
+  color: theme.colors.textMain,
+  fontWeight: theme.fontWeight.semiBold,
+  fontSize: theme.fontSize.xl, // 20px
+}));
+
+export const ProductDescription = styled.p(({theme}) => ({
+  color: theme.colors.secondText,
+  fontWeight: theme.fontWeight.regular,
+  fontSize: theme.fontSize.sm, // 14px
+  lineHeight: 1.5,
+}));
+
+export const ProductTagContainer = styled.div(({theme}) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing.xs,
+  marginBottom: theme.spacing.xl, //32
+}));
+
+export const ProductTag = styled.span(({theme}) => ({
+  padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+  color: theme.colors.textMain,
+  background: theme.colors.subtle,
+  borderRadius: theme.radius.full,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.regular,
+}));
+
+export const ViewMoreButton = styled.button(({ theme }) => ({
+  width: "100%",
+  height: "48px",
+  padding: `${theme.spacing.sm} 0`,
+  backgroundColor: theme.colors.textMain,
+  color: theme.colors.cards,
+  fontSize: theme.fontSize.sm, //14
+  fontWeight: theme.fontWeight.semiBold,
+  borderRadius: theme.radius.md, //8
+  cursor: "pointer",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
+// ProductPagination
+export const ProductPagination = styled.div(({theme}) => ({
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginTop: theme.spacing.xl, //32
+}));
+
+export const PaginationButton = styled.button(({theme}) => ({
+  width: "24px",
+  height: "24px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 0,
+  backgroundColor: "transparent",
+  color: theme.colors.textMain,
+  cursor: "pointer",
+
+  "&:disabled": {
+    opacity: 0.3,
+    cursor: "default",
+  },
+}));
+
+export const PaginationText = styled.span(({theme}) => ({
+  color: theme.colors.textMain,
+  fontSize: theme.fontSize.sm, //14
+  fontWeight:theme.fontWeight.semiBold,
+}));
