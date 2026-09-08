@@ -27,12 +27,22 @@ function ProductGroup({title, items}) {
 
     // handlePrevious(): 제품 카드의 이전 페이지로 이동하는 함수
     function handlePrevious() {
-        setCurrentPage((previousPage) => Math.max(previousPage - 1, 0));
+        if(totalPages <= 1) return;
+
+        setCurrentPage((previousPage) =>
+            previousPage === 0
+                ? totalPages - 1
+                : previousPage - 1
+            );
     };
 
     // handleNext(): 제품 카드의 다음 페이지로 이동하는 함수
     function handleNext() {
-        setCurrentPage((previousPage) => Math.min(previousPage + 1, totalPages - 1));
+        if(totalPages <= 1) return;
+
+        setCurrentPage((previousPage) =>
+        (previousPage + 1) % totalPages
+        );
     };
 
     return (
@@ -78,8 +88,8 @@ function ProductGroup({title, items}) {
 
 function ProductSection() {
     // API 연결 전 임시 사용
-    const bestProducts = products.slice(0, 6);
-    const newProducts = products.slice(-6);
+    const bestProducts = products.slice(0, 9);
+    const newProducts = products.slice(-9);
 
     return (
         <>
