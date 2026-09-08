@@ -97,7 +97,6 @@ function App() {
       <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
       <SignupForm />
 
-      <CartPage />
       {/* /detailpage 라우트로 렌더되므로 겹침 렌더 제거
       <ProductDetailPage
         isLoggedIn={isLoggedIn}
