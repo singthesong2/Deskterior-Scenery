@@ -11,11 +11,13 @@ import {
   Brand,
 } from "../styles/NotFoundPage.styles";
 
-function NotFoundPage() {
+function NotFoundPage({ autoRedirect = true }) {
   const [count, setCount] = useState(5);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!autoRedirect) return;
+
     if (count === 0) {
       navigate("/", { replace: true });
       return;
@@ -26,7 +28,7 @@ function NotFoundPage() {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [count, navigate]);
+  }, [autoRedirect, count, navigate]);
 
   return (
     <NotFoundBox>

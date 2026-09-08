@@ -18,7 +18,7 @@ export const SearchBox = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   alignSelf: "stretch",
-  gap: "167px",
+  gap: theme.spacing.xs,
   border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
   borderRadius: theme.radius.full,
   background: theme.colors.cards,
@@ -30,7 +30,8 @@ export const SearchInput = styled.input(({ theme }) => ({
   border: "none",
   outline: "none",
   fontSize: theme.fontSize.sm,
-  width: "100%",
+  flex: 1,
+  minWidth: 0,
   background: "transparent",
   color: theme.colors.textMain,
 

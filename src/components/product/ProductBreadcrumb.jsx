@@ -1,19 +1,20 @@
+import { Link, useNavigate } from "react-router";
 import { ArrowLeftIcon } from "../icons/Icons";
 import * as S from "../../styles/ProductDetail/ProductBreadcrumb.styles";
 
 /**
  * 상단 네비 — 뒤로가기 + "Home > Category > 상품명" 경로.
- * 라우터가 없어서 뒤로가기는 window.history.back(),
- * 경로 항목은 아직 링크 없이 텍스트로만 표시한다.
+ * "Home"만 실제 링크이고, 카테고리/상품명은 현재 위치라 텍스트로만 표시한다.
  */
 const ProductBreadcrumb = ({ category, productName }) => {
+  const navigate = useNavigate();
   const trail = ["Home", category, productName].filter(Boolean);
 
   const handleBack = () => {
     if (window.history.length > 1) {
-      window.history.back();
+      navigate(-1);
     } else {
-      window.location.href = "/";
+      navigate("/");
     }
   };
 
@@ -32,7 +33,7 @@ const ProductBreadcrumb = ({ category, productName }) => {
               key={index}
               aria-current={isLast ? "page" : undefined}
             >
-              {label}
+              {index === 0 ? <Link to="/">{label}</Link> : label}
             </S.Crumb>
           );
         })}

@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { BasketIcon, LoginIcon } from "../icons/Icons";
 import { HeaderSection,
   Logo,
@@ -20,14 +21,16 @@ const navLinks = [
 const Header = ({ activeLink }) => {
   return (
     <HeaderSection>
-      <Logo>SCENERY</Logo>
+      <Logo as={Link} to="/">SCENERY</Logo>
 
       <Navigation>
         <NavList>
           {navLinks.map((link)=>(
             <NavItem key={link}>
               <NavButton
-              type="button"
+              {...(link === "Lighting"
+                ? { as: Link, to: "/lightingpage" }
+                : { type: "button" })}
               isActive={link === activeLink}
               >
                 {link}
