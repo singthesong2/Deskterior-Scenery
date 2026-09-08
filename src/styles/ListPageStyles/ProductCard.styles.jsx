@@ -52,13 +52,13 @@ export const IconStack = styled.div(({ theme }) => ({
 
 export const LikeButton = styled.button(({ theme }) => ({
   display: "flex",
-  width: "30px",
-  height: "30px",
+  width: "36px",
+  height: "36px",
   justifyContent: "center",
   alignItems: "center",
   gap: "10px",
   border: "none",
-  borderRadius: "15px",
+  borderRadius: theme.radius.full,
   background: "rgba(253, 253, 253, 0.75)",
   color: theme.colors.textMain,
   cursor: "pointer",
@@ -66,13 +66,14 @@ export const LikeButton = styled.button(({ theme }) => ({
 
 export const CartButton = styled.button(({ theme }) => ({
   display: "flex",
-  width: "30px",
-  height: "30px",
+  width: "36px",
+  height: "36px",
   justifyContent: "center",
   alignItems: "center",
   gap: "10px",
   border: "none",
-  borderRadius: "15px",
+  borderRadius: theme.radius.full,
+  padding: theme.spacing["2xs"],
   background: theme.colors.textMain,
   color: "#fff",
   cursor: "pointer",
@@ -81,7 +82,7 @@ export const CartButton = styled.button(({ theme }) => ({
 export const Info = styled.div(({ theme }) => ({
   display: "flex",
   width: "280px",
-  padding: `0 ${theme.spacing.md}`,
+  padding: `${theme.spacing.xs} ${theme.spacing.md}`,
   flexDirection: "column",
   alignItems: "flex-start",
   gap: theme.spacing.xs,
