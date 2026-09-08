@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Global } from "@emotion/react";
 import { reset } from "./styles/reset";
-import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
 //import SignupForm from "./pages/SignupForm";
 //import LoginForm from "./pages/LoginForm";
@@ -66,7 +65,7 @@ function App() {
 
       {/*{isLoggedIn && userInfo && <p>{userInfo.name}님</p>}*/}
 
-      <Loading />
+      {/*<Loading />*/}
 
       <Toast />
       <Suspense fallback={<Loading />}>

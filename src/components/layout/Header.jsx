@@ -38,7 +38,7 @@ const Header = ({ activeLink }) => {
       </Navigation>
 
       <IconContainer>
-        <IconButton>
+        <IconButton onClick={() => navigate("/login")}>
           <LoginIcon />
         </IconButton>
 
