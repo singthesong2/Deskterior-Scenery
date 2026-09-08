@@ -76,7 +76,7 @@ export const DeskArea = styled.div(({theme}) => ({
   borderRadius: theme.radius.md,
 }));
 
-export const HotspotButton = styled.button(({theme}) => ({
+export const HotspotButton = styled.button(({theme, isSelected}) => ({
   position: "absolute",
   transform: "translate(-50%, -50%)",
   width: "40px",
@@ -84,7 +84,9 @@ export const HotspotButton = styled.button(({theme}) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: theme.colors.cards,
+  backgroundColor: isSelected
+  ? theme.colors.emphasis
+  : theme.colors.cards,
   borderRadius: theme.radius.full,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.semiBold,
@@ -98,6 +100,7 @@ export const DeskImage = styled.img({
   objectFit: "cover",
 })
 
+// ProductArea
 export const ProductArea = styled.div(({theme}) => ({
   height: "700px",
   flex: 1,

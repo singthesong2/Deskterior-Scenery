@@ -17,12 +17,15 @@ import {
 
 function DeskCurationSection({items = [] }) {
   const [selectedStyleId, setSelectedStyleId] = useState(null);
-  // 아무것도 선택되지 않았을 때 첫 번째 키워드(=Minimal)를 자동으로 선택
-  const activeStyleId = selectedStyleId ?? items[0]?.styleId;
+  const [selectedProductNumber, setSelectedProductNumber] = useState(null);
 
+  // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
+  const activeStyleId = selectedStyleId ?? items[0]?.styleId;
   const selectedStyle = items.find(
     (item) => item.styleId === activeStyleId
   );
+
+  const activeProductNumber = selectedProductNumber ?? selectedStyle?.coordinate?.[0]?.productId;
 
   // 화면이 처음 열릴 때 imageUrl을 미리 저장
   useEffect(() => {
@@ -66,7 +69,10 @@ function DeskCurationSection({items = [] }) {
             type="button"
             isSelected={item.styleId === activeStyleId}
             aria-pressed={item.styleId === activeStyleId}
-            onClick={() => setSelectedStyleId(item.styleId)}
+            onClick={() => {
+              setSelectedStyleId(item.styleId)
+              setSelectedProductNumber(null);
+            }}
             >
               {item.name}
             </KeywordButton>
@@ -88,9 +94,14 @@ function DeskCurationSection({items = [] }) {
                   <HotspotButton
                     key={product.productId}
                     type="button"
+                    isSelected={product.productId === activeProductNumber}
                     style={{
                       left: `${product.x}%`,
                       top: `${product.y}%`,
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSelectedProductNumber(product.productId);
                     }}
                     >
                       {index + 1}
