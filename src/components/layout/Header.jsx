@@ -13,11 +13,9 @@ import {
 } from "../../styles/Header.styles";
 
 const Header = ({ activeLink }) => {
-  const navigate = useNavigate();
-
   return (
     <HeaderSection>
-      <Logo as={Link} to="/">
+      <Logo as={Link} to="/" aria-label="타이틀 메인화면 버튼">
         SCENERY
       </Logo>
 
@@ -29,6 +27,7 @@ const Header = ({ activeLink }) => {
                 as={Link}
                 to={category.path}
                 isActive={category.name === activeLink}
+                aria-label="${category.name} 버튼"
               >
                 {category.name}
               </NavButton>
@@ -38,11 +37,11 @@ const Header = ({ activeLink }) => {
       </Navigation>
 
       <IconContainer>
-        <IconButton onClick={() => navigate("/login")}>
+        <IconButton as={Link} to="/login" aria-label="로그인 버튼">
           <LoginIcon />
         </IconButton>
 
-        <IconButton onClick={() => navigate("/cartpage")}>
+        <IconButton as={Link} to="/cartpage" aria-label="장바구니 버튼">
           <BasketIcon width={30} height={30} />
         </IconButton>
       </IconContainer>
