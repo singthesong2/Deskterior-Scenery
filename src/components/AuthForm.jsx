@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { checkId } from "../api/authApi";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import { showSuccessToast } from "./common/ShowToast";
+import { loginSchema, signupSchema } from "../schema/AuthSchema";
 import { useNavigate } from "react-router";
 import {
   Form,
@@ -39,6 +40,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [shakingButton, setShakingButton] = useState(false);
+  const [idShakingButton, setIdShakingButton] = useState(false);
   const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
@@ -94,6 +96,9 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
+    setMessage("");
+    setShakingButton(false);
+
     if (name === "id") {
       currentIdRef.current = value;
       setIdCheck("");
@@ -101,65 +106,27 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
   };
 
   const dataCheckForm = (data) => {
-    if (mode === "signup") {
-      if (!data.firstName.trim()) {
-        showError("First Name을 입력해주세요.", firstNameRef);
-        return false;
-      }
+    const zodCheck = mode === "signup" ? signupSchema : loginSchema;
 
-      if (!data.lastName.trim()) {
-        showError("Last Name을 입력해주세요.", lastNameRef);
-        return false;
-      }
-    }
+    const result = zodCheck.safeParse(data);
 
-    if (!data.id) {
-      showError("아이디를 입력해주세요.", idRef);
-      return false;
-    }
+    if (!result.success) {
+      const error = result.error.issues[0];
+      const field = error.path[0];
 
-    if (!data.password) {
-      showError("비밀번호를 입력해주세요.", passwordRef);
+      const refs = {
+        firstName: firstNameRef,
+        lastName: lastNameRef,
+        id: idRef,
+        password: passwordRef,
+        contact: contactRef,
+      };
+
+      showError(error.message, refs[field]);
       return false;
     }
 
     if (mode === "signup") {
-      if (data.id.length < 4) {
-        showError("아이디는 4자 이상 입력해주세요.", idRef);
-        return false;
-      }
-
-      if (!/^[a-zA-Z0-9]+$/.test(data.id)) {
-        showError("아이디는 영문과 숫자만 사용할 수 있습니다.", idRef);
-        return false;
-      }
-
-      if (data.password.length < 4) {
-        showError("비밀번호는 4자 이상 입력해주세요.", passwordRef);
-        return false;
-      }
-
-      if (/\s/.test(data.password)) {
-        showError("비밀번호에 공백을 입력할 수 없습니다.", passwordRef);
-        return false;
-      }
-
-      if (data.contact) {
-        const phoneNumber = /^010\d{8}$/;
-        const formattedPhone = /^010-\d{4}-\d{4}$/;
-
-        if (
-          !phoneNumber.test(data.contact) &&
-          !formattedPhone.test(data.contact)
-        ) {
-          showError(
-            "전화번호를 010-0000-0000 형식으로 입력해주세요.",
-            contactRef,
-          );
-          return false;
-        }
-      }
-
       if (idCheck !== data.id) {
         showError("아이디 중복 확인을 해주세요.", idRef);
         return false;
@@ -199,7 +166,9 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       }
 
       setIdCheck("");
-      showError(error.message, idRef);
+      //showError(error.message, idRef);  삭제 X
+      setMessage("아이디가 중복 되었습니다.");
+      setIdShakingButton(true);
     }
   };
 
@@ -305,7 +274,12 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
             />
 
             {mode === "signup" && (
-              <IdCheckButton type="button" onClick={handleIdCheck}>
+              <IdCheckButton
+                type="button"
+                className={idShakingButton ? "shake" : ""}
+                onAnimationEnd={() => setIdShakingButton(false)}
+                onClick={handleIdCheck}
+              >
                 중복 확인
               </IdCheckButton>
             )}

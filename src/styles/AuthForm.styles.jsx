@@ -72,6 +72,36 @@ export const IdCheckButton = styled.button({
   "&:hover": {
     filter: "brightness(1.5)",
   },
+  "@media (prefers-reduced-motion: no-preference)": {
+    "&.shake": {
+      animation: "shake 0.35s ease-in-out",
+    },
+  },
+  "@media (prefers-reduced-motion: reduce)": {
+    "&.shake": {
+      animation: "none",
+    },
+  },
+  "@keyframes shake": {
+    "0%": {
+      transform: "translateX(0)",
+    },
+    "20%": {
+      transform: "translateX(-6px)",
+    },
+    "40%": {
+      transform: "translateX(6px)",
+    },
+    "60%": {
+      transform: "translateX(-4px)",
+    },
+    "80%": {
+      transform: "translateX(4px)",
+    },
+    "100%": {
+      transform: "translateX(0)",
+    },
+  },
 });
 
 export const PasswordGroup = styled.div({
