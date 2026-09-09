@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const ProductsSection = styled.section(({theme}) => ({
-    padding: theme.spacing["3xl"], // 64
+  padding: theme.spacing["4xl"], //96
 }));
 
 export const ProductTitle = styled.h2(({theme}) => ({

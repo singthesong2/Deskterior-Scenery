@@ -46,17 +46,22 @@ function DeskCurationSection({items = [] }) {
 
   // handlePreviousProduct(): 이전 상품 정보를 불러오는 함수
   const handlePreviousProduct = () => {
-    if(activeProductIndex <= 0) return;
+    if(coordinates.lenght <= 1) return;
 
-    const previousProduct = coordinates[activeProductIndex - 1];
-    setSelectedProductNumber(previousProduct.productId);
+    const previousIndex =
+      activeProductIndex === 0
+      ? coordinates.length - 1
+      : activeProductIndex - 1;
+
+    setSelectedProductNumber(coordinates[previousIndex].productId);
   }
 
   // handleNextProduct(): 다음 상품 정보를 불러오는 함수
   const handleNextProduct = () => {
-    if(activeProductIndex >= coordinates.length - 1) return;
+    if(coordinates.length <= 1) return;
 
-    const nextProduct = coordinates[activeProductIndex + 1];
+    const nextIndex = (activeProductIndex + 1) % coordinates.length;
+    
     setSelectedProductNumber(nextProduct.productId);
   };
 

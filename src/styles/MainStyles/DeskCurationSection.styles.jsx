@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const CurationSection = styled.section(({theme}) => ({
-  padding: theme.spacing["3xl"],
+  padding: theme.spacing["4xl"], //96
 }))
 
 export const CurationTitleBox = styled.div(({theme}) => ({
@@ -201,6 +201,15 @@ export const ProductTag = styled.span(({theme}) => ({
   fontWeight: theme.fontWeight.regular,
 }));
 
+export const ProductBottomArea = styled.div(({theme}) => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.spacing.lg,
+  marginTop: "auto",
+  flexShrink: 0,
+}))
+
 export const ViewMoreButton = styled.button(({ theme }) => ({
   width: "100%",
   height: "48px",
@@ -208,7 +217,7 @@ export const ViewMoreButton = styled.button(({ theme }) => ({
   backgroundColor: theme.colors.textMain,
   color: theme.colors.cards,
   fontSize: theme.fontSize.sm, //14
-  fontWeight: theme.fontWeight.semiBold,
+  fontWeight: theme.fontWeight.medium,
   borderRadius: theme.radius.md, //8
   cursor: "pointer",
   display: "flex",
@@ -222,7 +231,6 @@ export const ProductPagination = styled.div(({theme}) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  marginTop: "auto", //32
 }));
 
 export const PaginationButton = styled.button(({theme}) => ({

@@ -82,6 +82,7 @@ export const CartButton = styled.button(({ theme }) => ({
 export const Info = styled.div(({ theme }) => ({
   display: "flex",
   width: "280px",
+  height: "128px",
   padding: `${theme.spacing.xs} ${theme.spacing.md}`,
   flexDirection: "column",
   alignItems: "flex-start",
