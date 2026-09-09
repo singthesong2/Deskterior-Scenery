@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router";
+import { useMemo } from "react";
+import { Link, useSearchParams } from "react-router";
 import allProducts, { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
+import { showSuccessToast } from "../../components/common/ShowToast";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
@@ -24,9 +25,24 @@ const stripAngleBrackets = (url) => url.replace(/^<|>$/g, "");
 const CategoryPage = ({ categoryId = "lighting" }) => {
   const category = getCategoryById(categoryId);
 
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("name");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("q") ?? "";
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const sortBy = searchParams.get("sort") ?? "name";
+
+  const updateSearchParams = (updates, options) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === "") {
+          next.delete(key);
+        } else {
+          next.set(key, String(value));
+        }
+      });
+      return next;
+    }, options);
+  };
 
   const categoryProducts = useMemo(
     () =>
@@ -82,6 +98,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
 
   const handleAddToCart = (productId) => {
     console.log("장바구니 담기", { productId });
+    showSuccessToast("장바구니에 담겼습니다");
   };
 
   return (
@@ -115,11 +132,12 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
           <ProductToolbar
             search={search}
             onSearchChange={(value) => {
-              setSearch(value);
-              setCurrentPage(1);
+              updateSearchParams({ q: value, page: 1 }, { replace: true });
             }}
             sortBy={sortBy}
-            onSortChange={setSortBy}
+            onSortChange={(value) =>
+              updateSearchParams({ sort: value }, { replace: true })
+            }
           />
 
           {filteredProducts.length === 0 ? (
@@ -159,7 +177,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={(page) => updateSearchParams({ page })}
           />
         </S.Content>
       </S.Main>

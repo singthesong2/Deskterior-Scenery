@@ -76,6 +76,11 @@ const media = {
   wide: `@media (min-width: 1440px)`,
 };
 
+//  레이아웃 (헤더 등 고정 요소 크기 - 다른 값들이 이걸 기준으로 계산됨)
+const layout = {
+  headerHeight: "80px",
+};
+
 export const theme = {
   colors,
   fontFamily,
@@ -85,4 +90,5 @@ export const theme = {
   radius,
   media,
   borderWidth,
+  layout,
 };

@@ -5,7 +5,7 @@ export const HeaderSection = styled.header(({theme}) => ({
   top: 0,
   zIndex: 50,
   width: "100%",
-  height: "80px",
+  height: theme.layout.headerHeight,
   padding: `0 ${theme.spacing.xl}`,
   display: "flex",
   alignItems: "center",
