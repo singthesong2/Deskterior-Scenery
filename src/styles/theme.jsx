@@ -8,6 +8,7 @@ const colors = {
   emphasis: "#EB6923", //강조색 (일부요소에 불투명도 들어가있어서 확인 요망!!)
   subtle: "#EBEAE4", //메인배경보다 어두운색(ex 상페 설명란) 버튼 보더색
   mutedText: "#6B7280",
+  error: "#C8473F", // error, sold badeg 색
 };
 
 // 폰트 패밀리 (공통)
