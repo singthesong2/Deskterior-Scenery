@@ -10,11 +10,18 @@ import {
   NavButton,
   IconContainer,
   IconButton,
+  MenuButton,
 } from "../../styles/Header.styles";
 
 const Header = ({ activeLink }) => {
   return (
     <HeaderSection>
+      <MenuButton type="button" aria-label="메뉴 열기">
+        <span />
+        <span />
+        <span />
+      </MenuButton>
+
       <Logo as={Link} to="/" aria-label="타이틀 메인화면 버튼">
         SCENERY
       </Logo>

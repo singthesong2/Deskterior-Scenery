@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const HeaderSection = styled.header(({theme}) => ({
+export const HeaderSection = styled.header(({ theme }) => ({
   position: "sticky",
   top: 0,
   zIndex: 50,
@@ -10,22 +10,41 @@ export const HeaderSection = styled.header(({theme}) => ({
   display: "flex",
   alignItems: "center",
   backgroundColor: theme.colors.background,
+
+  "@media (max-width: 768px)": {
+    position: "relative",
+    padding: "0 16px",
+    justifyContent: "space-between",
+  },
 }));
 
-export const Logo = styled.h1(({theme}) => ({
+export const Logo = styled.h1(({ theme }) => ({
   flex: "0 0 96px",
   color: theme.colors.textMain,
   fontSize: theme.fontSize.xl,
   letterSpacing: "-2px",
+
+  "@media (max-width: 768px)": {
+    position: "absolute",
+    left: "50%",
+    transform: "translateX(-50%)",
+    flex: "none",
+    fontSize: theme.fontSize.xl,
+    letterSpacing: "-1px",
+  },
 }));
 
 export const Navigation = styled.nav({
   display: "flex",
   flex: 1,
   justifyContent: "center",
+
+  "@media (max-width: 768px)": {
+    display: "none",
+  },
 });
 
-export const NavList = styled.ul(({theme}) => ({
+export const NavList = styled.ul(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: theme.spacing.lg,
@@ -35,33 +54,56 @@ export const NavItem = styled.li({});
 
 export const NavButton = styled("a", {
   shouldForwardProp: (prop) => prop !== "isActive" && prop !== "as",
-})(({theme, isActive}) => ({
-  fontSize: theme.fontSize.sm,
-  fontWeight: isActive
-    ? theme.fontWeight.semiBold
-    : theme.fontWeight.regular,
-  color: isActive
-    ? theme.colors.textMain
-    : theme.colors.secondText,
-    cursor: "pointer",
+})(({ theme, isActive }) => ({
+  //fontSize: theme.fontSize.sm,
+  fontSize: `clamp(12px, 1.1vw, ${theme.fontSize.sm})`,
+  fontWeight: isActive ? theme.fontWeight.semiBold : theme.fontWeight.regular,
+  color: isActive ? theme.colors.textMain : theme.colors.secondText,
+  cursor: "pointer",
+  whiteSpace: "nowrap",
   "&:hover": {
     color: theme.colors.textMain,
   },
 }));
 
-export const IconContainer = styled.div(({theme}) => ({
+export const IconContainer = styled.div(({ theme }) => ({
   display: "flex",
   flex: "0 0 96px",
   alignItems: "center",
   justifyContent: "flex-end",
   gap: theme.spacing.sm,
+
+  "@media (max-width: 768px)": {
+    flex: "none",
+    marginLeft: "auto",
+    gap: "8px",
+  },
 }));
 
-export const IconButton = styled.button(({
+export const IconButton = styled.button({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   cursor: "pointer",
-}));
+});
 
- 
+export const MenuButton = styled.button({
+  display: "none",
+
+  "@media (max-width: 768px)": {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    width: "24px",
+    height: "20px",
+    padding: 0,
+    cursor: "pointer",
+
+    "& span": {
+      display: "block",
+      width: "100%",
+      height: "1.5px",
+      backgroundColor: "#000000",
+    },
+  },
+});
