@@ -27,7 +27,7 @@ const Header = ({ activeLink }) => {
                 as={Link}
                 to={category.path}
                 isActive={category.name === activeLink}
-                aria-label="${category.name} 버튼"
+                aria-label={`${category.name} 버튼`}
               >
                 {category.name}
               </NavButton>
