@@ -6,16 +6,17 @@ export const LoginPage = styled.main({
   justifyContent: "center",
   alignItems: "stretch",
   gap: "20px",
-  padding: "60px 40px",
+  padding: "60px 96px",
 });
 
 export const LoginImage = styled.div({
-  width: "50vw",
+  flex: 1,
   backgroundColor: "#e8e6df",
 });
 
 export const LoginCard = styled.section({
-  width: "50vw",
+  flex: 1,
+  height: "500px",
   padding: "50px 30px",
   border: "1px solid #eee",
   borderRadius: "5px",
@@ -32,7 +33,7 @@ export const Title = styled.h1(({ theme }) => ({
 export const SignupLink = styled(Link)({
   display: "block",
   textAlign: "center",
-  marginTop: "20px",
+  marginTop: "30px",
   fontSize: "15px",
   textDecoration: "none",
   color: "#000000",

@@ -171,7 +171,7 @@ export const ErrorIcon = styled.span({
 export const Button = styled.button({
   width: "100%",
   padding: "12px",
-  marginTop: "10px",
+  marginTop: "15px",
   border: "none",
   borderRadius: "5px",
   backgroundColor: "#000000",
