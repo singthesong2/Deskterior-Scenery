@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import loginbanner from "../assets/loginbanner.webp";
 import { Link } from "react-router";
 
 export const LoginPage = styled.main({
@@ -11,7 +12,10 @@ export const LoginPage = styled.main({
 
 export const LoginImage = styled.div({
   flex: 1,
-  backgroundColor: "#e8e6df",
+  backgroundImage: `url(${loginbanner})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
 });
 
 export const LoginCard = styled.section({
