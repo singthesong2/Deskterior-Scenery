@@ -17,8 +17,7 @@ const ProductCard = ({ product, onAddToCart, onToggleLike, showCategory = false,
 
   const handleCardClick = () => {
     if (!isClickable) return;
-    //라우트가 /products/:id 로 바뀌면 navigate(`/products/${product.id}`)
-    navigate("/detailpage");
+    navigate(`/products/${product.id}`);
   };
 
   // 키보드(Tab 으로 포커스 → Enter / Space)로도 상세 이동

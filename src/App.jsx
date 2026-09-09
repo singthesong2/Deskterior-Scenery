@@ -92,7 +92,7 @@ function App() {
               />
             ))}
             <Route
-              path="/detailpage"
+              path="/products/:id"
               element={
                 <ProductDetailPage
                   isLoggedIn={isLoggedIn}
@@ -108,17 +108,16 @@ function App() {
       </Suspense>
       {/* 페이지 이동 및 Outlet 적용 코드, 삭제 X */}
 
+      {/* 라우팅으로 각 페이지가 렌더되므로 겹침 렌더 비활성화 
       <LoginForm setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />
       <SignupForm />
-
-      {/* /detailpage 라우트로 렌더되므로 겹침 렌더 제거
       <ProductDetailPage
         isLoggedIn={isLoggedIn}
         currentUserId={userInfo?.id ?? null}
         currentUserName={userInfo?.name ?? ""}
       />
-      */}
       <NotFoundPage autoRedirect={false} />
+      */}
     </>
   );
 }

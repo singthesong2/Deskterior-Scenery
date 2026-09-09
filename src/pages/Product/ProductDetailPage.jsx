@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { mockProduct } from "../../constants/mockProduct";
+import { useParams } from "react-router";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
 import ProductInfo from "../../components/product/ProductInfo";
@@ -7,6 +7,7 @@ import PurchaseBox from "../../components/product/PurchaseBox";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
+import Loading from "../../components/common/Loading";
 import {
   showSuccessToast,
   showFailToast,
@@ -20,44 +21,55 @@ import {
 } from "../../api/reviewsApi";
 import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
-//라우트에 :id 생기면 useParams 로 상품 번호 받기 (지금은 1 고정)
-const PRODUCT_ID = 1;
-
 const ProductDetailPage = ({ isLoggedIn = false }) => {
+  const { id } = useParams(); // /products/:id → "1", "14" ...
+
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
 
-  // 상품: 처음엔 목 데이터, 서버 응답 오면 교체 (실패 시 목 유지)
-  const [product, setProduct] = useState(mockProduct);
+  // 상품
+  const [product, setProduct] = useState(null);
+  const [productError, setProductError] = useState(false);
 
   useEffect(() => {
     let alive = true;
-    getProduct(PRODUCT_ID)
-      .then((data) => alive && setProduct(data))
-      .catch((err) => console.error("상품 로딩 실패:", err));
+    getProduct(id)
+      .then((data) => {
+        if (!alive) return;
+        setProduct(data);
+        setProductError(false);
+      })
+      .catch((err) => {
+        console.error("상품 로딩 실패:", err);
+        if (alive) setProductError(true);
+      });
     return () => {
       alive = false;
     };
-  }, []);
+  }, [id]);
 
+  // 아직 이번 URL 의 상품이 아니면(이전 상품이 남아있으면) 로딩 취급
+  const isCurrentProduct = product != null && String(product.id) === id;
+
+  // 리뷰
   const [reviews, setReviews] = useState([]);
 
   const loadReviews = useCallback(
     () =>
-      getReviews(PRODUCT_ID)
+      getReviews(id)
         .then((data) => setReviews(data.reviews))
         .catch((err) => console.error("리뷰 로딩 실패:", err)),
-    [],
+    [id],
   );
 
   useEffect(() => {
     loadReviews();
   }, [loadReviews]);
 
-  // 진입 시 스크롤 최상단
+  // 상품이 바뀔 때마다 스크롤 최상단
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [id]);
 
   /* 별점·리뷰 수는 리뷰 목록에서 계산 */
   const reviewCount = reviews.length;
@@ -68,30 +80,22 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
         reviewCount;
 
   const handleAddToCart = () => {
-    console.log("장바구니 담기", {
-      productId: product.id,
-      quantity,
-      price: product.price,
-    });
+    console.log("장바구니 담기", { productId: id, quantity });
     showSuccessToast("장바구니에 담겼습니다");
   };
 
   const handleToggleWish = () => {
     setIsWished((prev) => !prev);
-    console.log("찜 토글", { productId: product.id });
+    console.log("찜 토글", { productId: id });
   };
 
   const handleCheckout = () => {
-    console.log("결제하기", {
-      productId: product.id,
-      quantity,
-      price: product.price,
-    });
+    console.log("결제하기", { productId: id, quantity });
   };
 
   /* 리뷰 CRUD — 서버 연동. 작성/수정은 실패 시 throw 하여 폼이 에러 표시 */
   const handleCreateReview = async (payload) => {
-    await createReview(PRODUCT_ID, payload);
+    await createReview(id, payload);
     await loadReviews();
     showSuccessToast("리뷰가 등록되었습니다");
   };
@@ -112,6 +116,18 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
     }
   };
 
+  if (productError) {
+    return (
+      <S.Wrapper>
+        <S.Page>
+          <p>상품을 불러올 수 없어요.</p>
+        </S.Page>
+      </S.Wrapper>
+    );
+  }
+
+  if (!isCurrentProduct) return <Loading />;
+
   return (
     <S.Wrapper>
       <S.Page>
@@ -123,7 +139,7 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
         <S.TopSection>
           <S.GalleryColumn>
             <ProductImageGallery
-              key={PRODUCT_ID}
+              key={id}
               images={product.images}
               alt={product.name}
               soldOut={product.soldOut}
@@ -154,6 +170,7 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
         <ProductDetailContent sections={product.detailSections} />
 
         <ReviewSection
+          key={id}
           reviews={reviews}
           isLoggedIn={isLoggedIn}
           onCreate={handleCreateReview}
