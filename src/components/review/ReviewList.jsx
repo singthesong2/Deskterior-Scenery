@@ -4,7 +4,7 @@ import * as S from "../../styles/ProductDetail/Review.styles";
 
 const INITIAL_COUNT = 3;
 
-const ReviewList = ({ reviews = [], currentUserId, onEdit, onDelete }) => {
+const ReviewList = ({ reviews = [], onEdit, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (reviews.length === 0) {
@@ -34,7 +34,8 @@ const ReviewList = ({ reviews = [], currentUserId, onEdit, onDelete }) => {
           <ReviewItem
             key={review.id}
             review={review}
-            isMine={currentUserId != null && review.authorId === currentUserId}
+            // 명세대로: 서버가 준 isAuthor 그대로 사용
+            isMine={Boolean(review.isAuthor)}
             onEdit={onEdit}
             onDelete={onDelete}
           />

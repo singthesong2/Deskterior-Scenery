@@ -9,7 +9,7 @@ export const Wrapper = styled.div({
 export const Page = styled.div(({ theme }) => ({
   maxWidth: "1080px",
   margin: "0 auto",
-  padding: `${theme.spacing.lg} ${theme.spacing["3xl"]}`, // 상하 24 / 좌우 64
+  padding: theme.spacing["4xl"], // 상하·좌우 96
   textAlign: "left",
 }));
 

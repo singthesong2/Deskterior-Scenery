@@ -12,7 +12,6 @@ import * as S from "../../styles/ProductDetail/Review.styles";
 const ReviewSection = ({
   reviews = [],
   isLoggedIn = false,
-  currentUserId = null,
   onCreate,
   onUpdate,
   onDelete,
@@ -30,12 +29,12 @@ const ReviewSection = ({
       : reviews.reduce((sum, review) => sum + (review.rating ?? 0), 0) /
         reviews.length;
 
-  const handleSubmit = (payload) => {
+  const handleSubmit = async (payload) => {
     if (editingId != null) {
-      onUpdate?.(editingId, payload);
+      await onUpdate?.(editingId, payload);
       setEditingId(null);
     } else {
-      onCreate?.(payload);
+      await onCreate?.(payload);
     }
   };
 
@@ -65,7 +64,6 @@ const ReviewSection = ({
 
       <ReviewList
         reviews={reviews}
-        currentUserId={currentUserId}
         onEdit={setEditingId}
         onDelete={handleDelete}
       />
