@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import signupbanner from "../assets/signupbanner.webp";
 import { Link } from "react-router";
 
 export const SignupPage = styled.main({
@@ -11,7 +12,10 @@ export const SignupPage = styled.main({
 
 export const SignupImage = styled.div({
   flex: 1,
-  backgroundColor: "#e8e6df",
+  backgroundImage: `url(${signupbanner})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
 });
 
 export const SignupCard = styled.section({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "react-toastify";
 import useCartStore from "../../store/cartStore";
 import CartItem from "../../components/cart/CartItem";
