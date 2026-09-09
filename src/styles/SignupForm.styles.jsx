@@ -6,16 +6,16 @@ export const SignupPage = styled.main({
   justifyContent: "center",
   alignItems: "stretch",
   gap: "20px",
-  padding: "60px 40px",
+  padding: "60px 96px",
 });
 
 export const SignupImage = styled.div({
-  width: "50vw",
+  flex: 1,
   backgroundColor: "#e8e6df",
 });
 
 export const SignupCard = styled.section({
-  width: "50vw",
+  flex: 1,
   padding: "50px 30px",
   border: "1px solid #eee",
   borderRadius: "5px",
