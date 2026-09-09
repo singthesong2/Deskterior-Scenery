@@ -18,6 +18,8 @@ import {
   ProductPagination,
   PaginationButton,
   PaginationText,
+  ProductBottomArea,
+
 } from "../../styles/MainStyles/DeskCurationSection.styles";
 
 
@@ -57,13 +59,13 @@ function SelectedProductCard({
                   </ProductTagContainer>
                 </ProductInfo>
 
+              <ProductBottomArea>
                 <ViewMoreButton type="button">View More</ViewMoreButton>
 
                 <ProductPagination>
                   <PaginationButton
                   type="button"
                   onClick={onPrevious}
-                  disabled={activeProductIndex <= 0}
                   aria-label="이전 상품"
                   >
                     <ChevronLeftIcon width={24} height={24}/>
@@ -78,12 +80,14 @@ function SelectedProductCard({
                   <PaginationButton
                   type="button"
                   onClick={onNext}
-                  disabled={activeProductIndex >= totalProducts - 1}
                   aria-label="다음 상품"
                   >
                     <ChevronRightIcon width={24} height={24}/>
                   </PaginationButton>
                 </ProductPagination>
+
+              </ProductBottomArea>
+
               </>
             )}
           </ProductArea>
