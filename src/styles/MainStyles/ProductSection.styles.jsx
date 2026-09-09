@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 
-export const ProductsSection = styled.section(({theme}) => ({
+export const ProductsSection = styled.section(({theme, isBest}) => ({
   padding: theme.spacing["4xl"], //96
+  backgroundColor: isBest
+    ? theme.colors.cards
+    : theme.colors.background,
 }));
 
 export const ProductTitle = styled.h2(({theme}) => ({

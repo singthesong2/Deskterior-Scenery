@@ -26,7 +26,7 @@ function getCategoryName(categoryId) {
     return category?.name ?? categoryId;
 }
 
-function ProductGroup({title, items}) {
+function ProductGroup({title, items, isBest = false, }) {
     const [currentPage, setCurrentPage] = useState(0);
     const startIndex = currentPage * ITEMS_PER_PAGE;
     const visibleProducts = items.slice(
@@ -64,7 +64,7 @@ function ProductGroup({title, items}) {
     };
 
     return (
-        <ProductsSection>
+        <ProductsSection isBest={isBest}>
             <ProductTitle>{title}</ProductTitle>
 
             <ProductSlider>
@@ -138,6 +138,7 @@ function ProductSection() {
             <ProductGroup
                 title="Best Items"
                 items={bestProducts}
+                isBest
             />
             <ProductGroup
                 title="New Items"
