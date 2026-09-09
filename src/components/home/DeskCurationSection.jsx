@@ -62,7 +62,7 @@ function DeskCurationSection({items = [] }) {
 
     const nextIndex = (activeProductIndex + 1) % coordinates.length;
     
-    setSelectedProductNumber(nextProduct.productId);
+    setSelectedProductNumber(coordinates[nextIndex].productId);
   };
 
 
