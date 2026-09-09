@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import ReviewStars from "./ReviewStars";
 import Modal from "../common/Modal";
 import * as S from "../../styles/ProductDetail/Review.styles";
@@ -7,13 +8,8 @@ import * as S from "../../styles/ProductDetail/Review.styles";
  * defaultValue 를 주면 "수정" 모드, 없으면 "작성" 모드.
  * 수정 대상이 바뀔 때는 부모에서 key 를 바꿔 remount 시킨다.
  */
-const ReviewForm = ({
-  isLoggedIn = false,
-  defaultValue,
-  onSubmit,
-  onCancel,
-  onRequireLogin,
-}) => {
+const ReviewForm = ({ isLoggedIn = false, defaultValue, onSubmit, onCancel }) => {
+  const navigate = useNavigate();
   const isEditing = Boolean(defaultValue);
 
   const [rating, setRating] = useState(defaultValue?.rating ?? 0);
@@ -120,8 +116,7 @@ const ReviewForm = ({
           onClose={() => setLoginModalOpen(false)}
           onConfirm={() => {
             setLoginModalOpen(false);
-            // 실제 로그인 이동 배선은 추후(API 연결 시) onRequireLogin 으로 연결
-            onRequireLogin?.();
+            navigate("/login");
           }}
         />
       )}

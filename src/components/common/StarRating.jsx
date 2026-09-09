@@ -86,6 +86,8 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
       {[0, 1, 2, 3, 4].map((i) => {
         const pct = Math.max(0, Math.min(1, score - i)) * 100;
         const gradId = `${uid}-star-${i}`;
+        const isPartial = pct > 0 && pct < 100;
+        const solid = pct <= 0 ? EMPTY : FILLED;
         return (
           <svg
             key={i}
@@ -94,16 +96,18 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
             viewBox={STAR_VIEWBOX}
             aria-hidden="true"
           >
-            <defs>
-              <linearGradient id={gradId}>
-                <stop offset={`${pct}%`} stopColor={FILLED} />
-                <stop offset={`${pct}%`} stopColor={EMPTY} />
-              </linearGradient>
-            </defs>
+            {isPartial && (
+              <defs>
+                <linearGradient id={gradId}>
+                  <stop offset={`${pct}%`} stopColor={FILLED} />
+                  <stop offset={`${pct}%`} stopColor={EMPTY} />
+                </linearGradient>
+              </defs>
+            )}
             <path
               d={STAR_PATH}
-              fill={`url(#${gradId})`}
-              stroke={`url(#${gradId})`}
+              fill={isPartial ? `url(#${gradId})` : solid}
+              stroke={isPartial ? `url(#${gradId})` : solid}
               strokeWidth={2}
               strokeLinecap="round"
             />

@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router";
 
 export const Card = styled.div(({ theme }) => ({
+  position: "relative",
   display: "flex",
   width: "280px",
   height: "424px",
@@ -14,6 +16,13 @@ export const Card = styled.div(({ theme }) => ({
   borderRadius: theme.radius.md,
   overflow: "hidden",
 }));
+
+// 카드 전체를 덮는 투명 링크 (상세페이지 이동)
+export const StretchedLink = styled(Link)({
+  position: "absolute",
+  inset: 0,
+  zIndex: 1,
+});
 
 export const ImageWrapper = styled.div(({ theme }) => ({
   position: "relative",
@@ -52,6 +61,7 @@ export const BadgeGroup = styled.div(({ theme }) => ({
 
 export const IconStack = styled.div(({ theme }) => ({
   position: "absolute",
+  zIndex: 2,
   bottom: theme.spacing.sm,
   right: theme.spacing.sm,
   display: "flex",
@@ -113,23 +123,22 @@ export const ProductName = styled.strong(({ theme }) => ({
   color: theme.colors.textMain,
 }));
 
-export const CategoryName = styled.span(({theme}) => ({
+export const CategoryName = styled.span(({ theme }) => ({
   color: theme.colors.emphasis,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.medium,
-}))
+}));
 export const Price = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.md,
   color: theme.colors.secondText,
   margin: 0,
 }));
 
-export const Rating = styled.p(({theme}) => ({
+export const Rating = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.xs,
   color: theme.colors.secondText,
   marginTop: "auto",
 }));
-
 
 export const Star = styled.span({
   display: "inline-flex",

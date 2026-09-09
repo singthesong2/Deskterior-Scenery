@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { useTheme } from "@emotion/react";
 import { BasketIcon, HeartIcon, StarIcon } from "../icons/Icons";
 import Badge from "../common/Badge";
@@ -13,7 +12,6 @@ const ProductCard = ({
   isBest = false,
   isNew = false,
 }) => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const [liked, setLiked] = useState(!!product.liked);
 
@@ -21,45 +19,18 @@ const ProductCard = ({
   const safeCount = Number(product.reviewCount) || 0;
   const safePrice = Number(product.price) || 0;
 
-  // 빈(placeholder) 카드는 클릭 이동 없음
+  // 빈(placeholder) 카드는 링크 없음
   const isClickable = Boolean(product?.id) && product.id !== "placeholder";
 
-  const handleCardClick = () => {
-    if (!isClickable) return;
-    navigate(`/products/${product.id}`);
-  };
-
-  // 키보드(Tab 으로 포커스 → Enter / Space)로도 상세 이동
-  const handleCardKeyDown = (event) => {
-    if (!isClickable) return;
-    // 카드 안 버튼(찜/장바구니)에서 올라온 키 이벤트는 무시
-    if (event.target !== event.currentTarget) return;
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault(); // Space 로 인한 페이지 스크롤 방지
-      handleCardClick();
-    }
-  };
-
-  const handleToggleLike = (event) => {
-    event.stopPropagation(); // 카드 클릭(상세 이동)으로 전파 방지
+  const handleToggleLike = () => {
     setLiked((prev) => !prev);
     onToggleLike?.(product.id);
   };
 
-  const handleAddToCart = (event) => {
-    event.stopPropagation();
-    onAddToCart?.(product.id);
-  };
+  const handleAddToCart = () => onAddToCart?.(product.id);
 
   return (
-    <S.Card
-      onClick={handleCardClick}
-      onKeyDown={handleCardKeyDown}
-      role={isClickable ? "button" : undefined}
-      tabIndex={isClickable ? 0 : undefined}
-      aria-label={isClickable ? `${product.name} 상세 보기` : undefined}
-      style={isClickable ? { cursor: "pointer" } : undefined}
-    >
+    <S.Card>
       <S.ImageWrapper>
         {product.soldOut && <S.ImageOverlay />}
 
@@ -109,6 +80,14 @@ const ProductCard = ({
           {safeRating.toFixed(1)}({safeCount})
         </S.Rating>
       </S.Info>
+
+      {/* 카드 전체를 덮는 투명 링크 */}
+      {isClickable && (
+        <S.StretchedLink
+          to={`/products/${product.id}`}
+          aria-label={`${product.name} 상세 보기`}
+        />
+      )}
     </S.Card>
   );
 };
