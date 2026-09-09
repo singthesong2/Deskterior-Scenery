@@ -1,11 +1,19 @@
 import { useState } from "react";
+import { useTheme } from "@emotion/react";
 import SafeImage from "../common/SafeImage";
 import SceneryBox from "../common/SceneryBox";
 import Badge from "../common/Badge";
 import * as S from "../../styles/ProductDetail/ProductImageGallery.styles";
 
-const ProductImageGallery = ({ images, alt, soldOut = false }) => {
+const ProductImageGallery = ({
+  images,
+  alt,
+  soldOut = false,
+  isBest = false,
+  isNew = false,
+}) => {
   const [current, setCurrent] = useState(0);
+  const theme = useTheme();
 
   if (!images?.length) return null;
 
@@ -28,7 +36,16 @@ const ProductImageGallery = ({ images, alt, soldOut = false }) => {
           style={S.mainImage}
         />
         {soldOut && <S.ImageOverlay />}
-        {soldOut && <Badge text="Sold out" top="8px" left="8px" />}
+
+        {(soldOut || isBest || isNew) && (
+          <S.BadgeGroup>
+            {soldOut && <Badge text="Sold out" />}
+            {isBest && <Badge text="Best" size="sm" />}
+            {isNew && (
+              <Badge text="New" background={theme.colors.textMain} size="sm" />
+            )}
+          </S.BadgeGroup>
+        )}
       </S.MainImageFrame>
 
       {/* 큰 사진 밑 작은 사진들 */}

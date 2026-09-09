@@ -22,6 +22,17 @@ export const ImageOverlay = styled.div(({ theme }) => ({
   opacity: 0.35,
 }));
 
+// Best/New 뱃지 묶음 (ProductCard 와 동일 패턴)
+export const BadgeGroup = styled.div(({ theme }) => ({
+  position: "absolute",
+  top: theme.spacing.xs,
+  left: theme.spacing.xs,
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing.xs,
+  zIndex: 10,
+}));
+
 export const ThumbRow = styled.div(({ theme }) => ({
   display: "flex",
   flexWrap: "wrap",

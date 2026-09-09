@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useTheme } from "@emotion/react";
 import { BasketIcon, HeartIcon, StarIcon } from "../icons/Icons";
 import Badge from "../common/Badge";
 import * as S from "../../styles/ListPageStyles/ProductCard.styles";
 
-const ProductCard = ({ product, onAddToCart, onToggleLike, showCategory = false, }) => {
+const ProductCard = ({
+  product,
+  onAddToCart,
+  onToggleLike,
+  showCategory = false,
+  isBest = false,
+  isNew = false,
+}) => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const [liked, setLiked] = useState(!!product.liked);
 
   const safeRating = Math.min(5, Math.max(0, Number(product.rating) || 0));
@@ -53,7 +62,16 @@ const ProductCard = ({ product, onAddToCart, onToggleLike, showCategory = false,
     >
       <S.ImageWrapper>
         {product.soldOut && <S.ImageOverlay />}
-        {product.soldOut && <Badge text="Sold out" top="8px" left="8px" />}
+
+        {(product.soldOut || isBest || isNew) && (
+          <S.BadgeGroup>
+            {product.soldOut && <Badge text="Sold out" />}
+            {isBest && <Badge text="Best" size="sm" />}
+            {isNew && (
+              <Badge text="New" background={theme.colors.textMain} size="sm" />
+            )}
+          </S.BadgeGroup>
+        )}
 
         {product.imageUrl && (
           <S.ProductImage src={product.imageUrl} alt={product.name} />
