@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
 import ProductInfo from "../../components/product/ProductInfo";
@@ -24,6 +24,7 @@ import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
 const ProductDetailPage = ({ isLoggedIn = false }) => {
   const { id } = useParams(); // /products/:id → "1", "14" ...
+  const { hash } = useLocation();
 
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
@@ -67,10 +68,19 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
     loadReviews();
   }, [loadReviews]);
 
-  // 상품이 바뀔 때마다 스크롤 최상단
+  // 상품이 바뀔 때마다 스크롤 최상단 (특정 섹션으로 이동하는 경우는 제외)
   useEffect(() => {
+    if (hash) return;
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [id, hash]);
+
+  // #review 등 해시로 들어오면 콘텐츠가 로드된 후 해당 섹션으로 스크롤
+  useEffect(() => {
+    if (!hash || !isCurrentProduct) return;
+    document
+      .querySelector(hash)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [hash, isCurrentProduct]);
 
   /* 별점·리뷰 수는 리뷰 목록에서 계산 */
   const reviewCount = reviews.length;

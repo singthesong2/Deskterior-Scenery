@@ -7,6 +7,8 @@ export const Section = styled.section(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing.lg,
+  // 고정 헤더에 가려지지 않도록 #review로 스크롤 이동 시 여백 확보
+  scrollMarginTop: `calc(${theme.layout.headerHeight} + ${theme.spacing.lg})`,
 }));
 
 export const Header = styled.div(({ theme }) => ({

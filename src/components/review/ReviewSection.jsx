@@ -44,7 +44,7 @@ const ReviewSection = ({
   };
 
   return (
-    <S.Section>
+    <S.Section id="review">
       <S.Header>
         <S.Title>Reviews</S.Title>
         <S.Subtitle>

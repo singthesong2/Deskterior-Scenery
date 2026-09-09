@@ -29,6 +29,22 @@ const ProductCard = ({
 
   const handleAddToCart = () => onAddToCart?.(product.id);
 
+  const handleRatingClick = (event) => {
+    event.stopPropagation();
+    if (!isClickable) return;
+    navigate(`/products/${product.id}#review`);
+  };
+
+  // 키보드(Tab 으로 포커스 → Enter / Space)로도 리뷰 이동
+  const handleRatingKeyDown = (event) => {
+    event.stopPropagation();
+    if (!isClickable) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      navigate(`/products/${product.id}#review`);
+    }
+  };
+
   return (
     <S.Card>
       <S.ImageWrapper>
@@ -73,7 +89,14 @@ const ProductCard = ({
         )}
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>₩ {safePrice.toLocaleString("ko-KR")}</S.Price>
-        <S.Rating>
+        <S.Rating
+          onClick={handleRatingClick}
+          onKeyDown={handleRatingKeyDown}
+          role={isClickable ? "button" : undefined}
+          tabIndex={isClickable ? 0 : undefined}
+          aria-label={isClickable ? `${product.name} 리뷰 보기` : undefined}
+          style={isClickable ? { cursor: "pointer" } : undefined}
+        >
           <S.Star>
             <StarIcon width={12} height={12} />
           </S.Star>{" "}

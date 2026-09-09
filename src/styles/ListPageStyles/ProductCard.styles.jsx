@@ -138,6 +138,11 @@ export const Rating = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.xs,
   color: theme.colors.secondText,
   marginTop: "auto",
+  width: "fit-content",
+
+  "&:hover": {
+    textDecoration: "underline",
+  },
 }));
 
 export const Star = styled.span({
