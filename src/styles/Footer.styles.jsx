@@ -5,6 +5,10 @@ export const FooterContainer = styled.footer({
   backgroundColor: "#000000",
   padding: "70px 0 30px",
   boxSizing: "border-box",
+
+  "@media (max-width: 768px)": {
+    padding: "42px 14px 28px",
+  },
 });
 
 export const FooterInner = styled.div({
@@ -13,6 +17,13 @@ export const FooterInner = styled.div({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-start",
+
+  "@media (max-width: 768px)": {
+    width: "100%",
+    margin: 0,
+    flexDirection: "column",
+    gap: "25px",
+  },
 });
 
 export const FooterInfo = styled.section({
@@ -20,6 +31,10 @@ export const FooterInfo = styled.section({
   flexDirection: "column",
   alignItems: "flex-start",
   gap: "15px",
+
+  "@media (max-width: 768px)": {
+    gap: "12px",
+  },
 });
 
 export const FooterLogo = styled.h2({
@@ -28,6 +43,10 @@ export const FooterLogo = styled.h2({
   fontSize: "22px",
   fontWeight: 600,
   textAlign: "left",
+
+  "@media (max-width: 768px)": {
+    fontSize: "16px",
+  },
 });
 
 export const FooterDescription = styled.p({
@@ -36,6 +55,11 @@ export const FooterDescription = styled.p({
   fontSize: "16px",
   lineHeight: 1.4,
   textAlign: "left",
+
+  "@media (max-width: 768px)": {
+    fontSize: "13px",
+    lineHeight: 1.5,
+  },
 });
 
 export const FooterSupport = styled.section({
@@ -43,6 +67,12 @@ export const FooterSupport = styled.section({
   flexDirection: "column",
   alignItems: "flex-start",
   gap: "5px",
+
+  "@media (max-width: 768px)": {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "15px",
+  },
 });
 
 export const SupportTitle = styled.h3({
@@ -51,6 +81,12 @@ export const SupportTitle = styled.h3({
   fontSize: "16px",
   fontWeight: 500,
   textAlign: "left",
+
+  "@media (max-width: 768px)": {
+    color: "#777777",
+    fontWeight: 0,
+    fontSize: "13px",
+  },
 });
 
 export const SupportText = styled.p({
@@ -58,6 +94,10 @@ export const SupportText = styled.p({
   color: "#777777",
   fontSize: "16px",
   textAlign: "left",
+
+  "@media (max-width: 768px)": {
+    fontSize: "13px",
+  },
 });
 
 export const Copyright = styled.p({
@@ -66,4 +106,10 @@ export const Copyright = styled.p({
   color: "#777777",
   fontSize: "13px",
   textAlign: "left",
+
+  "@media (max-width: 768px)": {
+    width: "100%",
+    margin: "20px 0 0",
+    fontSize: "12px",
+  },
 });

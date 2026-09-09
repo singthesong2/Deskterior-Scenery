@@ -8,6 +8,11 @@ export const SignupPage = styled.main({
   alignItems: "stretch",
   gap: "20px",
   padding: "60px 96px",
+
+  "@media (max-width: 768px)": {
+    padding: "30px 130px",
+    alignItems: "center",
+  },
 });
 
 export const SignupImage = styled.div({
@@ -16,6 +21,10 @@ export const SignupImage = styled.div({
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
+
+  "@media (max-width: 768px)": {
+    display: "none",
+  },
 });
 
 export const SignupCard = styled.section({
@@ -24,6 +33,13 @@ export const SignupCard = styled.section({
   border: "1px solid #eee",
   borderRadius: "5px",
   backgroundColor: "#fff",
+
+  "@media (max-width: 768px)": {
+    flex: "none",
+    width: "100%",
+    //maxWidth: "360px",
+    padding: "28px 20px",
+  },
 });
 
 export const Title = styled.h1({
@@ -31,6 +47,11 @@ export const Title = styled.h1({
   textAlign: "left",
   fontSize: "20px",
   fontWeight: 550,
+
+  "@media (max-width: 768px)": {
+    marginBottom: "28px",
+    fontSize: "16px",
+  },
 });
 
 export const SignupLink = styled(Link)({
@@ -40,4 +61,9 @@ export const SignupLink = styled(Link)({
   fontSize: "15px",
   textDecoration: "none",
   color: "#000000",
+
+  "@media (max-width: 768px)": {
+    marginTop: "16px",
+    fontSize: "13px",
+  },
 });
