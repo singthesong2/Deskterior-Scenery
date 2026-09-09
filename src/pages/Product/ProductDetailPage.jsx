@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { mockProduct } from "../../constants/mockProduct";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
@@ -7,62 +7,59 @@ import PurchaseBox from "../../components/product/PurchaseBox";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
+import {
+  showSuccessToast,
+  showFailToast,
+} from "../../components/common/ShowToast";
+import { getProduct } from "../../api/productsApi";
+import {
+  getReviews,
+  createReview,
+  updateReview,
+  deleteReview,
+} from "../../api/reviewsApi";
 import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
-// 내가 작성한 리뷰를 새로고침 후에도 유지 (API 연결 전 임시 저장소)
-const myReviewsKey = (productId) => `deskterior:my-reviews:${productId}`;
+//라우트에 :id 생기면 useParams 로 상품 번호 받기 (지금은 1 고정)
+const PRODUCT_ID = 1;
 
-const readMyReviews = (productId) => {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(myReviewsKey(productId)));
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
-
-const ProductDetailPage = ({
-  product = mockProduct,
-  isLoggedIn = false,
-  currentUserId = null,
-  currentUserName = "",
-}) => {
+const ProductDetailPage = ({ isLoggedIn = false }) => {
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
 
-  // 내가 작성한 리뷰(로컬 저장)
-  const [myReviews, setMyReviews] = useState(() => readMyReviews(product.id));
-  const reviews = [...myReviews, ...(product.reviews ?? [])];
+  // 상품: 처음엔 목 데이터, 서버 응답 오면 교체 (실패 시 목 유지)
+  const [product, setProduct] = useState(mockProduct);
 
-  // TODO(임시): 로그인 상태 리뷰 CSS 작업용. API 연결 시 이 블록 삭제
-  const forceLoggedIn = true;
-  const reviewIsLoggedIn = forceLoggedIn || isLoggedIn;
-  const reviewUserId = forceLoggedIn ? "me" : currentUserId;
-
-  /* 상품이 바뀌면(라우터로 다른 상세페이지 이동 등) 상품별 state 초기화 */
-  const [shownProductId, setShownProductId] = useState(product.id);
-  if (product.id !== shownProductId) {
-    setShownProductId(product.id);
-    setMyReviews(readMyReviews(product.id));
-    setQuantity(1);
-    setIsWished(false);
-  }
-
-  // 내 리뷰 변경 시 localStorage 동기화
   useEffect(() => {
-    try {
-      localStorage.setItem(myReviewsKey(product.id), JSON.stringify(myReviews));
-    } catch {
-      // 저장 실패(프라이빗 모드·용량 초과)는 무시
-    }
-  }, [product.id, myReviews]);
+    let alive = true;
+    getProduct(PRODUCT_ID)
+      .then((data) => alive && setProduct(data))
+      .catch((err) => console.error("상품 로딩 실패:", err));
+    return () => {
+      alive = false;
+    };
+  }, []);
 
-  // 목록 등에서 넘어올 때 스크롤이 내려가 있던 위치를 이어받지 않도록 최상단으로
+  const [reviews, setReviews] = useState([]);
+
+  const loadReviews = useCallback(
+    () =>
+      getReviews(PRODUCT_ID)
+        .then((data) => setReviews(data.reviews))
+        .catch((err) => console.error("리뷰 로딩 실패:", err)),
+    [],
+  );
+
+  useEffect(() => {
+    loadReviews();
+  }, [loadReviews]);
+
+  // 진입 시 스크롤 최상단
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [product.id]);
+  }, []);
 
-  /* 별점·리뷰 수는 리뷰 목록에서 실시간 계산 (단일 소스) */
+  /* 별점·리뷰 수는 리뷰 목록에서 계산 */
   const reviewCount = reviews.length;
   const averageRating =
     reviewCount === 0
@@ -70,22 +67,20 @@ const ProductDetailPage = ({
       : reviews.reduce((sum, review) => sum + (review.rating ?? 0), 0) /
         reviewCount;
 
-  /* localStorage("cartItems")에 병합하도록 채울 예정 */
   const handleAddToCart = () => {
     console.log("장바구니 담기", {
       productId: product.id,
       quantity,
       price: product.price,
     });
+    showSuccessToast("장바구니에 담겼습니다");
   };
 
-  /* 나중에 localStorage("wishlist") 또는 API 로 교체 */
   const handleToggleWish = () => {
     setIsWished((prev) => !prev);
     console.log("찜 토글", { productId: product.id });
   };
 
-  /* 나중에 결제 페이지로 이동하도록 교체 */
   const handleCheckout = () => {
     console.log("결제하기", {
       productId: product.id,
@@ -94,31 +89,27 @@ const ProductDetailPage = ({
     });
   };
 
-  /* 리뷰 CRUD — 나중에 reviewsApi 로 교체. 내가 쓴 리뷰만 로컬에서 관리 */
-  const handleCreateReview = ({ rating, content }) => {
-    setMyReviews((prev) => [
-      {
-        id: crypto.randomUUID(),
-        authorId: reviewUserId, // TODO(임시): API 연결 시 currentUserId 로 원복
-        author: currentUserName || "익명",
-        rating,
-        content,
-        date: new Date().toISOString(),
-      },
-      ...prev,
-    ]);
+  /* 리뷰 CRUD — 서버 연동. 작성/수정은 실패 시 throw 하여 폼이 에러 표시 */
+  const handleCreateReview = async (payload) => {
+    await createReview(PRODUCT_ID, payload);
+    await loadReviews();
+    showSuccessToast("리뷰가 등록되었습니다");
   };
 
-  const handleUpdateReview = (id, { rating, content }) => {
-    setMyReviews((prev) =>
-      prev.map((review) =>
-        review.id === id ? { ...review, rating, content } : review,
-      ),
-    );
+  const handleUpdateReview = async (reviewId, payload) => {
+    await updateReview(reviewId, payload);
+    await loadReviews();
+    showSuccessToast("리뷰가 수정되었습니다");
   };
 
-  const handleDeleteReview = (id) => {
-    setMyReviews((prev) => prev.filter((review) => review.id !== id));
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      await deleteReview(reviewId);
+      await loadReviews();
+      showSuccessToast("리뷰가 삭제되었습니다");
+    } catch (err) {
+      showFailToast(err.message || "리뷰 삭제에 실패했습니다");
+    }
   };
 
   return (
@@ -132,7 +123,7 @@ const ProductDetailPage = ({
         <S.TopSection>
           <S.GalleryColumn>
             <ProductImageGallery
-              key={product.id}
+              key={PRODUCT_ID}
               images={product.images}
               alt={product.name}
               soldOut={product.soldOut}
@@ -163,10 +154,8 @@ const ProductDetailPage = ({
         <ProductDetailContent sections={product.detailSections} />
 
         <ReviewSection
-          key={product.id}
           reviews={reviews}
-          isLoggedIn={reviewIsLoggedIn}
-          currentUserId={reviewUserId}
+          isLoggedIn={isLoggedIn}
           onCreate={handleCreateReview}
           onUpdate={handleUpdateReview}
           onDelete={handleDeleteReview}

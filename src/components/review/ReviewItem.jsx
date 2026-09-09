@@ -17,7 +17,7 @@ const formatDate = (raw) => {
 const ReviewItem = ({ review, isMine = false, onEdit, onDelete }) => {
   const authorName = isMine ? "Me" : review.author;
   const rating = review.rating ?? 0;
-  const dateLabel = formatDate(review.date);
+  const dateLabel = formatDate(review.createdAt ?? review.date);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
