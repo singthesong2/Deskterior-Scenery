@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
-import allProducts from "../../data/products";
+import allProducts, { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
@@ -146,6 +146,8 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
                         key={item.key}
                         product={item.product}
                         onAddToCart={handleAddToCart}
+                        isBest={isBestProduct(item.product.id)}
+                        isNew={isNewProduct(item.product.id)}
                       />
                     ),
                   )}

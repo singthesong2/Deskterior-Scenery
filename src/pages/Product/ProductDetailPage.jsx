@@ -13,6 +13,7 @@ import {
   showFailToast,
 } from "../../components/common/ShowToast";
 import { getProduct } from "../../api/productsApi";
+import { isBestProduct, isNewProduct } from "../../data/products";
 import {
   getReviews,
   createReview,
@@ -143,6 +144,8 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
               images={product.images}
               alt={product.name}
               soldOut={product.soldOut}
+              isBest={isBestProduct(product.id)}
+              isNew={isNewProduct(product.id)}
             />
           </S.GalleryColumn>
 

@@ -4,6 +4,7 @@ const products = [
     name: "Minimal Mushroom Wireless Lamp",
     categoryId: "lighting",
     price: 38000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/Nnxv35Z9/whaudwprj1.webp",
     description: "곡선 쉐이드와 3단 터치 디밍이 돋보이는 모던 무선 무드등",
   },
@@ -37,6 +38,7 @@ const products = [
     name: "Magnetic Mini Sensor Light",
     categoryId: "lighting",
     price: 19000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/d4d2nxGh/whaudwprj.webp",
     description: "선반이나 프레임에 자석으로 부착해 사용하는 충전식 큐브 조명",
   },
@@ -45,6 +47,7 @@ const products = [
     name: "Glass Globe Table Lamp",
     categoryId: "lighting",
     price: 46000,
+    isBest: true,
     imageUrl:
       "https://i.ibb.co/mr4BfqwL/e965dcb2-980a-4ee3-9470-8b9fd4b57198.webp",
     description: "미니멀한 구형 유리 쉐이드로 부드러운 빛을 내는 오브제 조명",
@@ -63,6 +66,7 @@ const products = [
     name: "Wood Shade Articulated Desk Lamp",
     categoryId: "lighting",
     price: 64000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/0RHtKS1c/lamp.webp",
     description:
       "따뜻한 내추럴 우드 헤드와 견고한 매트 블랙 관절 바디가 조화를 이루며 정밀한 각도 조절이 가능한 작업용 램프",
@@ -72,6 +76,7 @@ const products = [
     name: "Clear Acrylic 3-Drawer Organizer",
     categoryId: "organization",
     price: 28000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/w8M6hk0/Chat-GPT-Image-2026-8-26-03-26-55.webp",
     description: "군더더기 없는 투명한 구조로 데스크 소품을 정돈하는 미니 서랍",
   },
@@ -116,6 +121,8 @@ const products = [
     name: "Minimal Desk Pegboard",
     categoryId: "organization",
     price: 36000,
+    isBest: true,
+    soldOut: true,
     imageUrl:
       "https://i.ibb.co/TDYWK1WH/Chat-GPT-Image-2026-8-26-03-24-13.webp",
     description:
@@ -126,6 +133,7 @@ const products = [
     name: "Terracotta Module Desk Caddy",
     categoryId: "organization",
     price: 26000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/Fb4bjXL7/Organization.webp",
     description:
       "감각적인 톤다운 테라코타 컬러와 핸들 일체형 다분할 수납 구조로 소품을 한 번에 이동하고 정리할 수 있는 데스크 캐디",
@@ -153,6 +161,7 @@ const products = [
     name: "Minimal Bluetooth Mechanical Keyboard",
     categoryId: "digital-electronics",
     price: 79000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/9mQNqKtd/image.webp",
     description: "절제된 키캡 컬러와 정갈한 타건감을 갖춘 텐키리스 무선 키보드",
   },
@@ -178,6 +187,7 @@ const products = [
     name: "Ultra-Slim Magnetic Power Bank",
     categoryId: "digital-electronics",
     price: 32000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/fzQMM1C2/image.webp",
     description:
       "디바이스 후면에 밀착되는 군더더기 없는 맥세이프 일체형 배터리",
@@ -187,6 +197,7 @@ const products = [
     name: "Rotary Dial Desk Timer",
     categoryId: "digital-electronics",
     price: 21000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/rKvCnSwL/image.webp",
     description:
       "직관적인 휠 다이얼로 작업과 집중 시간을 관리하는 미니멀 타이머",
@@ -196,6 +207,7 @@ const products = [
     name: "Minimal 2-Way Speaker",
     categoryId: "digital-electronics",
     price: 89000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/xqTLTbwc/Digital-Electronics.webp",
     description:
       "화이트 바디와 블랙 듀얼 드라이버의 모던한 대비로 풍성한 데스크 사운드를 채워주는 컴팩트 스피커",
@@ -214,6 +226,7 @@ const products = [
     name: "Solid Aluminum Laptop Stand",
     categoryId: "desk-accessories",
     price: 38000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/NgHYqp3b/2.webp",
     description: "미니멀한 알루미늄 판재로 시선 높이와 쿨링을 확보하는 거치대",
   },
@@ -231,6 +244,7 @@ const products = [
     name: "Magnetic Cable Drop Holder",
     categoryId: "desk-accessories",
     price: 12000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/gFJKygJm/wprj4.webp",
     description:
       "케이블 단자가 흘러내리지 않도록 자석으로 책상에 고정하는 홀더",
@@ -256,6 +270,7 @@ const products = [
     name: "Clear Cylinder Glass Vase",
     categoryId: "desk-accessories",
     price: 22000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/60QJ1NMM/glass.webp",
     description:
       "투명한 원통형 유리 실린더로 책상 위에 싱그러운 생기와 우아한 내추럴 포인트를 더해주는 플랜트 오브제",
@@ -275,6 +290,7 @@ const products = [
     name: "Matte Metal Gel Ink Pen",
     categoryId: "objects-stationery",
     price: 18000,
+    isBest: true,
     imageUrl:
       "https://i.ibb.co/VcgQMN59/Chat-GPT-Image-2026-8-27-02-10-39.webp",
     description: "정밀 가공된 알루미늄 바디로 흔들림 없이 써지는 미니멀 볼펜",
@@ -292,6 +308,7 @@ const products = [
     name: "Aluminum Cutting Ruler",
     categoryId: "objects-stationery",
     price: 9500,
+    isNew: true,
     imageUrl:
       "https://i.ibb.co/ksrnZ5Tt/Chat-GPT-Image-2026-8-27-02-09-45.webp",
     description:
@@ -320,6 +337,7 @@ const products = [
     name: "Peach Orange Metallic Hardcover Diary",
     categoryId: "objects-stationery",
     price: 18000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/W4rv8Y16/Orange-Note.webp",
     description:
       "부드러운 피치 오렌지 컬러와 은은한 메탈릭 광택이 조화를 이루는 세련된 하드커버 노트 다이어리",
@@ -329,6 +347,7 @@ const products = [
     name: "Matte Black 3-Tier Pen Organizer",
     categoryId: "organization",
     price: 19000,
+    isNew: true,
     imageUrl: "https://i.ibb.co/hw8bS2y/Desk-Accessories.webp",
     description:
       "높낮이가 다른 3개의 원통 실린더와 하단 트레이가 결합되어 필기구와 클립을 단정하게 정돈하는 메탈 펜꽂이",
@@ -347,10 +366,18 @@ const products = [
     name: "Classic Gold Fountain Pen",
     categoryId: "objects-stationery",
     price: 45000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/pjD1MDss/pen.webp",
     description:
       "고급스러운 골드 포인트와 부드러운 필기감으로 데스크 위 깊이 있는 아날로그 기록을 완성하는 만년필",
   },
 ];
+
+// Best/New는 각 상품의 isBest/isNew 필드로 직접 관리한다.
+// 홈/카테고리/상세 페이지가 전부 이 필드 하나만 참조해서 어디서든 같은 결과를 보장한다.
+export const isBestProduct = (productId) =>
+  Boolean(products.find((product) => product.id === productId)?.isBest);
+export const isNewProduct = (productId) =>
+  Boolean(products.find((product) => product.id === productId)?.isNew);
 
 export default products;

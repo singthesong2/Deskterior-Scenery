@@ -11,7 +11,7 @@ import {
     ChevronLeftIcon,
     ChevronRightIcon,
 } from "../icons/Icons";
-import products from "../../data/products";
+import products, { isBestProduct, isNewProduct } from "../../data/products";
 import ProductCard from "../product/ProductCard";
 import categories from "../../data/categories";
 import { useState } from "react";
@@ -82,13 +82,15 @@ function ProductGroup({title, items}) {
 
                 <ProductContainer>
                     {visibleProducts.map((product) => (
-                    <ProductCard 
+                    <ProductCard
                     key={product.id}
                     product={{
                         ...product,
                         categoryName: getCategoryName(product.categoryId),
                     }}
                     showCategory
+                    isBest={isBestProduct(product.id)}
+                    isNew={isNewProduct(product.id)}
                     />
                 ))}
                 </ProductContainer>
@@ -124,9 +126,12 @@ function ProductGroup({title, items}) {
 }
 
 function ProductSection() {
-    // API 연결 전 임시 사용
-    const bestProducts = products.slice(0, 9);
-    const newProducts = products.slice(-9);
+    const bestProducts = products.filter(
+        (product) => product.isBest && !product.soldOut
+    );
+    const newProducts = products.filter(
+        (product) => product.isNew && !product.soldOut
+    );
 
     return (
         <>
