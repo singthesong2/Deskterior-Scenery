@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const Card = styled.div(({ theme }) => ({
   display: "flex",
   width: "280px",
-  minHeight: "414px",
+  height: "424px",
   paddingBottom: theme.spacing.md,
   flexDirection: "column",
   alignItems: "flex-start",
@@ -91,8 +91,8 @@ export const CartButton = styled.button(({ theme }) => ({
 
 export const Info = styled.div(({ theme }) => ({
   display: "flex",
-  width: "280px",
-  height: "128px",
+  width: "100%",
+  height: "100%",
   padding: `${theme.spacing.xs} ${theme.spacing.md}`,
   flexDirection: "column",
   alignItems: "flex-start",
@@ -124,11 +124,12 @@ export const Price = styled.p(({ theme }) => ({
   margin: 0,
 }));
 
-export const Rating = styled.p({
-  fontSize: 13,
-  color: "#a19d92",
-  margin: 0,
-});
+export const Rating = styled.p(({theme}) => ({
+  fontSize: theme.fontSize.xs,
+  color: theme.colors.secondText,
+  marginTop: "auto",
+}));
+
 
 export const Star = styled.span({
   display: "inline-flex",

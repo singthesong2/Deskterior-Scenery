@@ -13,7 +13,7 @@ export const CurationTitleBox = styled.div(({theme}) => ({
 
 export const CurationSubtitle = styled.p(({theme}) => ({
   fontFamily: theme.fontFamily.base,
-  fontSize: theme.fontSize.sm, // 14px
+  fontSize: theme.fontSize.md, // 16px
   fontWeight: theme.fontWeight.medium,
   color: theme.colors.emphasis,
 }))

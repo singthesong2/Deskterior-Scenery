@@ -1,7 +1,11 @@
 import styled from "@emotion/styled";
+import { motion } from "motion/react";
 
-export const ProductsSection = styled.section(({theme}) => ({
+export const ProductsSection = styled.section(({theme, isBest}) => ({
   padding: theme.spacing["4xl"], //96
+  backgroundColor: isBest
+    ? theme.colors.cards
+    : theme.colors.background,
 }));
 
 export const ProductTitle = styled.h2(({theme}) => ({
@@ -11,12 +15,20 @@ export const ProductTitle = styled.h2(({theme}) => ({
     color: theme.colors.textMain,
 }));
 
-export const ProductContainer = styled.div(({theme}) => ({
+// 화면에 보여줄 상품 카드 범위를 제한
+export const SliderViewport = styled.div({
     width: "100%",
+    overflow: "hidden",
+    display: "grid",
+});
+
+export const SliderTrack = styled(motion.div)(({theme}) => ({
+    gridArea: "1 / 1",
+    justifySelf: "start",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: theme.spacing.lg, //24
+    alignItems: "stretch",
+    gap: theme.spacing.lg,
+    width: "max-content",
 }));
 
 export const ProductCards = styled.div(({theme}) => ({
@@ -28,7 +40,9 @@ export const ProductCards = styled.div(({theme}) => ({
 // previous, next slider button
 export const ProductSlider = styled.div({
     position: "relative",
-    width: "100%",
+    width: "min(1024px, 100vw)",
+    left: "50%",
+    transform: "translateX(-50%)",
 });
 
 export const SliderButton = styled.button(({theme}) => ({
@@ -46,6 +60,7 @@ export const SliderButton = styled.button(({theme}) => ({
     color: theme.colors.textMain,
     cursor: "pointer",
     transform: "translateY(-50%)",
+    zIndex: 10,
 }));
 
 // PageIndicator
