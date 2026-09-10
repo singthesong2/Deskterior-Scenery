@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import categories from "../../data/categories";
 import { BasketIcon, LoginIcon } from "../icons/Icons";
+import useCartStore from "../../store/cartStore";
 import {
   HeaderSection,
   Logo,
@@ -14,6 +15,11 @@ import {
 } from "../../styles/Header.styles";
 
 const Header = ({ activeLink }) => {
+  const navigate = useNavigate();
+  const { clearLocalCart } = useCartStore();
+  // 로그인 확인
+  const isLoggedIn = !!localStorage.getItem("token");
+
   return (
     <HeaderSection>
       <MenuButton type="button" aria-label="메뉴 열기">
