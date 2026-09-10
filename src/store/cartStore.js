@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { cartApi } from "../api/cartApi";
 
+// 로그인 여부
+const checkIsLoggedIn = () => !!localStorage.getItem("token");
+
 const useCartStore = create(
   persist(
     (set, get) => ({
@@ -9,8 +12,10 @@ const useCartStore = create(
       isLoading: false,
       error: null,
 
-      // 서버에서 장바구니 전체 불러오기 (마운트 시 한 번 호출 필요)
+      // 서버 장바구니 불러오기
       fetchCart: async () => {
+        if (!checkIsLoggedIn()) return; // 비회원이면(로컬 스토리지 유지)
+
         set({ isLoading: true, error: null });
         try {
           const res = await cartApi.getCart();
@@ -20,41 +25,80 @@ const useCartStore = create(
         }
       },
 
-      // 상품 담기
-      addToCart: async (productId, quantity = 1) => {
-        try {
-          await cartApi.addToCart(productId, quantity);
-          await get().fetchCart(); // cartItemId는 서버가 부여하므로 재조회로 동기화
-        } catch (err) {
-          set({ error: err.message });
-          throw err;
+      //  장바구니 담기
+      addToCart: async (product, quantity = 1) => {
+        if (checkIsLoggedIn()) {
+          // 회원이면 API 호출 후 재조회
+          try {
+            await cartApi.addToCart(product.productId, quantity);
+            await get().fetchCart();
+          } catch (err) {
+            set({ error: err.message });
+            throw err;
+          }
+        } else {
+          // 비회원은 로컬 배열만 업데이트
+          set((state) => {
+            const existing = state.cartItems.find(
+              (i) => i.productId === product.productId,
+            );
+            if (existing) {
+              return {
+                cartItems: state.cartItems.map((i) =>
+                  i.productId === product.productId
+                    ? { ...i, quantity: i.quantity + quantity }
+                    : i,
+                ),
+              };
+            }
+            // 새 상품 담기
+            return {
+              cartItems: [
+                ...state.cartItems,
+                {
+                  ...product,
+                  cartItemId: `local_${product.productId}`,
+                  quantity,
+                },
+              ],
+            };
+          });
         }
       },
 
-      // 수량 직접 지정
+      // 수량 업데이트
       updateQuantity: async (cartItemId, quantity) => {
         if (quantity < 1) return;
-        try {
-          await cartApi.updateQuantity(cartItemId, quantity);
+
+        if (checkIsLoggedIn()) {
+          try {
+            await cartApi.updateQuantity(cartItemId, quantity);
+            // 서버에 반영 성공 후 로컬 상태도 업데이트 (화면 리렌더링용)
+            set((state) => ({
+              cartItems: state.cartItems.map((item) =>
+                item.cartItemId === cartItemId ? { ...item, quantity } : item,
+              ),
+            }));
+          } catch (err) {
+            set({ error: err.message });
+            throw err;
+          }
+        } else {
+          // 비회원 로컬 업데이트
           set((state) => ({
             cartItems: state.cartItems.map((item) =>
               item.cartItemId === cartItemId ? { ...item, quantity } : item,
             ),
           }));
-        } catch (err) {
-          set({ error: err.message });
-          throw err;
         }
       },
 
-      // 증가
+      // 증가 / 감소
       increaseQuantity: (cartItemId) => {
         const item = get().cartItems.find((i) => i.cartItemId === cartItemId);
         if (!item) return;
         return get().updateQuantity(cartItemId, item.quantity + 1);
       },
-
-      // 감소
       decreaseQuantity: (cartItemId) => {
         const item = get().cartItems.find((i) => i.cartItemId === cartItemId);
         if (!item || item.quantity <= 1) return;
@@ -63,48 +107,68 @@ const useCartStore = create(
 
       // 개별 삭제
       removeItem: async (cartItemId) => {
-        try {
-          await cartApi.removeItem(cartItemId);
-          set((state) => ({
-            cartItems: state.cartItems.filter(
-              (item) => item.cartItemId !== cartItemId,
-            ),
-          }));
-        } catch (err) {
-          set({ error: err.message });
-          throw err;
+        if (checkIsLoggedIn()) {
+          try {
+            await cartApi.removeItem(cartItemId);
+          } catch (err) {
+            set({ error: err.message });
+            throw err;
+          }
         }
-      },
-
-      // 선택 삭제
-      removeSelectedItems: async (cartItemIds) => {
-        try {
-          await cartApi.removeSelectedItems(cartItemIds);
-          set((state) => ({
-            cartItems: state.cartItems.filter(
-              (item) => !cartItemIds.includes(item.cartItemId),
-            ),
-          }));
-        } catch (err) {
-          set({ error: err.message });
-          throw err;
-        }
+        // 로컬/서버 공통: 화면 배열에서 삭제
+        set((state) => ({
+          cartItems: state.cartItems.filter(
+            (item) => item.cartItemId !== cartItemId,
+          ),
+        }));
       },
 
       // 전체 삭제
       clearCart: async () => {
+        if (checkIsLoggedIn()) {
+          try {
+            await cartApi.clearCart();
+          } catch (err) {
+            set({ error: err.message });
+            throw err;
+          }
+        }
+        set({ cartItems: [] });
+      },
+
+      // 로그아웃 시 화면(로컬) 장바구니만 초기화
+      clearLocalCart: () => {
+        set({ cartItems: [] });
+      },
+
+      //  데이터 병합
+      mergeLocalCartToServer: async () => {
+        const localItems = get().cartItems;
+        if (localItems.length === 0) {
+          // 로컬X 바로 서버 장바구니만 불러오기
+          await get().fetchCart();
+          return;
+        }
+
         try {
-          await cartApi.clearCart();
-          set({ cartItems: [] });
+          // 로컬에 있던 상품들을 서버 API로 전부 밀어넣기
+          await Promise.all(
+            localItems.map((item) =>
+              cartApi.addToCart(item.productId, item.quantity),
+            ),
+          );
+
+          // 로컬 지우고 서버에 장바구니 데이터를 덮어쓰기
+          await get().fetchCart();
+          console.log("장바구니 병합 성공!");
         } catch (err) {
-          set({ error: err.message });
-          throw err;
+          console.error("장바구니 병합 실패:", err);
         }
       },
     }),
     {
       name: "cart-storage",
-      partialize: (state) => ({ cartItems: state.cartItems }), // isLoading/error는 저장 안 함
+      partialize: (state) => ({ cartItems: state.cartItems }),
     },
   ),
 );
