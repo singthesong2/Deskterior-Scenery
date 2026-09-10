@@ -55,9 +55,16 @@ export const SelectAllLabel = styled.label(({ theme }) => ({
   gap: theme.spacing.xs,
   fontSize: theme.fontSize.lg,
   fontWeight: theme.fontWeight.medium,
-  color: theme.colors.secondText,
+  color: theme.colors.blue,
   cursor: "pointer",
 }));
+
+// 왼쪽 버튼 두개
+export const LeftActionGroup = styled.div({
+  display: "flex",
+  alignItems: "center",
+  gap: "20px",
+});
 
 // 전체 선택 체크박스
 export const SelectAllCheckbox = styled.input(({ theme }) => ({
@@ -67,7 +74,18 @@ export const SelectAllCheckbox = styled.input(({ theme }) => ({
   cursor: "pointer",
 }));
 
-// 삭제
+// 선택 삭제
+export const SelectedDeleteButton = styled.button(({ theme }) => ({
+  background: "none",
+  border: "none",
+  cursor: "pointer",
+  padding: 0,
+  fontSize: theme.fontSize.lg,
+  fontWeight: theme.fontWeight.medium,
+  color: theme.colors.secondText,
+}));
+
+// 전체 삭제
 export const ClearAllButton = styled.button(({ theme }) => ({
   background: "none",
   border: "none",
@@ -75,7 +93,7 @@ export const ClearAllButton = styled.button(({ theme }) => ({
   padding: 0,
   fontSize: theme.fontSize.lg,
   fontWeight: theme.fontWeight.medium,
-  color: "#EE2E2E",
+  color: theme.colors.error,
 }));
 
 // 박스 안 박스

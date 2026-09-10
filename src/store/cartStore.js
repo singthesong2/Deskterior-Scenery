@@ -115,10 +115,30 @@ const useCartStore = create(
             throw err;
           }
         }
+
         // 로컬/서버 공통: 화면 배열에서 삭제
         set((state) => ({
           cartItems: state.cartItems.filter(
             (item) => item.cartItemId !== cartItemId,
+          ),
+        }));
+      },
+
+      // 선택 삭제
+      removeSelectedItems: async (cartItemIds) => {
+        if (checkIsLoggedIn()) {
+          try {
+            await cartApi.removeSelectedItems(cartItemIds);
+          } catch (err) {
+            set({ error: err.message });
+            throw err;
+          }
+        }
+
+        // 로컬/서버 공통: 체크된 ID가 아닌 상품들만 남기기
+        set((state) => ({
+          cartItems: state.cartItems.filter(
+            (item) => !cartItemIds.includes(item.cartItemId),
           ),
         }));
       },
