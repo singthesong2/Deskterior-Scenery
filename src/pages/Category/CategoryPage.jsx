@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useSearchParams } from "react-router";
 import allProducts, { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
@@ -44,16 +43,12 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
     }, options);
   };
 
-  const categoryProducts = useMemo(
-    () =>
-      allProducts
-        .filter((product) => product.categoryId === categoryId)
-        .map((product) => ({
-          ...product,
-          imageUrl: stripAngleBrackets(product.imageUrl),
-        })),
-    [categoryId],
-  );
+  const categoryProducts = allProducts
+    .filter((product) => product.categoryId === categoryId)
+    .map((product) => ({
+      ...product,
+      imageUrl: stripAngleBrackets(product.imageUrl),
+    }));
 
   if (!category) {
     return null;
