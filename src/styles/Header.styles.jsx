@@ -9,8 +9,11 @@ export const HeaderSection = styled.header(({ theme }) => ({
   padding: `0 ${theme.spacing.xl}`,
   display: "flex",
   alignItems: "center",
-  backgroundColor: theme.colors.background,
+  backgroundColor: `${theme.colors.background}BF`, // BF: 불투명도 약 80%
 
+  backdropFilter: "blur(8px)",
+  WebkitBackdropFilter: "blur(8px)", // 사파리 호환용
+  
   "@media (max-width: 768px)": {
     position: "relative",
     padding: "0 16px",
@@ -22,7 +25,7 @@ export const Logo = styled.h1(({ theme }) => ({
   flex: "0 0 96px",
   color: theme.colors.textMain,
   fontSize: theme.fontSize.xl,
-  letterSpacing: "-2px",
+  fontFamily: theme.fontFamily.display,
 
   "@media (max-width: 768px)": {
     position: "absolute",
