@@ -59,15 +59,25 @@ export const DescBox = styled.div(({ theme }) => ({
   background: "rgba(235, 234, 228, 0.75)",
   borderRadius: theme.radius.lg, // 12
   padding: theme.spacing.lg, // 24
+
+  [theme.media.tablet]: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: theme.spacing.md, // 16
+    height: "6.5rem", // 104
+  },
 }));
 
 export const DescLabel = styled.p(({ theme }) => ({
-  fontSize: theme.fontSize.sm, // 0.875rem
+  fontSize: theme.fontSize.sm, // 0.875rem — Label/MD
   fontWeight: theme.fontWeight.medium, // 500
   lineHeight: "normal",
   letterSpacing: "-0.00875rem",
   color: theme.colors.textMain,
   marginBottom: theme.spacing["2xs"],
+
+  [theme.media.tablet]: { marginBottom: 0 },
 }));
 
 export const DescText = styled.p(({ theme }) => ({
@@ -77,4 +87,10 @@ export const DescText = styled.p(({ theme }) => ({
   letterSpacing: "-0.0075rem",
   color: theme.colors.secondText,
   whiteSpace: "pre-line",
+
+  [theme.media.tablet]: {
+    fontSize: theme.fontSize.sm, // 0.875rem
+    fontWeight: theme.fontWeight.regular, // 400
+    letterSpacing: "-0.00875rem",
+  },
 }));

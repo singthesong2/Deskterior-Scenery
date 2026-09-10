@@ -21,7 +21,7 @@ const ProductInfo = ({
 
       <S.RatingRow>
         <S.Stars>
-          <StarRating value={safeRating} />
+          <StarRating value={safeRating} size={16} />
         </S.Stars>
         {safeRating.toFixed(1)} · 리뷰 {safeCount.toLocaleString("ko-KR")}개
       </S.RatingRow>
