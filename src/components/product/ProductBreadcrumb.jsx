@@ -1,10 +1,10 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { ArrowLeftIcon } from "../icons/Icons";
 import * as S from "../../styles/ProductDetail/ProductBreadcrumb.styles";
 
 /**
  * 상단 네비 — 뒤로가기 + "Home > Category > 상품명" 경로.
- * "Home"만 실제 링크이고, 카테고리/상품명은 현재 위치라 텍스트로만 표시한다.
+ * 전부 현재 위치 표시용 텍스트일 뿐, 클릭되지 않는다.
  */
 const ProductBreadcrumb = ({ category, productName }) => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const ProductBreadcrumb = ({ category, productName }) => {
               key={index}
               aria-current={isLast ? "page" : undefined}
             >
-              {index === 0 ? <Link to="/">{label}</Link> : label}
+              {label}
             </S.Crumb>
           );
         })}
