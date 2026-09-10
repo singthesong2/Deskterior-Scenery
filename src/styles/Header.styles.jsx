@@ -22,7 +22,7 @@ export const Logo = styled.h1(({ theme }) => ({
   flex: "0 0 96px",
   color: theme.colors.textMain,
   fontSize: theme.fontSize.xl,
-  letterSpacing: "-2px",
+  fontFamily: theme.fontFamily.display,
 
   "@media (max-width: 768px)": {
     position: "absolute",
