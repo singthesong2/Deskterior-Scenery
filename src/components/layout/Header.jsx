@@ -12,13 +12,17 @@ import {
   IconContainer,
   IconButton,
   MenuButton,
+  CartIconWrapper,
+  CartBadge,
 } from "../../styles/Header.styles";
 
 const Header = ({ activeLink }) => {
-  const { clearLocalCart } = useCartStore();
+  // 스토어에서 cartiTRem 가져옴
+  const { clearLocalCart, cartItems } = useCartStore();
   // 로그인 확인
   const isLoggedIn = !!localStorage.getItem("token");
-
+  // 뱃지 갯수 계산
+  const cartCount = cartItems.length;
   return (
     <HeaderSection>
       <MenuButton type="button" aria-label="메뉴 열기">
@@ -54,7 +58,10 @@ const Header = ({ activeLink }) => {
         </IconButton>
 
         <IconButton as={Link} to="/cartpage" aria-label="장바구니 버튼">
-          <BasketIcon width={30} height={30} />
+          <CartIconWrapper>
+            <BasketIcon width={30} height={30} />
+            {cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}
+          </CartIconWrapper>
         </IconButton>
       </IconContainer>
     </HeaderSection>
