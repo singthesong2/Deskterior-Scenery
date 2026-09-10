@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
@@ -23,13 +23,12 @@ import {
 import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
 const ProductDetailPage = ({ isLoggedIn = false }) => {
-  const { id } = useParams(); // /products/:id → "1", "14" ...
+  const { id } = useParams();
   const { hash } = useLocation();
 
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
 
-  // 상품
   const [product, setProduct] = useState(null);
   const [productError, setProductError] = useState(false);
 
@@ -50,31 +49,34 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
     };
   }, [id]);
 
-  // 아직 이번 URL 의 상품이 아니면(이전 상품이 남아있으면) 로딩 취급
   const isCurrentProduct = product != null && String(product.id) === id;
 
-  // 리뷰
   const [reviews, setReviews] = useState([]);
 
-  const loadReviews = useCallback(
-    () =>
-      getReviews(id)
-        .then((data) => setReviews(data.reviews))
-        .catch((err) => console.error("리뷰 로딩 실패:", err)),
-    [id],
-  );
-
+  // 상품(id)이 바뀌면 리뷰 목록 새로 조회
   useEffect(() => {
-    loadReviews();
-  }, [loadReviews]);
+    let alive = true;
+    getReviews(id)
+      .then((data) => {
+        if (alive) setReviews(data.reviews);
+      })
+      .catch((err) => console.error("리뷰 로딩 실패:", err));
+    return () => {
+      alive = false;
+    };
+  }, [id]);
 
-  // 상품이 바뀔 때마다 스크롤 최상단 (특정 섹션으로 이동하는 경우는 제외)
+  const reloadReviews = () =>
+    getReviews(id)
+      .then((data) => setReviews(data.reviews))
+      .catch((err) => console.error("리뷰 로딩 실패:", err));
+
+  // 상품이 바뀔 때마다 스크롤 최상단
   useEffect(() => {
     if (hash) return;
     window.scrollTo(0, 0);
   }, [id, hash]);
 
-  // #review 등 해시로 들어오면 콘텐츠가 로드된 후 해당 섹션으로 스크롤
   useEffect(() => {
     if (!hash || !isCurrentProduct) return;
     document
@@ -82,7 +84,7 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [hash, isCurrentProduct]);
 
-  /* 별점·리뷰 수는 리뷰 목록에서 계산 */
+  //별점·리뷰 수는 리뷰 목록에서 계산
   const reviewCount = reviews.length;
   const averageRating =
     reviewCount === 0
@@ -104,23 +106,23 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
     console.log("결제하기", { productId: id, quantity });
   };
 
-  /* 리뷰 CRUD — 서버 연동. 작성/수정은 실패 시 throw 하여 폼이 에러 표시 */
+  //리뷰 CRUD — 서버 연동. 작성/수정은 실패 시 throw 하여 폼이 에러 표시
   const handleCreateReview = async (payload) => {
     await createReview(id, payload);
-    await loadReviews();
+    await reloadReviews();
     showSuccessToast("리뷰가 등록되었습니다");
   };
 
   const handleUpdateReview = async (reviewId, payload) => {
     await updateReview(reviewId, payload);
-    await loadReviews();
+    await reloadReviews();
     showSuccessToast("리뷰가 수정되었습니다");
   };
 
   const handleDeleteReview = async (reviewId) => {
     try {
       await deleteReview(reviewId);
-      await loadReviews();
+      await reloadReviews();
       showSuccessToast("리뷰가 삭제되었습니다");
     } catch (err) {
       showFailToast(err.message || "리뷰 삭제에 실패했습니다");

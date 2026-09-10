@@ -1,6 +1,9 @@
 import { clientApi } from "./clientApi";
 import { getCategoryById } from "../data/categories";
 
+// 임시 : 서버 stock:0 반영 전까지 강제 품절 처리
+const FORCE_SOLD_OUT_IDS = new Set([14]); // Minimal Desk Pegboard
+
 // 서버 응답 → 상세페이지 컴포넌트가 쓰는 모양으로 변환
 function toProduct(raw) {
   return {
@@ -20,7 +23,7 @@ function toProduct(raw) {
       title: "",
       body: "",
     })),
-    soldOut: (raw.stock ?? 0) <= 0,
+    soldOut: FORCE_SOLD_OUT_IDS.has(raw.id) || (raw.stock ?? 0) <= 0,
     rating: raw.rating ?? 0,
     reviewCount: raw.reviewCount ?? 0,
   };
