@@ -13,6 +13,7 @@ import {
   showFailToast,
 } from "../../components/common/ShowToast";
 import { getProduct } from "../../api/productsApi";
+import useCartStore from "../../store/cartStore";
 import { isBestProduct, isNewProduct } from "../../data/products";
 import {
   getReviews,
@@ -28,6 +29,8 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
 
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
+
+  const addToCart = useCartStore((s) => s.addToCart);
 
   const [product, setProduct] = useState(null);
   const [productError, setProductError] = useState(false);
@@ -92,9 +95,26 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
       : reviews.reduce((sum, review) => sum + (review.rating ?? 0), 0) /
         reviewCount;
 
-  const handleAddToCart = () => {
-    console.log("장바구니 담기", { productId: id, quantity });
-    showSuccessToast("장바구니에 담겼습니다");
+  const handleAddToCart = async () => {
+    if (!product || product.soldOut) return;
+
+    // 상세페이지 상품(id/images/soldOut) → 장바구니가 쓰는 모양(productId/imageUrl/isSoldOut)
+    try {
+      await addToCart(
+        {
+          productId: product.id,
+          name: product.name,
+          price: product.discountPrice || product.price,
+          imageUrl: product.images?.[0],
+          isSoldOut: product.soldOut,
+        },
+        quantity,
+      );
+      showSuccessToast("장바구니에 담겼습니다");
+    } catch (err) {
+      console.error("장바구니 담기 실패:", err);
+      showFailToast("장바구니 담기에 실패했습니다");
+    }
   };
 
   const handleToggleWish = () => {

@@ -6,13 +6,20 @@ export const Wrapper = styled.div(({ theme }) => ({
   gap: theme.spacing.lg,
 }));
 
-export const Stepper = styled.div({
+export const Stepper = styled.div(({ theme }) => ({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "space-between",
   alignSelf: "flex-start",
   width: "126px", // 126×35
-});
+
+  [theme.media.tablet]: {
+    display: "flex",
+    width: "7.5rem",
+    justifyContent: "center",
+    gap: theme.spacing.md,
+  },
+}));
 
 export const StepButton = styled.button(({ theme }) => ({
   width: "35px",
@@ -34,12 +41,30 @@ export const StepButton = styled.button(({ theme }) => ({
     color: theme.colors.subtle,
     cursor: "not-allowed",
   },
+
+  [theme.media.tablet]: {
+    flexDirection: "column",
+    gap: "0.625rem",
+    flexShrink: 0,
+    padding: "0 0.3125rem 0.125rem 0.3125rem",
+    background: "#FFF",
+  },
 }));
 
 export const Qty = styled.span(({ theme }) => ({
   minWidth: "18px",
   textAlign: "center",
   fontSize: theme.fontSize.sm,
+
+  [theme.media.tablet]: {
+    width: "1.75rem",
+    flexShrink: 0,
+    color: theme.colors.textMain,
+    fontSize: theme.fontSize.xl, // 1.25rem
+    fontWeight: theme.fontWeight.semiBold, // 600
+    lineHeight: "normal",
+    letterSpacing: "-0.0125rem",
+  },
 }));
 
 export const ButtonRow = styled.div(({ theme }) => ({
@@ -66,6 +91,10 @@ export const CartButton = styled.button(({ theme }) => ({
 
   "&:hover": { filter: "brightness(1.2)" }, // 팀 공통 버튼 호버
   "&:disabled": { opacity: 0.5, cursor: "not-allowed" },
+
+  [theme.media.tablet]: {
+    width: "10.0625rem",
+  },
 }));
 
 export const WishButton = styled.button(({ theme }) => ({
@@ -76,6 +105,10 @@ export const WishButton = styled.button(({ theme }) => ({
   borderRadius: theme.radius.md,
   background: theme.colors.subtle, // #EBEAE4
   color: theme.colors.textMain,
+
+  [theme.media.tablet]: {
+    width: "2.4375rem",
+  },
 }));
 
 export const CheckoutButton = styled.button(({ theme }) => ({

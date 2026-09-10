@@ -9,6 +9,12 @@ export const MainImageFrame = styled.div(({ theme }) => ({
   borderRadius: theme.radius.md,
   overflow: "hidden",
   background: theme.colors.imagePlaceholder,
+
+  [theme.media.tablet]: {
+    maxWidth: "none",
+    aspectRatio: "auto",
+    height: "22.41rem",
+  },
 }));
 
 // 품절 시 큰 이미지 위에 덮는 반투명 레이어 (ProductCard·CartItem 과 동일 패턴)
@@ -58,9 +64,14 @@ export const ThumbButton = styled.button(({ theme, $active }) => ({
     outline: `${theme.borderWidth.focus} solid ${theme.colors.textMain}`,
     outlineOffset: "2px",
   },
+
+  [theme.media.tablet]: {
+    width: "3.55rem",
+    height: "3.55rem",
+  },
 }));
 
-// 큰 이미지 — 프레임(500x540)을 꽉 채움 (프레임이 position:relative)
+// 큰 이미지 — 프레임(500x540)을 꽉 채움
 export const mainImage = {
   position: "absolute",
   inset: 0,

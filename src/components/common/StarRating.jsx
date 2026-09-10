@@ -2,8 +2,6 @@ import { useId } from "react";
 
 // viewBox 0 0 18 17 기준 5각 별 (피그마 export)
 const STAR_VIEWBOX = "0 0 18 17";
-const STAR_W = 18;
-const STAR_H = 17;
 const STAR_PATH =
   "M8.94255 2.33325L10.327 6.59431H14.8074L11.1827 9.22779L12.5672 13.4889L8.94255 10.8554L5.31787 13.4889L6.70237 9.22779L3.0777 6.59431H7.55804L8.94255 2.33325Z";
 
@@ -33,9 +31,8 @@ const StarRating = ({ value = 0, onChange, size = 18 }) => {
   const selectable = typeof onChange === "function";
   const score = Math.max(0, Math.min(5, Number(value) || 0));
 
-  // 피그마 별 비율 18:17 유지 (size 는 가로 기준)
   const w = size;
-  const h = (size * STAR_H) / STAR_W;
+  const h = size;
 
   if (selectable) {
     const rounded = Math.round(score);

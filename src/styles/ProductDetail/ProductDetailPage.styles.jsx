@@ -12,6 +12,10 @@ export const Page = styled.div(({ theme }) => ({
   margin: "0 auto",
   padding: theme.spacing["4xl"], // 상하·좌우 96
   textAlign: "left",
+
+  [theme.media.tablet]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+  },
 }));
 
 export const TopSection = styled.div(({ theme }) => ({
@@ -19,11 +23,10 @@ export const TopSection = styled.div(({ theme }) => ({
   alignItems: "flex-start",
   gap: theme.spacing["2xl"], // 48
 
-  // pc·wide 는 기본 2단 유지
   [theme.media.tablet]: {
-    flexDirection: "column",
-    gap: theme.spacing.xl,
+    gap: theme.spacing.lg, // 24
   },
+
   [theme.media.mobile]: {
     flexDirection: "column",
     gap: theme.spacing.lg,
@@ -34,17 +37,16 @@ export const GalleryColumn = styled.div(({ theme }) => ({
   flex: "0 1 31.25rem",
   minWidth: 0,
 
-  [theme.media.tablet]: { flex: "none", width: "100%" },
+  [theme.media.tablet]: { flex: "1 1 0", width: "auto" },
   [theme.media.mobile]: { flex: "none", width: "100%" },
 }));
 
 export const InfoColumn = styled.div(({ theme }) => ({
-  flex: "0 0 21.75rem", // 348 고정
+  flex: "0 0 21.75rem", // 348 고정 (데스크탑·태블릿 공통)
   minWidth: 0,
   display: "flex",
   flexDirection: "column",
-  gap: theme.spacing.lg,
+  gap: theme.spacing.lg, // 24
 
-  [theme.media.tablet]: { flex: "none", width: "100%" },
   [theme.media.mobile]: { flex: "none", width: "100%" },
 }));

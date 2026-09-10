@@ -8,6 +8,12 @@ export const Nav = styled.nav(({ theme }) => ({
   fontSize: theme.fontSize.sm,
   color: theme.colors.secondText,
   padding: `${theme.spacing.sm} 0`,
+
+  [theme.media.tablet]: {
+    gap: theme.spacing.xs,
+    padding: 0,
+    marginBottom: theme.spacing.xs,
+  },
 }));
 
 export const BackButton = styled.button(({ theme }) => ({
