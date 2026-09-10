@@ -15,7 +15,6 @@ import {
 } from "../../styles/Header.styles";
 
 const Header = ({ activeLink }) => {
-  const navigate = useNavigate();
   const { clearLocalCart } = useCartStore();
   // 로그인 확인
   const isLoggedIn = !!localStorage.getItem("token");
