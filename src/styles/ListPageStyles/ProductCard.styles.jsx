@@ -5,7 +5,7 @@ export const Card = styled.div(({ theme }) => ({
   position: "relative",
   display: "flex",
   width: "280px",
-  height: "424px",
+  height: "414px",
   paddingBottom: theme.spacing.md,
   flexDirection: "column",
   alignItems: "flex-start",
@@ -102,8 +102,7 @@ export const CartButton = styled.button(({ theme }) => ({
 export const Info = styled.div(({ theme }) => ({
   display: "flex",
   width: "100%",
-  height: "100%",
-  padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+  padding: `0 ${theme.spacing.md}`,
   flexDirection: "column",
   alignItems: "flex-start",
   gap: theme.spacing.xs,
@@ -137,7 +136,6 @@ export const Price = styled.p(({ theme }) => ({
 export const Rating = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.xs,
   color: theme.colors.secondText,
-  marginTop: "auto",
   width: "fit-content",
 
   "&:hover": {

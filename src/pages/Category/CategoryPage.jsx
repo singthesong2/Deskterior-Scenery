@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import allProducts, { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
 import { showSuccessToast } from "../../components/common/ShowToast";
@@ -59,10 +59,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
     return null;
   }
 
-  const breadcrumbTrail = [
-    { label: "Home", to: "/" },
-    { label: category.name },
-  ];
+  const breadcrumbTrail = [{ label: "Home" }, { label: category.name }];
 
   const filteredProducts = categoryProducts
     .filter((product) =>
@@ -114,11 +111,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
                     key={crumb.label}
                     aria-current={isCurrent ? "page" : undefined}
                   >
-                    {isCurrent || !crumb.to ? (
-                      crumb.label
-                    ) : (
-                      <Link to={crumb.to}>{crumb.label}</Link>
-                    )}
+                    {crumb.label}
                   </S.Crumb>
                 );
               })}

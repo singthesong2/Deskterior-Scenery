@@ -26,7 +26,8 @@ export const SliderTrack = styled(motion.div)(({theme}) => ({
     gridArea: "1 / 1",
     justifySelf: "start",
     display: "flex",
-    alignItems: "stretch",
+    alignItems: "flex-start",
+    alignSelf: "stretch",
     gap: theme.spacing.lg,
     width: "max-content",
 }));

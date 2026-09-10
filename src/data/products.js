@@ -161,7 +161,7 @@ const products = [
     name: "Minimal Bluetooth Mechanical Keyboard",
     categoryId: "digital-electronics",
     price: 79000,
-    isBest: true,
+    isNew: true,
     imageUrl: "https://i.ibb.co/9mQNqKtd/image.webp",
     description: "절제된 키캡 컬러와 정갈한 타건감을 갖춘 텐키리스 무선 키보드",
   },
@@ -178,6 +178,7 @@ const products = [
     name: "Aluminum Cube Bluetooth Speaker",
     categoryId: "digital-electronics",
     price: 45000,
+    isBest: true,
     imageUrl: "https://i.ibb.co/gZKyKDhh/1.webp",
     description:
       "미니멀 메탈 바디에서 나오는 깊은 사운드로 공간을 채우는 스피커",
@@ -347,7 +348,6 @@ const products = [
     name: "Matte Black 3-Tier Pen Organizer",
     categoryId: "organization",
     price: 19000,
-    isNew: true,
     imageUrl: "https://i.ibb.co/hw8bS2y/Desk-Accessories.webp",
     description:
       "높낮이가 다른 3개의 원통 실린더와 하단 트레이가 결합되어 필기구와 클립을 단정하게 정돈하는 메탈 펜꽂이",

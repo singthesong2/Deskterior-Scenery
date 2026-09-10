@@ -9,22 +9,20 @@ const headingStyle = (theme) => ({
 export const Main = styled.main(({ theme }) => ({
   display: "flex",
   width: "100%",
-  maxWidth: "1024px",
   flexDirection: "column",
-  alignItems: "stretch",
-  margin: "0 auto",
-  padding: theme.spacing.xl,
   fontFamily: theme.fontFamily.base,
 }));
 
 export const Header = styled.div(({ theme }) => ({
   display: "flex",
+  width: "100%",
+  maxWidth: "1088px",
   height: "233px",
-  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} 48px ${theme.spacing["3xl"]}`,
+  margin: "0 auto",
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["4xl"]} 48px ${theme.spacing["4xl"]}`,
   flexDirection: "column",
   alignItems: "center",
   gap: "16px",
-  alignSelf: "stretch",
   borderBottom: `1px solid ${theme.colors.subtle}`,
   background: theme.colors.background,
 }));
@@ -76,7 +74,10 @@ export const PageSubtitle = styled.p(({ theme }) => ({
 
 export const Content = styled.div(({ theme }) => ({
   display: "flex",
-  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]}`,
+  width: "100%",
+  maxWidth: "1088px",
+  margin: "0 auto",
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["4xl"]} ${theme.spacing["4xl"]} ${theme.spacing["4xl"]}`,
   flexDirection: "column",
   alignItems: "center",
   gap: theme.spacing.xl,
@@ -111,15 +112,17 @@ export const ProductGrid = styled.div(({ theme }) => ({
   flexDirection: "column",
   width: "896px",
   justifyContent: "center",
-  alignItems: "center",
-  gap: theme.spacing.md,
+  alignItems: "flex-start",
+  alignSelf: "stretch",
+  gap: theme.spacing["2xl"],
 }));
 
 export const Row = styled.div(({ theme }) => ({
   display: "flex",
-  alignItems: "flex-start",
-  gap: theme.spacing.lg,
-  alignSelf: "stretch",
+  width: "896px",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: theme.spacing.md,
 }));
 
 export const GridPlaceholder = styled.div({
