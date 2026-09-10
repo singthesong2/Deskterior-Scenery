@@ -6,16 +6,19 @@ export const Section = styled.section(({ theme }) => ({
   marginTop: "48px",
   marginLeft: "calc(50% - 50vw)",
   marginRight: "calc(50% - 50vw)",
-  padding: "40px 0",
+  padding: "64px 0", // Item Detail 상하 패딩
   background: theme.colors.cards, // #FDFDFD
 }));
 
-// 실제 콘텐츠는 이미지 폭(764px)에 맞춰 가운데 정렬
-export const Inner = styled.div({
-  maxWidth: "764px",
+// 콘텐츠는 프레임 폭(1024)에 좌우 144 패딩 → 이미지 영역 736px
+export const Inner = styled.div(({ theme }) => ({
+  maxWidth: "1024px",
   margin: "0 auto",
-  padding: "0 20px",
-});
+  padding: "0 144px",
+
+  [theme.media.tablet]: { padding: "0 48px" },
+  [theme.media.mobile]: { padding: "0 20px" },
+}));
 
 export const Title = styled.h2(({ theme }) => ({
   margin: "0 0 24px",
@@ -29,7 +32,7 @@ export const Title = styled.h2(({ theme }) => ({
 }));
 
 export const Article = styled.article({
-  marginBottom: "56px",
+  marginBottom: "32px", // Detail 이미지 간격
 });
 
 export const SectionTitle = styled.h3(({ theme }) => ({

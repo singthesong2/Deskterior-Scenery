@@ -6,12 +6,13 @@ export const Wrapper = styled.div(({ theme }) => ({
   gap: theme.spacing.lg,
 }));
 
-export const Stepper = styled.div(({ theme }) => ({
+export const Stepper = styled.div({
   display: "inline-flex",
   alignItems: "center",
+  justifyContent: "space-between",
   alignSelf: "flex-start",
-  gap: theme.spacing.sm,
-}));
+  width: "126px", // 126×35
+});
 
 export const StepButton = styled.button(({ theme }) => ({
   width: "35px",
@@ -70,7 +71,7 @@ export const CartButton = styled.button(({ theme }) => ({
 export const WishButton = styled.button(({ theme }) => ({
   display: "grid",
   placeItems: "center",
-  width: "2.4375rem",
+  width: "2.5rem", // 40×40
   height: "2.5rem",
   borderRadius: theme.radius.md,
   background: theme.colors.subtle, // #EBEAE4

@@ -57,8 +57,8 @@ export const Price = styled.strong(({ theme }) => ({
 
 export const DescBox = styled.div(({ theme }) => ({
   background: "rgba(235, 234, 228, 0.75)",
-  borderRadius: theme.radius.md,
-  padding: theme.spacing.md,
+  borderRadius: theme.radius.lg, // 12
+  padding: theme.spacing.lg, // 24
 }));
 
 export const DescLabel = styled.p(({ theme }) => ({
