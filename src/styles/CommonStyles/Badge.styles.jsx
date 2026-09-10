@@ -16,7 +16,7 @@ export const StyledBadge = styled.span(
       : {
           minWidth: "62px",
           padding: `${theme.spacing["2xs"]} ${theme.spacing.sm}`,
-          borderRadius: theme.radius.md,
+          borderRadius: theme.radius.full,
           backgroundColor: background || theme.colors.error,
         }),
 

@@ -107,3 +107,28 @@ export const MenuButton = styled.button({
     },
   },
 });
+// 카트 아이콘
+export const CartIconWrapper = styled.div({
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
+
+export const CartBadge = styled.span(({ theme }) => ({
+  position: "absolute",
+  top: "-4px",
+  right: "-8px",
+  backgroundColor: theme.colors.emphasis,
+  color: "#FFFFFF",
+  fontSize: "12px",
+  fontWeight: 700,
+  minWidth: "18px",
+  height: "18px",
+  padding: "0 4px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "999px",
+  boxSizing: "border-box",
+}));
