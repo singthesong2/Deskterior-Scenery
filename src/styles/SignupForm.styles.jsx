@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import signupbanner from "../assets/signupbanner.webp";
 import { Link } from "react-router";
 
 export const SignupPage = styled.main({
@@ -7,37 +6,42 @@ export const SignupPage = styled.main({
   justifyContent: "center",
   alignItems: "stretch",
   gap: "20px",
-  padding: "60px 96px",
+  padding: "60px clamp(16px, 6vw, 96px)",
 
-  "@media (max-width: 768px)": {
-    padding: "30px 130px",
+  "@media (min-width: 320px) and (width < 768px)": {
     alignItems: "center",
   },
 });
 
-export const SignupImage = styled.div({
-  flex: 1,
-  backgroundImage: `url(${signupbanner})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
+export const SignupImageWrap = styled.div({
+  flex: "1 1 50%",
+  minWidth: 0,
+  position: "relative",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     display: "none",
   },
 });
 
+export const SignupImage = styled.img({
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  objectFit: "fill",
+});
+
 export const SignupCard = styled.section({
-  flex: 1,
+  flex: "1 1 50%",
+  minWidth: 0,
+  boxSizing: "border-box",
   padding: "50px 30px",
   border: "1px solid #eee",
   borderRadius: "5px",
   backgroundColor: "#fff",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     flex: "none",
     width: "100%",
-    //maxWidth: "360px",
     padding: "28px 20px",
   },
 });
@@ -48,7 +52,7 @@ export const Title = styled.h1({
   fontSize: "20px",
   fontWeight: 550,
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     marginBottom: "28px",
     fontSize: "16px",
   },
@@ -62,7 +66,7 @@ export const SignupLink = styled(Link)({
   textDecoration: "none",
   color: "#000000",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     marginTop: "16px",
     fontSize: "13px",
   },

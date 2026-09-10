@@ -6,7 +6,7 @@ export const FooterContainer = styled.footer({
   padding: "70px 0 30px",
   boxSizing: "border-box",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     padding: "42px 14px 28px",
   },
 });
@@ -18,7 +18,7 @@ export const FooterInner = styled.div({
   justifyContent: "space-between",
   alignItems: "flex-start",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     width: "100%",
     margin: 0,
     flexDirection: "column",
@@ -32,7 +32,7 @@ export const FooterInfo = styled.section({
   alignItems: "flex-start",
   gap: "15px",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     gap: "12px",
   },
 });
@@ -44,7 +44,7 @@ export const FooterLogo = styled.h2({
   fontWeight: 600,
   textAlign: "left",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     fontSize: "16px",
   },
 });
@@ -56,7 +56,7 @@ export const FooterDescription = styled.p({
   lineHeight: 1.4,
   textAlign: "left",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     fontSize: "13px",
     lineHeight: 1.5,
   },
@@ -68,7 +68,7 @@ export const FooterSupport = styled.section({
   alignItems: "flex-start",
   gap: "5px",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     flexDirection: "row",
     alignItems: "center",
     gap: "15px",
@@ -82,7 +82,7 @@ export const SupportTitle = styled.h3({
   fontWeight: 500,
   textAlign: "left",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     color: "#777777",
     fontWeight: 0,
     fontSize: "13px",
@@ -95,7 +95,7 @@ export const SupportText = styled.p({
   fontSize: "16px",
   textAlign: "left",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     fontSize: "13px",
   },
 });
@@ -107,7 +107,7 @@ export const Copyright = styled.p({
   fontSize: "13px",
   textAlign: "left",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     width: "100%",
     margin: "20px 0 0",
     fontSize: "12px",
