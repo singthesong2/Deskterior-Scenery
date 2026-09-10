@@ -9,6 +9,7 @@ const colors = {
   subtle: "#EBEAE4", //메인배경보다 어두운색(ex 상페 설명란) 버튼 보더색
   mutedText: "#6B7280",
   error: "#C8473F", // error, sold badeg 색
+  blue: "#2478BD",
 };
 
 // 폰트 패밀리 (공통)
