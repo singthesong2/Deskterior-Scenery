@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
 
-// 배경(흰색)은 브라우저 가로 전체로 확장
 export const Section = styled.section(({ theme }) => ({
   width: "100vw",
   marginTop: "48px",
   marginLeft: "calc(50% - 50vw)",
   marginRight: "calc(50% - 50vw)",
-  padding: "64px 0", // Item Detail 상하 패딩
+  padding: "64px 0",
   background: theme.colors.cards, // #FDFDFD
 
   [theme.media.tablet]: {
@@ -14,7 +13,6 @@ export const Section = styled.section(({ theme }) => ({
   },
 }));
 
-// 콘텐츠는 프레임 폭(1024)에 좌우 144 패딩 → 이미지 영역 736px
 export const Inner = styled.div(({ theme }) => ({
   maxWidth: "1024px",
   margin: "0 auto",
@@ -30,12 +28,16 @@ export const Title = styled.h2(({ theme }) => ({
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
   lineHeight: "normal",
-  letterSpacing: "-0.01em", // letter-spacing-default
+  letterSpacing: "-0.01em",
   color: theme.colors.textMain, // #1F211F
+
+  [theme.media.tablet]: {
+    fontSize: theme.fontSize["4xl"],
+  },
 }));
 
 export const Article = styled.article(({ theme }) => ({
-  marginBottom: "32px", // Detail 이미지 간격
+  marginBottom: "32px",
 
   [theme.media.tablet]: {
     marginBottom: theme.spacing.lg,

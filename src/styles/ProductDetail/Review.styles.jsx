@@ -1,20 +1,31 @@
 import styled from "@emotion/styled";
 
-/* 섹션 레이아웃 (페이지 폭 전체 사용) */
 export const Section = styled.section(({ theme }) => ({
   width: "100%",
   marginTop: theme.spacing["2xl"],
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing.lg,
-  // 고정 헤더에 가려지지 않도록 #review로 스크롤 이동 시 여백 확보
+
   scrollMarginTop: `calc(${theme.layout.headerHeight} + ${theme.spacing.lg})`,
+
+  [theme.media.tablet]: {
+    marginTop: 0,
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+    alignItems: "center",
+  },
 }));
 
 export const Header = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing["2xs"],
+
+  [theme.media.tablet]: {
+    alignSelf: "stretch",
+    alignItems: "flex-start",
+    gap: theme.spacing.xs,
+  },
 }));
 
 export const Title = styled.h2(({ theme }) => ({
@@ -26,6 +37,10 @@ export const Title = styled.h2(({ theme }) => ({
   lineHeight: "normal",
   letterSpacing: "-0.01em",
   color: theme.colors.textMain,
+
+  [theme.media.tablet]: {
+    fontSize: theme.fontSize["4xl"],
+  },
 }));
 
 export const Subtitle = styled.p(({ theme }) => ({
@@ -38,19 +53,18 @@ export const Subtitle = styled.p(({ theme }) => ({
   color: theme.colors.secondText,
 }));
 
-/* 리뷰 작성 폼 */
+//리뷰 작성 폼
 export const Form = styled.form(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-end",
-  gap: "0.75rem",
+  gap: theme.spacing.sm, // 12
   alignSelf: "stretch",
   padding: theme.spacing.lg,
   borderRadius: theme.radius.lg,
   background: theme.colors.cards,
 }));
 
-// 별점 박스 + 입력 영역을 나란히 배치하는 상단 행
 export const FormRow = styled.div(({ theme }) => ({
   display: "flex",
   alignSelf: "stretch",
@@ -115,7 +129,7 @@ export const Textarea = styled.textarea(({ theme }) => ({
   "&::placeholder": { color: theme.colors.mutedText },
   "&:focus": {
     outline: "none",
-    boxShadow: "0 0 0 2px rgba(235, 105, 35, 0.35)", // 포커스 표시
+    boxShadow: "0 0 0 2px rgba(235, 105, 35, 0.35)",
   },
   "&:disabled": { cursor: "not-allowed" },
 
@@ -178,7 +192,6 @@ export const CancelButton = styled.button(({ theme }) => ({
   "&:disabled": { opacity: 0.5, cursor: "not-allowed" },
 }));
 
-/* (작성된 리뷰 · 평균 별점) */
 export const Summary = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "baseline",
@@ -205,10 +218,11 @@ export const SummaryMeta = styled.span(({ theme }) => ({
   color: theme.colors.secondText, // #74766F
 }));
 
-/* 리뷰 목록 */
-export const ListWrap = styled.div({
-  position: "relative",
-});
+export const ListWrap = styled.div(({ theme }) => ({
+  [theme.media.tablet]: {
+    alignSelf: "stretch",
+  },
+}));
 
 export const List = styled.ul(({ theme }) => ({
   listStyle: "none",
@@ -247,11 +261,10 @@ export const EmptyText = styled.p(({ theme }) => ({
   color: theme.colors.secondText, // #74766F
 }));
 
-/*리뷰 아이템*/
-
 export const Item = styled.li(({ theme, $mine }) => ({
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
   alignItems: "flex-end",
   gap: theme.spacing.md,
   alignSelf: "stretch",
@@ -264,7 +277,6 @@ export const Item = styled.li(({ theme, $mine }) => ({
     : {
         height: "9.375rem",
         flexShrink: 0,
-        justifyContent: "center",
       }),
 }));
 
@@ -329,7 +341,7 @@ export const Content = styled.p(({ theme }) => ({
   letterSpacing: "-0.00875rem",
   color: theme.colors.mutedText, // #6B7280
   whiteSpace: "pre-wrap",
-  overflowWrap: "anywhere", // 공백 없는 긴 문자열도 카드 안에서 줄바꿈
+  overflowWrap: "anywhere",
 }));
 
 export const DateText = styled.time(({ theme }) => ({
@@ -342,16 +354,12 @@ export const DateText = styled.time(({ theme }) => ({
   color: theme.colors.secondText, // #74766F
 }));
 
-/* 더 보기 */
+// 더 보기
 export const MoreButton = styled.button(({ theme }) => ({
-  position: "absolute",
-  left: "50%",
-  bottom: 0,
-  transform: "translateX(-50%)",
-
   display: "flex",
   width: "2.5rem",
   height: "2.5rem",
+  margin: `${theme.spacing.xl} auto 0`,
   padding: "0 0 0.1875rem",
   justifyContent: "center",
   alignItems: "center",
@@ -366,4 +374,8 @@ export const MoreButton = styled.button(({ theme }) => ({
   lineHeight: "normal",
   letterSpacing: "-0.0125rem",
   color: theme.colors.secondText, // #74766F
+
+  [theme.media.tablet]: {
+    marginTop: theme.spacing.lg,
+  },
 }));
