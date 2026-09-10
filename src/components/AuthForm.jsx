@@ -261,6 +261,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
           <span>ID {mode === "signup" && <Required>*</Required>}</span>
           <InputIdGroup>
             <Input
+              className="id-input"
               ref={idRef}
               name="id"
               type="text"
@@ -275,8 +276,8 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
             {mode === "signup" && (
               <IdCheckButton
-                type="button"
                 className={idShakingButton ? "shake" : ""}
+                type="button"
                 onAnimationEnd={() => setIdShakingButton(false)}
                 onClick={handleIdCheck}
               >
@@ -409,8 +410,8 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
         )}
 
         <Button
-          type="submit"
           className={shakingButton ? "shake" : ""}
+          type="submit"
           onAnimationEnd={() => setShakingButton(false)}
         >
           {mode === "signup" ? "Sign Up" : "Log in"}

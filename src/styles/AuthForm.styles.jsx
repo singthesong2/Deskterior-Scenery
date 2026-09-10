@@ -4,7 +4,7 @@ export const Form = styled.form({
   display: "flex",
   flexDirection: "column",
   width: "100%",
-  gap: "20px",
+  gap: "30px",
 });
 
 export const NameGroup = styled.div({
@@ -22,7 +22,8 @@ export const Label = styled.label({
   flexDirection: "column",
   alignItems: "flex-start",
   gap: "5px",
-  fontSize: "15px",
+  //fontSize: "15px",
+  fontSize: "clamp(13px, calc(11px + 0.625vw), 15px)",
   color: "#000000",
   fontWeight: 600,
   flex: 1,
@@ -40,6 +41,18 @@ export const Input = styled.input({
   },
   "&::placeholder": {
     color: "#b0b0b0",
+    fontSize: "clamp(13px, calc(11px + 0.625vw), 15px)",
+  },
+
+  "@media (min-width: 768px) and (width < 1024px)": {
+    "&.id-input::placeholder": {
+      fontSize: "clamp(10px, calc(2.352941vw - 9.070588px), 15px)",
+    },
+  },
+  "@media (min-width: 320px) and (width < 480px)": {
+    "&.id-input::placeholder": {
+      fontSize: "clamp(10px, calc(2px + 2.5vw), 14px)",
+    },
   },
 });
 
@@ -50,6 +63,7 @@ export const InputIdGroup = styled.div({
   borderBottom: "2px solid #e6e6e6",
   "& input": {
     flex: 1,
+    minWidth: 0,
     width: "auto",
     borderBottom: "none",
   },
@@ -134,7 +148,7 @@ export const PasswordHidenButton = styled.button({
 export const TermsGroup = styled.div({
   display: "flex",
   flexDirection: "column",
-  fontSize: "15px",
+  fontSize: "clamp(13px, calc(11px + 0.625vw), 15px)",
   gap: "10px",
   color: "#5f5e5e",
   textAlign: "left",
@@ -151,6 +165,7 @@ export const TermsGroup = styled.div({
 });
 
 export const ItemCheckbox = styled.input(({ theme }) => ({
+  flexShrink: 0,
   width: "20px",
   height: "20px",
   margin: 0,
@@ -169,7 +184,8 @@ export const ErrorMessage = styled.div({
   boxSizing: "border-box",
   backgroundColor: "#f8d1bd",
   borderRadius: "6px",
-  fontSize: "14px",
+  //fontSize: "14px",
+  fontSize: "clamp(12px, calc(10px + 0.625vw), 14px)",
   color: "#000000",
   textAlign: "left",
 });
@@ -244,7 +260,7 @@ export const Button = styled.button({
 
 export const Message = styled.p({
   marginTop: "8px",
-  fontSize: "12px",
+  fontSize: "clamp(10px, calc(8px + 0.625vw), 12px)",
 });
 
 export const Required = styled.span({

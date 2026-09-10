@@ -13,8 +13,8 @@ export const HeaderSection = styled.header(({ theme }) => ({
 
   backdropFilter: "blur(8px)",
   WebkitBackdropFilter: "blur(8px)", // 사파리 호환용
-  
-  "@media (max-width: 768px)": {
+
+  "@media ((min-width: 320px) and (width < 768px))": {
     position: "relative",
     padding: "0 16px",
     justifyContent: "space-between",
@@ -27,12 +27,12 @@ export const Logo = styled.h1(({ theme }) => ({
   fontSize: theme.fontSize.xl,
   fontFamily: theme.fontFamily.display,
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     position: "absolute",
     left: "50%",
     transform: "translateX(-50%)",
     flex: "none",
-    fontSize: theme.fontSize.xl,
+    fontSize: "24px",
     letterSpacing: "-1px",
   },
 }));
@@ -42,7 +42,7 @@ export const Navigation = styled.nav({
   flex: 1,
   justifyContent: "center",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     display: "none",
   },
 });
@@ -58,7 +58,6 @@ export const NavItem = styled.li({});
 export const NavButton = styled("a", {
   shouldForwardProp: (prop) => prop !== "isActive" && prop !== "as",
 })(({ theme, isActive }) => ({
-  //fontSize: theme.fontSize.sm,
   fontSize: `clamp(12px, 1.1vw, ${theme.fontSize.sm})`,
   fontWeight: isActive ? theme.fontWeight.semiBold : theme.fontWeight.regular,
   color: isActive ? theme.colors.textMain : theme.colors.secondText,
@@ -76,7 +75,7 @@ export const IconContainer = styled.div(({ theme }) => ({
   justifyContent: "flex-end",
   gap: theme.spacing.sm,
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     flex: "none",
     marginLeft: "auto",
     gap: "8px",
@@ -93,7 +92,7 @@ export const IconButton = styled.button({
 export const MenuButton = styled.button({
   display: "none",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -110,7 +109,7 @@ export const MenuButton = styled.button({
     },
   },
 });
-// 카트 아이콘
+
 export const CartIconWrapper = styled.div({
   position: "relative",
   display: "flex",

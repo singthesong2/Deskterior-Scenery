@@ -1,6 +1,7 @@
 import AuthForm from "../components/AuthForm";
 import { login } from "../api/authApi";
 import useCartStore from "../store/cartStore";
+import loginbanner from "../assets/loginbanner.webp";
 
 import {
   LoginPage,
@@ -8,6 +9,7 @@ import {
   LoginCard,
   Title,
   SignupLink,
+  LoginImageWrap,
 } from "../styles/LoginForm.styles";
 
 function LoginForm({ setIsLoggedIn, setUserInfo }) {
@@ -36,7 +38,9 @@ function LoginForm({ setIsLoggedIn, setUserInfo }) {
   return (
     <>
       <LoginPage>
-        <LoginImage />
+        <LoginImageWrap>
+          <LoginImage src={loginbanner} alt="Login banner" />
+        </LoginImageWrap>
 
         <LoginCard>
           <Title>Log In</Title>

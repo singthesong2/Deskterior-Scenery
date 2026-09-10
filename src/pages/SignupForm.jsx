@@ -1,7 +1,9 @@
 import AuthForm from "../components/AuthForm";
+import signupbanner from "../assets/signupbanner.webp";
 import { signUp } from "../api/authApi";
 import {
   SignupPage,
+  SignupImageWrap,
   SignupImage,
   SignupCard,
   Title,
@@ -17,7 +19,9 @@ function SignupForm() {
   return (
     <>
       <SignupPage>
-        <SignupImage />
+        <SignupImageWrap>
+          <SignupImage src={signupbanner} alt="Signup banner" />
+        </SignupImageWrap>
 
         <SignupCard>
           <Title>Create an account</Title>

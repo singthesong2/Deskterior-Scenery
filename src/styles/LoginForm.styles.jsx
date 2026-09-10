@@ -1,41 +1,48 @@
 import styled from "@emotion/styled";
-import loginbanner from "../assets/loginbanner.webp";
 import { Link } from "react-router";
 
 export const LoginPage = styled.main({
   display: "flex",
   justifyContent: "center",
-  alignItems: "stretch",
   gap: "20px",
-  padding: "60px 96px",
+  padding: "60px clamp(16px, 6vw, 96px)",
 
-  "@media (max-width: 768px)": {
-    padding: "30px 16px",
+  "@media (min-width: 320px) and (width < 768px)": {
     alignItems: "center",
   },
 });
 
-export const LoginImage = styled.div({
-  flex: 1,
-  backgroundImage: `url(${loginbanner})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
+export const LoginImageWrap = styled.div({
+  flex: "1 1 50%",
+  minWidth: 0,
+  position: "relative",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     display: "none",
   },
 });
 
+export const LoginImage = styled.img({
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  objectFit: "fill",
+});
+
 export const LoginCard = styled.section({
-  flex: 1,
-  height: "500px",
+  flex: "1 1 50%",
+  minWidth: 0,
+  boxSizing: "border-box",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  height: "700px",
   padding: "50px 30px",
   border: "1px solid #eee",
   borderRadius: "5px",
   backgroundColor: "#fff",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     flex: "none",
     height: "auto",
     width: "100%",
@@ -50,7 +57,7 @@ export const Title = styled.h1(({ theme }) => ({
   textAlign: "center",
   fontSize: "40px",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     marginBottom: "30px",
     fontSize: "32px",
   },
@@ -64,7 +71,7 @@ export const SignupLink = styled(Link)({
   textDecoration: "none",
   color: "#000000",
 
-  "@media (max-width: 768px)": {
+  "@media (min-width: 320px) and (width < 768px)": {
     marginTop: "24px",
     fontSize: "13px",
   },
