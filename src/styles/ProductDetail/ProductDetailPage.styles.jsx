@@ -7,7 +7,8 @@ export const Wrapper = styled.div({
 });
 
 export const Page = styled.div(({ theme }) => ({
-  maxWidth: "1080px",
+  // 콘텐츠 폭 896(500+48+348) + 좌우 패딩 96*2
+  maxWidth: "1088px",
   margin: "0 auto",
   padding: theme.spacing["4xl"], // 상하·좌우 96
   textAlign: "left",
@@ -38,12 +39,12 @@ export const GalleryColumn = styled.div(({ theme }) => ({
 }));
 
 export const InfoColumn = styled.div(({ theme }) => ({
-  flex: "1 1 0",
+  flex: "0 0 21.75rem", // 348 고정
   minWidth: 0,
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing.lg,
 
-  [theme.media.tablet]: { width: "100%" },
-  [theme.media.mobile]: { width: "100%" },
+  [theme.media.tablet]: { flex: "none", width: "100%" },
+  [theme.media.mobile]: { flex: "none", width: "100%" },
 }));
