@@ -21,6 +21,9 @@ function DeskCurationSection({items = [] }) {
   const [selectedProductNumber, setSelectedProductNumber] = useState(null);
   // 서버에서 받은 상품을 저장할 상태
   const [productData, setProductData] = useState(null);
+  // 로딩, 오류 상태
+  const [isProductLoading, setIsProductLoading] = useState(false);
+  const [productError, setProductError] = useState("");
 
   // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
   const activeStyleId = selectedStyleId ?? items[0]?.styleId;
@@ -40,7 +43,11 @@ function DeskCurationSection({items = [] }) {
 
   // 큐레이션 상품 정보 연결
   useEffect(() => {
-    if(activeProductNumber == null) return;
+    if(activeProductNumber == null) {
+      setIsProductLoading(false);
+      setProductError("");
+      return;
+    }
 
     let ignore = false;
 
@@ -54,7 +61,12 @@ function DeskCurationSection({items = [] }) {
       } catch(error) {
         if(!ignore) {
           setProductData(null);
+          setProductError("상품 정보를 불러오지 못했습니다.");
           console.error("큐레이션 상품 조회 실패:", error);
+        }
+      } finally {
+        if(!ignore) {
+          setIsProductLoading(false);
         }
       }
     }
@@ -75,7 +87,7 @@ function DeskCurationSection({items = [] }) {
 
   // handlePreviousProduct(): 이전 상품 정보를 불러오는 함수
   const handlePreviousProduct = () => {
-    if(coordinates.lenght <= 1) return;
+    if(coordinates.length <= 1) return;
 
     const previousIndex =
       activeProductIndex === 0
@@ -142,6 +154,8 @@ function DeskCurationSection({items = [] }) {
             selectedStyleName={selectedStyle?.name}
             activeProductIndex={activeProductIndex}
             totalProducts={coordinates.length}
+            isProductLoading={isProductLoading}
+            productError={productError}
             onPrevious={handlePreviousProduct}
             onNext={handleNextProduct}
           />
