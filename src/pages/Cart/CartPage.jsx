@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import useCartStore from "../../store/cartStore";
+import { isForceSoldOut } from "../../api/productsApi";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
@@ -47,7 +48,7 @@ const CartPage = () => {
     if (cartItems.length > 0 && checkedItems.length === 0) {
       setCheckedItems(
         cartItems
-          .filter((item) => !item.isSoldOut)
+          .filter((item) => !isForceSoldOut(item.productId))
           .map((item) => item.cartItemId),
       );
     }
@@ -75,7 +76,9 @@ const CartPage = () => {
   };
 
   // 전체 선택 계산)
-  const availableItems = cartItems.filter((item) => !item.isSoldOut);
+  const availableItems = cartItems.filter(
+    (item) => !isForceSoldOut(item.productId),
+  );
   const isAllChecked =
     availableItems.length > 0 && availableItems.length === checkedItems.length;
 
@@ -153,7 +156,8 @@ const CartPage = () => {
   const total = subtotal + deliveryFee;
 
   const isAllSoldOut =
-    cartItems.length > 0 && cartItems.every((item) => item.isSoldOut);
+    cartItems.length > 0 &&
+    cartItems.every((item) => isForceSoldOut(item.productId));
 
   if (isLoading) {
     return (

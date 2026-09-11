@@ -1,6 +1,7 @@
 import { useTheme } from "@emotion/react";
 import Badge from "../common/Badge";
 import { isBestProduct, isNewProduct } from "../../data/products";
+import { isForceSoldOut } from "../../api/productsApi";
 import {
   ItemWrapper,
   ItemLeft,
@@ -30,9 +31,10 @@ const CartItem = ({
   onDelete,
 }) => {
   const theme = useTheme();
+  const isSoldOut = isForceSoldOut(item.productId);
 
   const badges = [
-    item.isSoldOut && {
+    isSoldOut && {
       text: "Sold out",
       size: "sm",
       background: theme.colors.error,
@@ -53,12 +55,12 @@ const CartItem = ({
           type="checkbox"
           checked={isChecked}
           onChange={() => onToggleCheck(item.cartItemId)}
-          disabled={item.isSoldOut}
+          disabled={isSoldOut}
         />
 
         <ImageBox>
           <ItemImage src={item.imageUrl} alt={item.name} />
-          {item.isSoldOut && <ImageOverlay />}
+          {isSoldOut && <ImageOverlay />}
           {badges.length > 0 && (
             <BadgeGroup>
               {badges.map((badge) => (
@@ -79,14 +81,14 @@ const CartItem = ({
         <QuantityBox>
           <QuantityButton
             onClick={() => onDecrease(item.cartItemId)}
-            disabled={item.isSoldOut || item.quantity <= 1}
+            disabled={isSoldOut || item.quantity <= 1}
           >
             -
           </QuantityButton>
           <QuantityText>{item.quantity}</QuantityText>
           <QuantityButton
             onClick={() => onIncrease(item.cartItemId)}
-            disabled={item.isSoldOut}
+            disabled={isSoldOut}
           >
             +
           </QuantityButton>
