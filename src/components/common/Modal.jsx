@@ -24,17 +24,17 @@ const Modal = ({ title, description, confirmText, onClose, onConfirm }) => {
           >
             <path
               d="M21.25 19.8131L20.8869 20.2902H3.07885L2.75006 19.8131L11.9294 3.70984H12.0756L21.25 19.8131Z"
-              stroke="#EB6923"
+              stroke="#C8473F"
               strokeLinecap="round"
             />
             <path
               d="M12.0177 14.0161V11.215"
-              stroke="#EB6923"
+              stroke="#C8473F"
               strokeLinecap="square"
             />
             <path
               d="M12.0112 16.8036H12.0202"
-              stroke="#EB6923"
+              stroke="#C8473F"
               strokeWidth="1.5"
               strokeLinecap="square"
             />

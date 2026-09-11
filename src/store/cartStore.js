@@ -190,6 +190,26 @@ const useCartStore = create(
           console.error("장바구니 병합 실패:", err);
         }
       },
+      // 7번 API
+      syncCartWithServer: async () => {
+        if (!checkIsLoggedIn()) return; // 비회원은 통신 안 함
+
+        try {
+          const res = await cartApi.getCartCount();
+
+          const serverCount = res.data ? res.data.count : res.count;
+          const localCount = get().cartItems.length;
+
+          if (serverCount !== localCount) {
+            console.log(
+              `장바구니 동기화 중... (서버: ${serverCount}, 로컬: ${localCount})`,
+            );
+            await get().fetchCart();
+          }
+        } catch (err) {
+          console.error("장바구니 뱃지 동기화 실패:", err);
+        }
+      },
     }),
     {
       name: "cart-storage",
