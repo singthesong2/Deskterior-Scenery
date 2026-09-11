@@ -26,7 +26,7 @@ export const ObjectInteractionArea = styled.div({
   zIndex: 20,
 });
 
-export const HeroTitle = styled(motion.h1)(({theme}) => ({
+export const HeroTitle = styled(motion.h2)(({theme}) => ({
   position: "absolute",
   left: 0,
   top: "32%",
