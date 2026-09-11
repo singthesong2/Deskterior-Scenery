@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router";
 import { NoResultIcon, LoadFailIcon } from "../../components/icons/Icons";
 
 const headingStyle = (theme) => ({
@@ -49,6 +50,12 @@ export const Crumb = styled.li(({ theme }) => ({
     margin: `0 ${theme.spacing["2xs"]}`,
   },
 }));
+
+export const CrumbLink = styled(Link)({
+  "&:hover": {
+    textDecoration: "underline",
+  },
+});
 
 export const PageTitle = styled.h1(({ theme }) => ({
   ...headingStyle(theme),
