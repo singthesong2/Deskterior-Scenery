@@ -15,7 +15,6 @@ import {
 } from "../../components/common/ShowToast";
 import { getProduct } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
-import { isBestProduct, isNewProduct } from "../../data/products";
 import {
   getReviews,
   createReview,
@@ -177,8 +176,8 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
               images={product.images}
               alt={product.name}
               soldOut={product.soldOut}
-              isBest={isBestProduct(product.id)}
-              isNew={isNewProduct(product.id)}
+              isBest={product.isBest}
+              isNew={product.isNew}
             />
           </S.GalleryColumn>
 

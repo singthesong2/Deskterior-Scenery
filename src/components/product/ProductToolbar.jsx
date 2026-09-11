@@ -9,6 +9,8 @@ export const SORT_OPTIONS = [
   { value: "reviewCount", label: "리뷰많은순" },
 ];
 
+const SEARCH_DEBOUNCE_MS = 400;
+
 const ProductToolbar = ({
   search,
   onSearchChange,
@@ -17,6 +19,37 @@ const ProductToolbar = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const sortBoxRef = useRef(null);
+
+  // 검색어 입력은 즉시 화면에 반영하고, 실제 검색(API 호출)은 타이핑이 멈춘 후에만 실행
+  const [inputValue, setInputValue] = useState(search);
+  const [syncedSearch, setSyncedSearch] = useState(search);
+  const [lastSent, setLastSent] = useState(search);
+  const debounceRef = useRef(null);
+
+  // 외부에서 검색어가 바뀌면(예: 브라우저 뒤로가기) 입력창도 동기화 — 렌더 중 조정
+  // 단, 우리가 방금 보낸 검색어 때문에 바뀐 거라면(디바운스 응답 반영) 입력창은 건드리지 않음 —
+  // 그 사이 사용자가 계속 타이핑했을 수 있어서 덮어쓰면 글자가 지워질 수 있음
+  if (search !== syncedSearch) {
+    setSyncedSearch(search);
+    if (search !== lastSent) {
+      setInputValue(search);
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  const handleSearchInputChange = (value) => {
+    setInputValue(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setLastSent(value);
+      onSearchChange?.(value);
+    }, SEARCH_DEBOUNCE_MS);
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -78,8 +111,8 @@ const ProductToolbar = ({
     <S.ToolbarWrapper>
       <S.SearchBox>
         <S.SearchInput
-          value={search}
-          onChange={(e) => onSearchChange?.(e.target.value)}
+          value={inputValue}
+          onChange={(e) => handleSearchInputChange(e.target.value)}
           placeholder="search..."
         />
         <S.StyledSearchIcon />
