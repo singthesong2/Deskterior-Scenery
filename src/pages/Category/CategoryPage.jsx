@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
-import { getProducts, isForceSoldOut } from "../../api/productsApi";
+import { getProducts } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
 import {
   showSuccessToast,
@@ -16,17 +15,8 @@ import * as S from "../../styles/ListPageStyles/CategoryPage.styles";
 
 const PAGE_SIZE = 6;
 const ROW_SIZE = 3;
-// sort/q가 서버에 반영되기 전까지, 카테고리 내 전체 상품을 한 번에 받아 검색/정렬/페이징은 클라이언트에서 처리
-const FETCH_LIMIT = 100;
 
 const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
-
-const SORT_COMPARATORS = {
-  name: (a, b) => a.name.localeCompare(b.name),
-  priceHigh: (a, b) => b.price - a.price,
-  priceLow: (a, b) => a.price - b.price,
-  reviewCount: (a, b) => b.reviewCount - a.reviewCount,
-};
 
 const CategoryPage = ({ categoryId = "lighting" }) => {
   const category = getCategoryById(categoryId);
@@ -51,35 +41,54 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
     }, options);
   };
 
-  const [categoryProducts, setCategoryProducts] = useState(null);
-  const [loadedCategoryId, setLoadedCategoryId] = useState(null);
-  const [erroredCategoryId, setErroredCategoryId] = useState(null);
+  const [pageProducts, setPageProducts] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [erroredKey, setErroredKey] = useState(null);
+
+  const queryKey = `${categoryId}|${currentPage}|${sortBy}|${search}`;
+  const hasLoadedRef = useRef(false);
 
   useEffect(() => {
     let alive = true;
-    getProducts({ category: categoryId, limit: FETCH_LIMIT })
+    getProducts({
+      category: categoryId,
+      page: currentPage,
+      limit: PAGE_SIZE,
+      sort: sortBy,
+      q: search,
+    })
       .then((data) => {
         if (!alive) return;
-        setCategoryProducts(
+        setPageProducts(
           data.products.map((product) => ({
             ...product,
-            soldOut: isForceSoldOut(product.id),
+            soldOut: (product.stock ?? 0) <= 0,
+            isBest: (product.badge ?? []).includes("best"),
+            isNew: (product.badge ?? []).includes("new"),
           })),
         );
-        setLoadedCategoryId(categoryId);
+        setTotalPages(Math.max(1, data.pagination.totalPages));
+        setErroredKey(null);
+        hasLoadedRef.current = true;
       })
       .catch((err) => {
         console.error("상품목록 로딩 실패:", err);
-        if (alive) setErroredCategoryId(categoryId);
+        if (!alive) return;
+        setErroredKey(queryKey);
+        // 이미 목록을 보여준 상태라 화면은 그대로 유지되니, 실패했다는 것만 토스트로 알림
+        if (hasLoadedRef.current) {
+          showFailToast("목록을 불러오지 못했어요. 다시 시도해주세요.");
+        }
       });
     return () => {
       alive = false;
     };
-  }, [categoryId]);
+  }, [categoryId, currentPage, sortBy, search, queryKey]);
 
-  const isCurrentCategory =
-    categoryProducts !== null && loadedCategoryId === categoryId;
-  const isCurrentError = erroredCategoryId === categoryId;
+  // 카테고리/정렬/검색/페이지가 바뀌어 재조회 중이어도, 이미 보여줄 데이터가 있으면
+  // 화면 전체를 스피너로 갈아치우지 않고 기존 목록을 유지하다가 새 데이터로 자연스럽게 교체
+  const hasLoadedOnce = pageProducts !== null;
+  const isCurrentError = erroredKey === queryKey;
 
   if (!category) {
     return null;
@@ -87,55 +96,14 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
 
   const breadcrumbTrail = [{ label: "Home" }, { label: category.name }];
 
-  if (isCurrentError) {
-    return (
-      <S.Main>
-        <S.Header>
-          <S.PageTitle>{category.name}</S.PageTitle>
-        </S.Header>
-        <p>상품목록을 불러올 수 없어요.</p>
-      </S.Main>
-    );
-  }
-
-  if (!isCurrentCategory) {
+  // 진짜 첫 로딩(에러도 데이터도 아직 없음)일 때만 전체 화면 스피너
+  if (!hasLoadedOnce && !isCurrentError) {
     return <Loading />;
   }
 
-  const filteredProducts = categoryProducts
-    .filter((product) =>
-      product.name.toLowerCase().includes(search.toLowerCase()),
-    )
-    .sort(SORT_COMPARATORS[sortBy]);
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredProducts.length / PAGE_SIZE),
-  );
-
-  const pagedProducts = filteredProducts.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
-  );
-
-  const placeholderCount = PAGE_SIZE - pagedProducts.length;
-
-  const gridItems = [
-    ...pagedProducts.map((product) => ({ key: String(product.id), product })),
-    ...Array.from({ length: placeholderCount }).map((_, index) => ({
-      key: `placeholder-${index}`,
-      product: PLACEHOLDER_PRODUCT,
-      isPlaceholder: true,
-    })),
-  ];
-
-  const rows = [];
-  for (let i = 0; i < gridItems.length; i += ROW_SIZE) {
-    rows.push(gridItems.slice(i, i + ROW_SIZE));
-  }
-
   const handleAddToCart = async (productId) => {
-    const product = categoryProducts.find((p) => p.id === productId);
+    if (!pageProducts) return;
+    const product = pageProducts.find((p) => p.id === productId);
     if (!product) return;
 
     try {
@@ -152,6 +120,66 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
       showFailToast("장바구니 담기에 실패했습니다");
     }
   };
+
+  let resultsContent;
+
+  if (isCurrentError && !hasLoadedOnce) {
+    resultsContent = (
+      <S.EmptyState>
+        <S.StyledLoadFailIcon width={96} height={96} aria-hidden="true" />
+        <S.EmptyTitle>상품을 불러올 수 없습니다</S.EmptyTitle>
+        <S.EmptySubtitle>다시 시도해 주세요</S.EmptySubtitle>
+      </S.EmptyState>
+    );
+  } else if (pageProducts.length === 0) {
+    resultsContent = (
+      <S.EmptyState>
+        <S.StyledNoResultIcon width={96} height={96} aria-hidden="true" />
+        <S.EmptyTitle>"{search}"에 대한 검색 결과가 없습니다</S.EmptyTitle>
+        <S.EmptySubtitle>검색어를 확인하거나 다시 입력해주세요</S.EmptySubtitle>
+      </S.EmptyState>
+    );
+  } else {
+    const placeholderCount = PAGE_SIZE - pageProducts.length;
+
+    const gridItems = [
+      ...pageProducts.map((product) => ({ key: String(product.id), product })),
+      ...Array.from({ length: placeholderCount }).map((_, index) => ({
+        key: `placeholder-${index}`,
+        product: PLACEHOLDER_PRODUCT,
+        isPlaceholder: true,
+      })),
+    ];
+
+    const rows = [];
+    for (let i = 0; i < gridItems.length; i += ROW_SIZE) {
+      rows.push(gridItems.slice(i, i + ROW_SIZE));
+    }
+
+    resultsContent = (
+      <S.ProductGrid>
+        {rows.map((row, rowIndex) => (
+          <S.Row key={`row-${rowIndex}`}>
+            {row.map((item) =>
+              item.isPlaceholder ? (
+                <S.GridPlaceholder key={item.key} aria-hidden="true">
+                  <ProductCard product={item.product} />
+                </S.GridPlaceholder>
+              ) : (
+                <ProductCard
+                  key={item.key}
+                  product={item.product}
+                  onAddToCart={handleAddToCart}
+                  isBest={item.product.isBest}
+                  isNew={item.product.isNew}
+                />
+              ),
+            )}
+          </S.Row>
+        ))}
+      </S.ProductGrid>
+    );
+  }
 
   return (
     <div>
@@ -184,43 +212,11 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
             }}
             sortBy={sortBy}
             onSortChange={(value) =>
-              updateSearchParams({ sort: value }, { replace: true })
+              updateSearchParams({ sort: value, page: 1 }, { replace: true })
             }
           />
 
-          {filteredProducts.length === 0 ? (
-            <S.EmptyState>
-              <S.StyledNoResultIcon width={64} height={64} aria-hidden="true" />
-              <S.EmptyTitle>
-                "{search}"에 대한 검색 결과가 없습니다
-              </S.EmptyTitle>
-              <S.EmptySubtitle>
-                검색어를 확인하거나 다시 입력해주세요
-              </S.EmptySubtitle>
-            </S.EmptyState>
-          ) : (
-            <S.ProductGrid>
-              {rows.map((row, rowIndex) => (
-                <S.Row key={`row-${rowIndex}`}>
-                  {row.map((item) =>
-                    item.isPlaceholder ? (
-                      <S.GridPlaceholder key={item.key} aria-hidden="true">
-                        <ProductCard product={item.product} />
-                      </S.GridPlaceholder>
-                    ) : (
-                      <ProductCard
-                        key={item.key}
-                        product={item.product}
-                        onAddToCart={handleAddToCart}
-                        isBest={isBestProduct(item.product.id)}
-                        isNew={isNewProduct(item.product.id)}
-                      />
-                    ),
-                  )}
-                </S.Row>
-              ))}
-            </S.ProductGrid>
-          )}
+          {resultsContent}
 
           <Pagination
             currentPage={currentPage}

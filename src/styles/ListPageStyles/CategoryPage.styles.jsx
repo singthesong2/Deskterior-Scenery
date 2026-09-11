@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { NoResultIcon } from "../../components/icons/Icons";
+import { NoResultIcon, LoadFailIcon } from "../../components/icons/Icons";
 
 const headingStyle = (theme) => ({
   fontFamily: theme.fontFamily.display,
@@ -86,9 +86,20 @@ export const Content = styled.div(({ theme }) => ({
 
 export const EmptyState = styled.div(({ theme }) => ({
   display: "flex",
+  width: "100%",
+  // 상품 2행 그리드와 높이가 같도록: 카드 414px * 2 + 행 간격 48px
+  minHeight: "876px",
   flexDirection: "column",
   alignItems: "center",
+  justifyContent: "center",
   padding: `${theme.spacing["4xl"]} 0`,
+  background: theme.colors.cards,
+  border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+  borderRadius: theme.radius.md,
+}));
+
+export const StyledLoadFailIcon = styled(LoadFailIcon)(({ theme }) => ({
+  color: theme.colors.imagePlaceholder,
 }));
 
 export const StyledNoResultIcon = styled(NoResultIcon)(({ theme }) => ({
@@ -97,13 +108,14 @@ export const StyledNoResultIcon = styled(NoResultIcon)(({ theme }) => ({
 
 export const EmptyTitle = styled.p(({ theme }) => ({
   marginTop: theme.spacing.lg,
-  fontSize: theme.fontSize.sm,
+  fontSize: theme.fontSize.lg,
+  fontWeight: theme.fontWeight.semiBold,
   color: theme.colors.textMain,
 }));
 
 export const EmptySubtitle = styled.p(({ theme }) => ({
   marginTop: theme.spacing.xs,
-  fontSize: theme.fontSize.xs,
+  fontSize: theme.fontSize.sm,
   color: theme.colors.secondText,
 }));
 

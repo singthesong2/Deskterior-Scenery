@@ -1,11 +1,11 @@
 import { clientApi } from "./clientApi";
 import { getCategoryById } from "../data/categories";
 
-// 임시 : 서버 stock:0 반영 전까지 강제 품절 처리
+// 장바구니 등 상품 원본(raw) 없이 productId만으로 품절 여부가 필요한 곳에서 사용
 const FORCE_SOLD_OUT_IDS = new Set([14]); // Minimal Desk Pegboard
 export const isForceSoldOut = (id) => FORCE_SOLD_OUT_IDS.has(id);
 
-// 서버 응답 → 상세페이지 컴포넌트가 쓰는 모양으로 변환
+// 서버 응답 → 프론트 컴포넌트가 쓰는 모양으로 변환
 function toProduct(raw) {
   return {
     id: raw.id,
@@ -25,7 +25,9 @@ function toProduct(raw) {
       title: item.title ?? "",
       body: item.description ?? "",
     })),
-    soldOut: FORCE_SOLD_OUT_IDS.has(raw.id) || (raw.stock ?? 0) <= 0,
+    soldOut: (raw.stock ?? 0) <= 0,
+    isBest: (raw.badge ?? []).includes("best"),
+    isNew: (raw.badge ?? []).includes("new"),
     rating: raw.rating ?? 0,
     reviewCount: raw.reviewCount ?? 0,
   };

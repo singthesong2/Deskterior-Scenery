@@ -247,3 +247,27 @@ export const NoResultIcon = (props) => (
     />
   </svg>
 );
+
+export const LoadFailIcon = (props) => (
+  <svg
+    viewBox="0 0 64 64"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect x="28" y="10" width="8" height="4" rx="2" />
+
+    <rect x="16" y="18" width="32" height="30" rx="4" />
+
+    <path d="M22 28 L36 28" />
+    <path d="M22 34 L40 34" />
+    <path d="M22 40 L30 40" />
+
+    <circle cx="42" cy="42" r="8" />
+    <path d="M42 39 L42 42" strokeWidth="2" />
+    <circle cx="42" cy="45.5" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
