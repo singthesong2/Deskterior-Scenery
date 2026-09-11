@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
+import useAuthStore from "../../components/common/UseAuthStore";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
 import ProductInfo from "../../components/product/ProductInfo";
@@ -23,7 +24,9 @@ import {
 } from "../../api/reviewsApi";
 import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 
-const ProductDetailPage = ({ isLoggedIn = false }) => {
+const ProductDetailPage = () => {
+  const user = useAuthStore((state) => state.user);
+
   const { id } = useParams();
   const { hash } = useLocation();
 
@@ -207,7 +210,7 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
         <ReviewSection
           key={id}
           reviews={reviews}
-          isLoggedIn={isLoggedIn}
+          isLoggedIn={Boolean(user)}
           onCreate={handleCreateReview}
           onUpdate={handleUpdateReview}
           onDelete={handleDeleteReview}

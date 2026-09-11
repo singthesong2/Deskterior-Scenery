@@ -13,7 +13,7 @@ import {
   LoginImageWrap,
 } from "../styles/LoginForm.styles";
 
-function LoginForm({ setIsLoggedIn, setUserInfo }) {
+function LoginForm() {
   const setUser = useAuthStore((state) => state.setUser);
 
   // 장바구니 병합 함수
