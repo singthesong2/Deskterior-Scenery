@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router";
 //import ProductDetailPage from "./pages/Product/ProductDetailPage";
 //import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
+import useAuthStore from "./components/common/UseAuthStore";
 //import CategoryPage from "./pages/Category/CategoryPage";
 import categories from "./data/categories";
 //import HomePage from "./pages/Home/HomePage";
@@ -25,37 +26,33 @@ const CartPage = lazy(() => import("./pages/Cart/CartPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+  const clearUser = useAuthStore((state) => state.clearUser);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const restoreLogin = async () => {
+      const token = localStorage.getItem("token");
 
-    if (!token) {
-      setIsLoggedIn(false);
-      setUserInfo(null);
-      return;
-    }
+      if (!token) {
+        clearUser();
+        return;
+      }
 
-    async function checkAuth() {
       try {
         const result = await getMe();
 
-        setIsLoggedIn(true);
-        setUserInfo(result.userInfo);
-
-        localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
+        setUser(result.userInfo);
       } catch (error) {
         localStorage.removeItem("token");
-        localStorage.removeItem("userInfo");
+        clearUser();
 
-        setIsLoggedIn(false);
-        setUserInfo(null);
+        console.error("로그인 상태 복구 실패:", error);
       }
-    }
+    };
 
-    checkAuth();
-  }, []);
+    restoreLogin();
+  }, [setUser, clearUser]);
 
   return (
     <>
@@ -72,15 +69,7 @@ function App() {
         <Routes>
           <Route element={<CommonLayout />}>
             <Route path="/" element={<HomePage />} />
-            <Route
-              path="/login"
-              element={
-                <LoginForm
-                  setIsLoggedIn={setIsLoggedIn}
-                  setUserInfo={setUserInfo}
-                />
-              }
-            />
+            <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
             {categories.map((category) => (
               <Route
@@ -91,16 +80,7 @@ function App() {
                 }
               />
             ))}
-            <Route
-              path="/products/:id"
-              element={
-                <ProductDetailPage
-                  isLoggedIn={isLoggedIn}
-                  currentUserId={userInfo?.id ?? null}
-                  currentUserName={userInfo?.name ?? ""}
-                />
-              }
-            />
+            <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/cartpage" element={<CartPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />

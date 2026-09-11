@@ -1,4 +1,4 @@
-import useAutoStore from "../common/UseAuthStore";
+import useAuthStore from "../common/UseAuthStore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
@@ -27,9 +27,9 @@ const Header = ({ activeLink }) => {
   const { cartItems, syncCartWithServer, clearLocalCart } = useCartStore();
 
   // 로그인 확인
-  const user = useAutoStore((state) => state.user);
+  const user = useAuthStore((state) => state.user);
 
-  const clearUser = useAutoStore((state) => state.clearUser);
+  const clearUser = useAuthStore((state) => state.clearUser);
   // 뱃지 갯수 계산
   const cartCount = cartItems.length;
 
@@ -39,13 +39,6 @@ const Header = ({ activeLink }) => {
       .then(setCategories)
       .catch((err) => console.error("카테고리 로딩 실패:", err));
   }, []);
-
-  // 장바구니 동기화
-  useEffect(() => {
-    if (user) {
-      syncCartWithServer();
-    }
-  }, [user, syncCartWithServer]);
 
   const handleLogout = async () => {
     try {
