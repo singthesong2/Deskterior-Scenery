@@ -11,9 +11,17 @@ export const Stepper = styled.div(({ theme }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   alignSelf: "flex-start",
-  width: "126px", // 126×35
+  width: "126px",
 
   [theme.media.tablet]: {
+    display: "flex",
+    width: "7.5rem",
+    justifyContent: "center",
+    gap: theme.spacing.md,
+  },
+
+  // 모바일: 태블릿과 동일
+  [theme.media.mobile]: {
     display: "flex",
     width: "7.5rem",
     justifyContent: "center",
@@ -36,7 +44,7 @@ export const StepButton = styled.button(({ theme }) => ({
   fontSize: theme.fontSize.md,
   fontWeight: theme.fontWeight.regular,
   lineHeight: "normal",
-  // 비활성
+
   "&:disabled": {
     color: theme.colors.subtle,
     cursor: "not-allowed",
@@ -47,6 +55,15 @@ export const StepButton = styled.button(({ theme }) => ({
     gap: "0.625rem",
     flexShrink: 0,
     padding: "0 0.3125rem 0.125rem 0.3125rem",
+    background: "#FFF",
+  },
+
+  // 모바일: 태블릿과 같은 구조, 좌우 패딩만 7px
+  [theme.media.mobile]: {
+    flexDirection: "column",
+    gap: "0.625rem",
+    flexShrink: 0,
+    padding: "0 0.4375rem 0.125rem 0.4375rem",
     background: "#FFF",
   },
 }));
@@ -65,11 +82,27 @@ export const Qty = styled.span(({ theme }) => ({
     lineHeight: "normal",
     letterSpacing: "-0.0125rem",
   },
+
+  // 모바일: 태블릿과 동일
+  [theme.media.mobile]: {
+    width: "1.75rem",
+    flexShrink: 0,
+    color: theme.colors.textMain,
+    fontSize: theme.fontSize.xl, // 1.25rem
+    fontWeight: theme.fontWeight.semiBold, // 600
+    lineHeight: "normal",
+    letterSpacing: "-0.0125rem",
+  },
 }));
 
 export const ButtonRow = styled.div(({ theme }) => ({
   display: "flex",
   gap: theme.spacing.xs,
+
+  // 모바일: 하단 고정 CTA 바(MobileCtaBar)가 대신 보여줌
+  [theme.media.mobile]: {
+    display: "none",
+  },
 }));
 
 export const CartButton = styled.button(({ theme }) => ({
@@ -128,4 +161,9 @@ export const CheckoutButton = styled.button(({ theme }) => ({
 
   "&:not(:disabled):hover": { filter: "brightness(1.2)" }, // 팀 공통 버튼 호버
   "&:disabled": { opacity: 0.5, cursor: "not-allowed" },
+
+  // 모바일: 하단 고정 CTA 바(MobileCtaBar)가 대신 보여줌
+  [theme.media.mobile]: {
+    display: "none",
+  },
 }));

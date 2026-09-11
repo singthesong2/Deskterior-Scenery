@@ -14,6 +14,14 @@ export const Nav = styled.nav(({ theme }) => ({
     padding: 0,
     marginBottom: theme.spacing.xs,
   },
+
+  [theme.media.mobile]: {
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    alignSelf: "stretch",
+    padding: 0,
+    marginBottom: theme.spacing.md,
+  },
 }));
 
 export const BackButton = styled.button(({ theme }) => ({

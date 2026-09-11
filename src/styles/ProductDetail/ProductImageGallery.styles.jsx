@@ -15,9 +15,14 @@ export const MainImageFrame = styled.div(({ theme }) => ({
     aspectRatio: "auto",
     height: "22.41rem",
   },
+
+  [theme.media.mobile]: {
+    maxWidth: "none",
+    aspectRatio: "auto",
+    height: "22.625rem",
+  },
 }));
 
-// 품절 시 큰 이미지 위에 덮는 반투명 레이어 (ProductCard·CartItem 과 동일 패턴)
 export const ImageOverlay = styled.div(({ theme }) => ({
   position: "absolute",
   top: 0,
@@ -28,7 +33,6 @@ export const ImageOverlay = styled.div(({ theme }) => ({
   opacity: 0.35,
 }));
 
-// Best/New 뱃지 묶음 (ProductCard 와 동일 패턴)
 export const BadgeGroup = styled.div(({ theme }) => ({
   position: "absolute",
   top: theme.spacing.xs,
@@ -69,9 +73,13 @@ export const ThumbButton = styled.button(({ theme, $active }) => ({
     width: "3.55rem",
     height: "3.55rem",
   },
+
+  [theme.media.mobile]: {
+    width: "4.8125rem",
+    height: "4.375rem",
+  },
 }));
 
-// 큰 이미지 — 프레임(500x540)을 꽉 채움
 export const mainImage = {
   position: "absolute",
   inset: 0,
@@ -81,10 +89,9 @@ export const mainImage = {
   display: "block",
 };
 
-// 썸네일 이미지 — 정사각
 export const fillImage = {
   width: "100%",
-  aspectRatio: "1 / 1",
+  height: "100%",
   objectFit: "cover",
   display: "block",
 };

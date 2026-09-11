@@ -17,10 +17,14 @@ export const Button = styled.button(({ theme }) => ({
   borderRadius: theme.radius.full,
   border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
   background: theme.colors.textMain,
+
+  [theme.media.mobile]: {
+    bottom: "calc(81px + env(safe-area-inset-bottom, 0px))",
+  },
 }));
 
 export const Icon = styled.svg({
-  width: "1.5rem", // 24px — 40px 버튼에 맞춤
+  width: "1.5rem",
   height: "1.5rem",
   flexShrink: 0,
 });

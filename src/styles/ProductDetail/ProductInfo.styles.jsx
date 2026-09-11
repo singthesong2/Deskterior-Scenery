@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const Wrapper = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: theme.spacing.lg, // 24 통일
+  gap: theme.spacing.lg,
 }));
 
 // 상품 정보 하단 구분 바
@@ -67,6 +67,15 @@ export const DescBox = styled.div(({ theme }) => ({
     gap: theme.spacing.md, // 16
     height: "6.5rem", // 104
   },
+
+  [theme.media.mobile]: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: theme.spacing.xs,
+    height: "6.5rem", // 104
+    background: theme.colors.subtle, // solid #EBEAE4
+  },
 }));
 
 export const DescLabel = styled.p(({ theme }) => ({
@@ -78,6 +87,7 @@ export const DescLabel = styled.p(({ theme }) => ({
   marginBottom: theme.spacing["2xs"],
 
   [theme.media.tablet]: { marginBottom: 0 },
+  [theme.media.mobile]: { marginBottom: 0 },
 }));
 
 export const DescText = styled.p(({ theme }) => ({
@@ -89,6 +99,11 @@ export const DescText = styled.p(({ theme }) => ({
   whiteSpace: "pre-line",
 
   [theme.media.tablet]: {
+    fontSize: theme.fontSize.sm, // 0.875rem
+    fontWeight: theme.fontWeight.regular, // 400
+    letterSpacing: "-0.00875rem",
+  },
+  [theme.media.mobile]: {
     fontSize: theme.fontSize.sm, // 0.875rem
     fontWeight: theme.fontWeight.regular, // 400
     letterSpacing: "-0.00875rem",
