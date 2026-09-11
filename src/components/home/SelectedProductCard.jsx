@@ -31,17 +31,25 @@ function SelectedProductCard({
     totalProducts,
     onPrevious,
     onNext,
+    isProductLoading,
+    productError,
     }) {
         return (
           <ProductArea>
             <ProductTitleBox>
+              {isProductLoading && (
+                <p>상품을 불러오는 중...</p>
+              )}
+              {!isProductLoading && productError && (
+                <p>{productError}</p>
+              )}
               <ProductNumber>
                 {String(activeProductIndex + 1).padStart(2, "0")}
               </ProductNumber>
               <ProductTitle>Selected Product</ProductTitle>
             </ProductTitleBox>
 
-            {selectedProduct && (
+            {!isProductLoading && !productError && selectedProduct && (
               <>
                 <ProductImage
                   src={selectedProduct.imageUrl}
@@ -54,6 +62,9 @@ function SelectedProductCard({
                   <ProductDescription>{selectedProduct.description}</ProductDescription>
                 
                   <ProductTagContainer>
+                    {selectedCategory && (
+                      <ProductTag>{selectedCategory.name}</ProductTag>
+                    )}
                     <ProductTag>{selectedCategory.name}</ProductTag>
                     <ProductTag>{selectedStyleName}</ProductTag>
                   </ProductTagContainer>

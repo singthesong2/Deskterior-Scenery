@@ -55,3 +55,10 @@ export async function getProduct(productId) {
   const res = await clientApi(`/products/${productId}`); // { success, data }
   return toProduct(res.data);
 }
+
+// 원본 상품 정보 반환 - getProductRaw()
+export async function getProductRaw(productId) {
+  const response = await clientApi(`/products/${productId}`);
+
+  return response.data;
+}

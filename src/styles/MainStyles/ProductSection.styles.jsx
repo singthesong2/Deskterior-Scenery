@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { motion } from "motion/react";
 
 export const ProductsSection = styled.section(({theme, isBest}) => ({
-  padding: theme.spacing["4xl"], //96
+  padding: theme.spacing["3xl"], //64
   backgroundColor: isBest
     ? theme.colors.cards
     : theme.colors.background,

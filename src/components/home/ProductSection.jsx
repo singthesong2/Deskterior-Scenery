@@ -15,6 +15,7 @@ import {
 import products, { isBestProduct, isNewProduct } from "../../data/products";
 import ProductCard from "../product/ProductCard";
 import categories from "../../data/categories";
+import { getProducts } from "../../api/productsApi";
 import { useState, useEffect } from "react";
 import useCartStore from "../../store/cartStore";
 import {
@@ -52,12 +53,22 @@ function ProductGroup({title, items, isBest = false, onAddToCart, }) {
         return() => cancelAnimationFrame(frameId);
     }, [isResetting]);
 
+    // 데이터 로딩 전에 슬라이더가 오류 없이 불러와지게 설정
+    if(items.length === 0) {
+        return (
+            <ProductsSection isBest={isBest}>
+                <ProductTitle>{title}</ProductTitle>
+                <p>표시할 상품이 없습니다.</p>
+            </ProductsSection>
+        );
+    }
+
     const sliderProducts = [
         items[items.length - 1],
         ...items,
         items[0],
-        items[1],
-        items[2],
+        items[1 % items.length],
+        items[2 % items.length],
     ];
 
     // 제품 개수를 3으로 나누면 페이지 수가 나옴
@@ -201,17 +212,45 @@ function ProductGroup({title, items, isBest = false, onAddToCart, }) {
 }
 
 function ProductSection() {
-    const bestProducts = products.filter(
-        (product) => product.isBest && !product.soldOut
-    );
-    const newProducts = products.filter(
-        (product) => product.isNew && !product.soldOut
-    );
+
+    const [bestProducts, setBestProducts] = useState([]);
+    const [newProducts, setNewProducts] = useState([]);
 
     const addToCart = useCartStore((s) => s.addToCart);
 
+    // 서버 API 호출 및 상태 업데이트
+    useEffect(() => {
+        async function fetchMainProducts() {
+            try {
+                const bestResult = await getProducts({
+                    isBest: true,
+                    soldOut: false,
+                    page: 1,
+                    limit: 12,
+                });
+
+                setBestProducts(bestResult.products || []);
+
+                const newResult = await getProducts({
+                    isNew: true,
+                    soldOut: false,
+                    page: 1,
+                    limit: 12,
+                });
+                setNewProducts(newResult.products || []);
+
+            } catch(error) {
+                console.error("상품 데이터 조회 실패", error);
+            }
+        }
+        fetchMainProducts();
+    }, []);
+
+    // 서버 데이터 기준으로 카트 추가
     const handleAddToCart = async (productId) => {
-        const product = products.find((p) => p.id === productId);
+        const allLoadedProducts = [...bestProducts, ...newProducts];
+        const product = allLoadedProducts.find((p) => p.id === productId);
+
         if (!product) return;
 
         try {

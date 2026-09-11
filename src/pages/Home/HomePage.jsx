@@ -3,23 +3,29 @@ import { HeroSection } from "../../components/home/HeroSection";
 import { DeskCurationSection } from "../../components/home/DeskCurationSection";
 import { ProductSection } from "../../components/home/ProductSection";
 import { useEffect, useState } from "react";
-import main from "../../data/main";
 import { getCategories } from "../../api/categoriesApi";
+import { getMain } from "../../api/mainApi";
 
 export default function HomePage() {
-  // useEffect(() => {
-  //   async function fetchMainData() {
-  //     try {
-  //       const data = await getMain();
-  //       console.log("GET /main 응답:", data);
-  //     } catch (error) {
-  //       console.log("GET /main 요청 실패:", error);
-  //     }
-  //   }
-  //   fetchMainData();
-  // }, []);
-  const categoryItems = main.slice(0, 5);
-  const styleItems = main.filter((item) => item.styleId);
+  const [mainImages, setMainImages] = useState([]);
+
+  useEffect(() => {
+    async function fetchMainData() {
+      try {
+        const response = await getMain();
+
+        setMainImages(response.data.images);
+        console.log("메인 이미지 목록:", response.data.images);
+      } catch (error) {
+        console.error("메인 이미지 조회 실패:", error);
+      }
+    }
+
+    fetchMainData();
+  }, []);
+
+  const categoryItems = mainImages.filter((item) => item.categoryId);
+  const styleItems = mainImages.filter((item) => item.styleId);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {

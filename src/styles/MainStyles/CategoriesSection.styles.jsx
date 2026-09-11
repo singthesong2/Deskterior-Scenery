@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const CategoriesContainer = styled.section(({ theme }) => ({
   width: "100%",
-  padding: `${theme.spacing["3xl"]} ${theme.spacing["4xl"]} ${theme.spacing["4xl"]}`, // 64 96 96
+  padding: theme.spacing["3xl"],
   backgroundColor: theme.colors.cards,
   display: "flex",
   flexDirection: "column",
