@@ -96,7 +96,7 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
         reviewCount;
 
   const handleAddToCart = async () => {
-    if (!product || product.soldOut) return;
+    if (!product) return;
 
     // 상세페이지 상품(id/images/soldOut) → 장바구니가 쓰는 모양(productId/imageUrl/isSoldOut)
     try {
