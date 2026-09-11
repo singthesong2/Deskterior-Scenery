@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { getCategoryById } from "../../data/categories";
 import {
   SectionTitle,
   CategoriesContainer,
@@ -9,7 +8,7 @@ import {
   CategoryImage,
 } from "../../styles/MainStyles/CategoriesSection.styles";
 
-function CategoriesSection({ items = [] }) {
+function CategoriesSection({ items = [], categories = [] }) {
   const navigate = useNavigate();
 
   return (
@@ -18,7 +17,7 @@ function CategoriesSection({ items = [] }) {
 
       <CategoryList>
         {items.map((item) => {
-          const category = getCategoryById(item.categoryId);
+          const category = categories.find((c) => c.id === item.categoryId);
 
           return (
             <CategoryItem

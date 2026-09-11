@@ -1,14 +1,19 @@
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import allProducts, { isBestProduct, isNewProduct } from "../../data/products";
+import { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
+import { getProducts, isForceSoldOut } from "../../api/productsApi";
 import { showSuccessToast } from "../../components/common/ShowToast";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
+import Loading from "../../components/common/Loading";
 import * as S from "../../styles/ListPageStyles/CategoryPage.styles";
 
 const PAGE_SIZE = 6;
 const ROW_SIZE = 3;
+// sort/q가 서버에 반영되기 전까지, 카테고리 내 전체 상품을 한 번에 받아 검색/정렬/페이징은 클라이언트에서 처리
+const FETCH_LIMIT = 100;
 
 const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
@@ -18,8 +23,6 @@ const SORT_COMPARATORS = {
   priceLow: (a, b) => a.price - b.price,
   reviewCount: (a, b) => b.reviewCount - a.reviewCount,
 };
-
-const stripAngleBrackets = (url) => url.replace(/^<|>$/g, "");
 
 const CategoryPage = ({ categoryId = "lighting" }) => {
   const category = getCategoryById(categoryId);
@@ -43,18 +46,56 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
     }, options);
   };
 
-  const categoryProducts = allProducts
-    .filter((product) => product.categoryId === categoryId)
-    .map((product) => ({
-      ...product,
-      imageUrl: stripAngleBrackets(product.imageUrl),
-    }));
+  const [categoryProducts, setCategoryProducts] = useState(null);
+  const [loadedCategoryId, setLoadedCategoryId] = useState(null);
+  const [erroredCategoryId, setErroredCategoryId] = useState(null);
+
+  useEffect(() => {
+    let alive = true;
+    getProducts({ category: categoryId, limit: FETCH_LIMIT })
+      .then((data) => {
+        if (!alive) return;
+        setCategoryProducts(
+          data.products.map((product) => ({
+            ...product,
+            soldOut: isForceSoldOut(product.id),
+          })),
+        );
+        setLoadedCategoryId(categoryId);
+      })
+      .catch((err) => {
+        console.error("상품목록 로딩 실패:", err);
+        if (alive) setErroredCategoryId(categoryId);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [categoryId]);
+
+  const isCurrentCategory =
+    categoryProducts !== null && loadedCategoryId === categoryId;
+  const isCurrentError = erroredCategoryId === categoryId;
 
   if (!category) {
     return null;
   }
 
   const breadcrumbTrail = [{ label: "Home" }, { label: category.name }];
+
+  if (isCurrentError) {
+    return (
+      <S.Main>
+        <S.Header>
+          <S.PageTitle>{category.name}</S.PageTitle>
+        </S.Header>
+        <p>상품목록을 불러올 수 없어요.</p>
+      </S.Main>
+    );
+  }
+
+  if (!isCurrentCategory) {
+    return <Loading />;
+  }
 
   const filteredProducts = categoryProducts
     .filter((product) =>

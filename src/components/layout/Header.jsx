@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import categories from "../../data/categories";
+import { getCategories } from "../../api/categoriesApi";
 import { BasketIcon, LoginIcon } from "../icons/Icons";
 import useCartStore from "../../store/cartStore";
 import {
@@ -23,6 +24,14 @@ const Header = ({ activeLink }) => {
   const isLoggedIn = !!localStorage.getItem("token");
   // 뱃지 갯수 계산
   const cartCount = cartItems.length;
+
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getCategories()
+      .then(setCategories)
+      .catch((err) => console.error("카테고리 로딩 실패:", err));
+  }, []);
+
   return (
     <HeaderSection>
       <MenuButton type="button" aria-label="메뉴 열기">
