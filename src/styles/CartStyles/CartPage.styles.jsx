@@ -29,7 +29,7 @@ export const Course = styled.span(({ theme }) => ({
 }));
 
 // Cart
-export const PageTitle = styled.h1(({ theme }) => ({
+export const PageTitle = styled.h2(({ theme }) => ({
   fontFamily: theme.fontFamily.display,
   fontSize: theme.fontSize.dpMd,
   fontWeight: theme.fontWeight.regular,
