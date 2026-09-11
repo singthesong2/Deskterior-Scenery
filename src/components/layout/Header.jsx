@@ -40,8 +40,10 @@ const Header = ({ activeLink }) => {
         <span />
       </MenuButton>
 
-      <Logo as={Link} to="/" aria-label="타이틀 메인화면 버튼">
-        SCENERY
+      <Logo>
+        <Link to="/" aria-label="타이틀 메인화면 버튼">
+          SCENERY
+        </Link>
       </Logo>
 
       <Navigation>
