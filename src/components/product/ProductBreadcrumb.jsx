@@ -2,13 +2,16 @@ import { useNavigate } from "react-router";
 import { ArrowLeftIcon } from "../icons/Icons";
 import * as S from "../../styles/ProductDetail/ProductBreadcrumb.styles";
 
-/**
- * 상단 네비 — 뒤로가기 + "Home > Category > 상품명" 경로.
- * 전부 현재 위치 표시용 텍스트일 뿐, 클릭되지 않는다.
- */
-const ProductBreadcrumb = ({ category, productName }) => {
+//Home / 카테고리는 각각 홈·카테고리 페이지로 이동, 마지막(상품명)은 현재 위치라 텍스트만.
+
+const ProductBreadcrumb = ({ category, categoryPath, productName }) => {
   const navigate = useNavigate();
-  const trail = ["Home", category, productName].filter(Boolean);
+
+  const trail = [
+    { label: "Home", to: "/" },
+    category && { label: category, to: categoryPath || undefined },
+    productName && { label: productName },
+  ].filter(Boolean);
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -26,14 +29,15 @@ const ProductBreadcrumb = ({ category, productName }) => {
       </S.BackButton>
 
       <S.Trail>
-        {trail.map((label, index) => {
+        {trail.map((item, index) => {
           const isLast = index === trail.length - 1;
           return (
-            <S.Crumb
-              key={index}
-              aria-current={isLast ? "page" : undefined}
-            >
-              {label}
+            <S.Crumb key={index} aria-current={isLast ? "page" : undefined}>
+              {item.to ? (
+                <S.CrumbLink to={item.to}>{item.label}</S.CrumbLink>
+              ) : (
+                item.label
+              )}
             </S.Crumb>
           );
         })}

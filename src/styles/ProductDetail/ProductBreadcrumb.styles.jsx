@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router";
 
 export const Nav = styled.nav(({ theme }) => ({
   display: "flex",
@@ -58,3 +59,8 @@ export const Crumb = styled.li(({ theme }) => ({
     margin: `0 ${theme.spacing["2xs"]}`,
   },
 }));
+
+// Home / 카테고리처럼 이동 가능한 크럼 (마지막 상품명은 그냥 텍스트로 둠)
+export const CrumbLink = styled(Link)({
+  "&:hover": { textDecoration: "underline" },
+});
