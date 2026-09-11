@@ -11,7 +11,7 @@ import {
   KeywordButton,
   ClickableProductMap,
 } from "../../styles/MainStyles/DeskCurationSection.styles";
-import products from "../../data/products";
+import { getProductRaw } from "../../api/productsApi";
 import categories from "../../data/categories";
 import { SelectedProductCard } from "./SelectedProductCard";
 import { DeskProductMap } from "./DeskProductMap";
@@ -19,6 +19,8 @@ import { DeskProductMap } from "./DeskProductMap";
 function DeskCurationSection({items = [] }) {
   const [selectedStyleId, setSelectedStyleId] = useState(null);
   const [selectedProductNumber, setSelectedProductNumber] = useState(null);
+  // 서버에서 받은 상품을 저장할 상태
+  const [productData, setProductData] = useState(null);
 
   // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
   const activeStyleId = selectedStyleId ?? items[0]?.styleId;
@@ -27,7 +29,7 @@ function DeskCurationSection({items = [] }) {
   );
 
   const activeProductNumber = selectedProductNumber ?? selectedStyle?.coordinate?.[0]?.productId;
-  const selectedProduct = products.find((product) => product.id === activeProductNumber);
+  const selectedProduct = productData?.id === activeProductNumber ? productData : null;
   const selectedCategory = categories.find((category) => category.id === selectedProduct?.categoryId);
   // selectedStyle에 coordinate가 있으면 가져오고 undefined이거나 null 이면 빈 배열을 반환함
   const coordinates = selectedStyle?.coordinate ?? [];
@@ -35,6 +37,33 @@ function DeskCurationSection({items = [] }) {
   const activeProductIndex = coordinates.findIndex(
     (item) => item.productId === activeProductNumber
   );
+
+  // 큐레이션 상품 정보 연결
+  useEffect(() => {
+    if(activeProductNumber == null) return;
+
+    let ignore = false;
+
+    async function fetchSelectedProduct() {
+      try {
+        const product = await getProductRaw(activeProductNumber);
+
+        if(!ignore) {
+          setProductData(product);
+        }
+      } catch(error) {
+        if(!ignore) {
+          setProductData(null);
+          console.error("큐레이션 상품 조회 실패:", error);
+        }
+      }
+    }
+    fetchSelectedProduct();
+
+    return() => {
+      ignore = true;
+    };
+  }, [activeProductNumber]);
 
   // 화면이 처음 열릴 때 imageUrl을 미리 저장
   useEffect(() => {
