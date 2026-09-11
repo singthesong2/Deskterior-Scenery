@@ -152,8 +152,8 @@ export const HeadphonesLabel = styled(motion.div)(({theme}) => ({
 
 export const PenTrayLabel = styled(motion.div)(({theme}) => ({
   position: "absolute",
-  right: "12%",
-  top: "55%",
+  right: "15%",
+  top: "52%",
   color: theme.colors.textMain,
 }));
 
