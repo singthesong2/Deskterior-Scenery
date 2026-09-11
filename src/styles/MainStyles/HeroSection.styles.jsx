@@ -26,7 +26,7 @@ export const ObjectInteractionArea = styled.div({
   zIndex: 20,
 });
 
-export const HeroTitle = styled(motion.h1)(({theme}) => ({
+export const HeroTitle = styled(motion.h2)(({theme}) => ({
   position: "absolute",
   left: 0,
   top: "32%",
@@ -152,8 +152,8 @@ export const HeadphonesLabel = styled(motion.div)(({theme}) => ({
 
 export const PenTrayLabel = styled(motion.div)(({theme}) => ({
   position: "absolute",
-  right: "12%",
-  top: "55%",
+  right: "15%",
+  top: "52%",
   color: theme.colors.textMain,
 }));
 
