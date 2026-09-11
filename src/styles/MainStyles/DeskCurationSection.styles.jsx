@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const CurationSection = styled.section(({theme}) => ({
-  padding: theme.spacing["4xl"], //96
+  padding: theme.spacing["3xl"], //64
 }))
 
 export const CurationTitleBox = styled.div(({theme}) => ({

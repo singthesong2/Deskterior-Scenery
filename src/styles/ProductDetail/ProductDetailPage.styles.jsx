@@ -9,7 +9,7 @@ export const Wrapper = styled.div({
 export const Page = styled.div(({ theme }) => ({
   maxWidth: "1088px",
   margin: "0 auto",
-  padding: theme.spacing["4xl"],
+  padding: theme.spacing["3xl"],
   textAlign: "left",
 
   [theme.media.tablet]: {
