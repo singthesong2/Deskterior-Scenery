@@ -7,6 +7,15 @@ export async function signUp(data) {
   });
 }
 
+export function checkId(id) {
+  return clientApi("/auth/check-id", {
+    method: "POST",
+    body: JSON.stringify({
+      id,
+    }),
+  });
+}
+
 export async function login(data) {
   return clientApi("/auth/login", {
     method: "POST",
@@ -17,15 +26,12 @@ export async function login(data) {
   });
 }
 
-export function getMe() {
-  return clientApi("/auth/me");
+export function logout() {
+  return clientApi("/auth/logout", {
+    method: "POST",
+  });
 }
 
-export function checkId(id) {
-  return clientApi("/auth/check-id", {
-    method: "POST",
-    body: JSON.stringify({
-      id,
-    }),
-  });
+export function getMe() {
+  return clientApi("/auth/me");
 }

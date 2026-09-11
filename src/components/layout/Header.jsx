@@ -1,8 +1,12 @@
+import useAutoStore from "../common/UseAuthStore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
-import { BasketIcon, LoginIcon } from "../icons/Icons";
+import { logout } from "../../api/authApi";
+import { BasketIcon, LoginIcon, LogoutIcon } from "../icons/Icons";
 import useCartStore from "../../store/cartStore";
+import { showFailToast, showSuccessToast } from "../common/ShowToast";
+import { useNavigate } from "react-router";
 import {
   HeaderSection,
   Logo,
@@ -18,10 +22,13 @@ import {
 } from "../../styles/Header.styles";
 
 const Header = ({ activeLink }) => {
+  const navigate = useNavigate();
   // 스토어에서 cartiTRem 가져옴
   const { cartItems, syncCartWithServer } = useCartStore();
   // 로그인 확인
-  const isLoggedIn = !!localStorage.getItem("token");
+  const user = useAutoStore((state) => state.user);
+
+  const clearUser = useAutoStore((state) => state.clearUser);
   // 뱃지 갯수 계산
   const cartCount = cartItems.length;
 
@@ -37,6 +44,20 @@ const Header = ({ activeLink }) => {
       syncCartWithServer();
     }
   }, [isLoggedIn, syncCartWithServer]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      localStorage.removeItem("token");
+      clearUser();
+      showSuccessToast("Logout successful");
+      navigate("/");
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+      showFailToast("Logout Fail");
+    }
+  };
 
   return (
     <HeaderSection>
@@ -70,9 +91,19 @@ const Header = ({ activeLink }) => {
       </Navigation>
 
       <IconContainer>
-        <IconButton as={Link} to="/login" aria-label="로그인 버튼">
-          <LoginIcon />
-        </IconButton>
+        {user ? (
+          <IconButton
+            type="button"
+            aria-label="로그아웃 버튼"
+            onClick={handleLogout}
+          >
+            <LogoutIcon />
+          </IconButton>
+        ) : (
+          <IconButton as={Link} to="/login" aria-label="로그인 버튼">
+            <LoginIcon />
+          </IconButton>
+        )}
 
         <IconButton as={Link} to="/cartpage" aria-label="장바구니 버튼">
           <CartIconWrapper>

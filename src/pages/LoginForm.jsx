@@ -2,6 +2,7 @@ import AuthForm from "../components/AuthForm";
 import { login } from "../api/authApi";
 import useCartStore from "../store/cartStore";
 import loginbanner from "../assets/loginbanner.webp";
+import useAuthStore from "../components/common/UseAuthStore";
 
 import {
   LoginPage,
@@ -13,6 +14,8 @@ import {
 } from "../styles/LoginForm.styles";
 
 function LoginForm({ setIsLoggedIn, setUserInfo }) {
+  const setUser = useAuthStore((state) => state.setUser);
+
   // 장바구니 병합 함수
   const { mergeLocalCartToServer } = useCartStore();
 
@@ -20,10 +23,8 @@ function LoginForm({ setIsLoggedIn, setUserInfo }) {
     const result = await login(data);
 
     localStorage.setItem("token", result.token);
-    localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
 
-    setIsLoggedIn(true);
-    setUserInfo(result.userInfo);
+    setUser(result.userInfo);
 
     // 장바구니 로컬데이터 옮김
     try {
