@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { getCategoryById } from "../../data/categories";
+import { getCategories } from "../../api/categoriesApi";
 import { getProducts } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
 import {
@@ -19,8 +19,30 @@ const ROW_SIZE = 3;
 const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
 const CategoryPage = ({ categoryId = "lighting" }) => {
-  const category = getCategoryById(categoryId);
   const addToCart = useCartStore((s) => s.addToCart);
+
+  const [categories, setCategories] = useState(null);
+  const [categoriesFailed, setCategoriesFailed] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    getCategories()
+      .then((data) => {
+        if (alive) setCategories(data);
+      })
+      .catch((err) => {
+        console.error("카테고리 로딩 실패:", err);
+        if (!alive) return;
+        setCategoriesFailed(true);
+        showFailToast("카테고리 이름을 불러오지 못했어요.");
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const category = categories?.find((c) => c.id === categoryId);
+  // 카테고리 이름을 못 가져와도(로딩 실패) 상품목록 자체는 볼 수 있도록 categoryId로 폴백
+  const categoryName = category?.name ?? categoryId;
 
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("q") ?? "";
@@ -90,11 +112,20 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
   const hasLoadedOnce = pageProducts !== null;
   const isCurrentError = erroredKey === queryKey;
 
-  if (!category) {
+  // 카테고리 목록이 아직 로딩 중(실패도 아직 안 함)이면 유효한 categoryId인지도 아직 알 수 없으니 대기
+  if (categories === null && !categoriesFailed) {
+    return <Loading />;
+  }
+
+  // 카테고리 목록을 정상적으로 받아왔는데 그 안에 없는 id면 진짜 잘못된 페이지
+  if (categories !== null && !category) {
     return null;
   }
 
-  const breadcrumbTrail = [{ label: "Home" }, { label: category.name }];
+  const breadcrumbTrail = [
+    { label: "Home", path: "/" },
+    { label: categoryName },
+  ];
 
   // 진짜 첫 로딩(에러도 데이터도 아직 없음)일 때만 전체 화면 스피너
   if (!hasLoadedOnce && !isCurrentError) {
@@ -194,13 +225,17 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
                     key={crumb.label}
                     aria-current={isCurrent ? "page" : undefined}
                   >
-                    {crumb.label}
+                    {crumb.path && !isCurrent ? (
+                      <S.CrumbLink to={crumb.path}>{crumb.label}</S.CrumbLink>
+                    ) : (
+                      crumb.label
+                    )}
                   </S.Crumb>
                 );
               })}
             </S.Trail>
           </S.Breadcrumb>
-          <S.PageTitle>{category.name}</S.PageTitle>
+          <S.PageTitle>{categoryName}</S.PageTitle>
           <S.PageSubtitle>Take Your SCENERY</S.PageSubtitle>
         </S.Header>
 
