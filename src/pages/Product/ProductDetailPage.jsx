@@ -77,12 +77,6 @@ const ProductDetailPage = () => {
       .then((data) => setReviews(data.reviews))
       .catch((err) => console.error("리뷰 로딩 실패:", err));
 
-  // 상품이 바뀔 때마다 스크롤 최상단
-  useEffect(() => {
-    if (hash) return;
-    window.scrollTo(0, 0);
-  }, [id, hash]);
-
   useEffect(() => {
     if (!hash || !isCurrentProduct) return;
     document
@@ -169,6 +163,7 @@ const ProductDetailPage = () => {
       <S.Page>
         <ProductBreadcrumb
           category={product.category}
+          categoryPath={product.categoryPath}
           productName={product.name}
         />
 

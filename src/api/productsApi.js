@@ -7,6 +7,8 @@ export const isForceSoldOut = (id) => FORCE_SOLD_OUT_IDS.has(id);
 
 // 서버 응답 → 프론트 컴포넌트가 쓰는 모양으로 변환
 function toProduct(raw) {
+  const category = getCategoryById(raw.categoryId);
+
   return {
     id: raw.id,
     name: raw.name,
@@ -14,14 +16,15 @@ function toProduct(raw) {
     discountPrice: raw.discountPrice,
     description: raw.description,
 
-    category: getCategoryById(raw.categoryId)?.name ?? raw.categoryId,
+    category: category?.name ?? raw.categoryId,
+    categoryPath: category?.path ?? null,
 
     images: [raw.imageUrl, ...(raw.thumbnails ?? [])],
 
-    // detailImages: 문자열 배열 → { imageUrl, title, description } 객체 배열로 변경됨
+    // detailImages: 문자열 배열 → { imageUrl, title, description } 객체 배열
     detailSections: (raw.detailImages ?? []).map((item, index) => ({
       id: index + 1,
-      image: item.imageUrl ?? item, // 옛 문자열 응답도 방어적으로 지원
+      image: item.imageUrl ?? item,
       title: item.title ?? "",
       body: item.description ?? "",
     })),
