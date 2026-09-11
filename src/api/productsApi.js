@@ -18,11 +18,12 @@ function toProduct(raw) {
 
     images: [raw.imageUrl, ...(raw.thumbnails ?? [])],
 
-    detailSections: (raw.detailImages ?? []).map((url, index) => ({
+    // detailImages: 문자열 배열 → { imageUrl, title, description } 객체 배열로 변경됨
+    detailSections: (raw.detailImages ?? []).map((item, index) => ({
       id: index + 1,
-      image: url,
-      title: "",
-      body: "",
+      image: item.imageUrl ?? item, // 옛 문자열 응답도 방어적으로 지원
+      title: item.title ?? "",
+      body: item.description ?? "",
     })),
     soldOut: FORCE_SOLD_OUT_IDS.has(raw.id) || (raw.stock ?? 0) <= 0,
     rating: raw.rating ?? 0,

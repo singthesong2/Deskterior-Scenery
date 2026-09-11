@@ -7,14 +7,18 @@ export const Wrapper = styled.div({
 });
 
 export const Page = styled.div(({ theme }) => ({
-  // 콘텐츠 폭 896(500+48+348) + 좌우 패딩 96*2
   maxWidth: "1088px",
   margin: "0 auto",
-  padding: theme.spacing["4xl"], // 상하·좌우 96
+  padding: theme.spacing["4xl"],
   textAlign: "left",
 
   [theme.media.tablet]: {
     padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+  },
+
+  [theme.media.mobile]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.md}`,
+    paddingBottom: `calc(${theme.spacing["2xl"]} + 81px + env(safe-area-inset-bottom, 0px))`,
   },
 }));
 
@@ -29,7 +33,7 @@ export const TopSection = styled.div(({ theme }) => ({
 
   [theme.media.mobile]: {
     flexDirection: "column",
-    gap: theme.spacing.lg,
+    gap: theme.spacing.md,
   },
 }));
 
@@ -42,11 +46,11 @@ export const GalleryColumn = styled.div(({ theme }) => ({
 }));
 
 export const InfoColumn = styled.div(({ theme }) => ({
-  flex: "0 0 21.75rem", // 348 고정 (데스크탑·태블릿 공통)
+  flex: "0 0 21.75rem",
   minWidth: 0,
   display: "flex",
   flexDirection: "column",
-  gap: theme.spacing.lg, // 24
+  gap: theme.spacing.lg,
 
   [theme.media.mobile]: { flex: "none", width: "100%" },
 }));

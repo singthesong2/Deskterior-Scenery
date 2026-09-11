@@ -4,6 +4,7 @@ import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
 import ProductImageGallery from "../../components/product/ProductImageGallery";
 import ProductInfo from "../../components/product/ProductInfo";
 import PurchaseBox from "../../components/product/PurchaseBox";
+import MobileCtaBar from "../../components/product/MobileCtaBar";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
@@ -214,6 +215,14 @@ const ProductDetailPage = ({ isLoggedIn = false }) => {
         />
 
         <ScrollTopButton />
+
+        <MobileCtaBar
+          isWished={isWished}
+          onToggleWish={handleToggleWish}
+          onAddToCart={handleAddToCart}
+          onCheckout={handleCheckout}
+          soldOut={product.soldOut}
+        />
       </S.Page>
     </S.Wrapper>
   );

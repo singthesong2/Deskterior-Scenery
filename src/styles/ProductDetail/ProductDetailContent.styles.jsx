@@ -11,6 +11,11 @@ export const Section = styled.section(({ theme }) => ({
   [theme.media.tablet]: {
     padding: `${theme.spacing["2xl"]} 0`,
   },
+
+  [theme.media.mobile]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.md}`,
+    background: theme.colors.background,
+  },
 }));
 
 export const Inner = styled.div(({ theme }) => ({
@@ -18,7 +23,13 @@ export const Inner = styled.div(({ theme }) => ({
   margin: "0 auto",
   padding: "0 144px", // 데스크탑·태블릿 공통
 
-  [theme.media.mobile]: { padding: "0 20px" },
+  [theme.media.mobile]: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: theme.spacing.md, // 16
+    padding: 0,
+  },
 }));
 
 export const Title = styled.h2(({ theme }) => ({
@@ -34,6 +45,10 @@ export const Title = styled.h2(({ theme }) => ({
   [theme.media.tablet]: {
     fontSize: theme.fontSize["4xl"],
   },
+
+  [theme.media.mobile]: {
+    margin: 0,
+  },
 }));
 
 export const Article = styled.article(({ theme }) => ({
@@ -41,6 +56,11 @@ export const Article = styled.article(({ theme }) => ({
 
   [theme.media.tablet]: {
     marginBottom: theme.spacing.lg,
+  },
+
+  [theme.media.mobile]: {
+    marginBottom: 0,
+    alignSelf: "stretch",
   },
 }));
 
