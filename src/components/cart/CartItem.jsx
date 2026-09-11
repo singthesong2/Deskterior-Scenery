@@ -1,10 +1,13 @@
+import { useTheme } from "@emotion/react";
 import Badge from "../common/Badge";
+import { isBestProduct, isNewProduct } from "../../data/products";
 import {
   ItemWrapper,
   ItemLeft,
   ItemCheckbox,
   ImageBox,
   ItemImage,
+  BadgeGroup,
   ImageOverlay,
   InfoBox,
   ItemName,
@@ -26,6 +29,22 @@ const CartItem = ({
   onDecrease,
   onDelete,
 }) => {
+  const theme = useTheme();
+
+  const badges = [
+    item.isSoldOut && {
+      text: "Sold out",
+      size: "sm",
+      background: theme.colors.error,
+    },
+    isBestProduct(item.productId) && { text: "Best", size: "sm" },
+    isNewProduct(item.productId) && {
+      text: "New",
+      size: "sm",
+      background: theme.colors.textMain,
+    },
+  ].filter(Boolean);
+
   return (
     <ItemWrapper>
       {/* 체크박스, 이미지(뺏지), 상품*/}
@@ -40,7 +59,13 @@ const CartItem = ({
         <ImageBox>
           <ItemImage src={item.imageUrl} alt={item.name} />
           {item.isSoldOut && <ImageOverlay />}
-          {item.isSoldOut && <Badge text="Sold out" top="8px" left="8px" />}
+          {badges.length > 0 && (
+            <BadgeGroup>
+              {badges.map((badge) => (
+                <Badge key={badge.text} {...badge} />
+              ))}
+            </BadgeGroup>
+          )}
         </ImageBox>
 
         <InfoBox>

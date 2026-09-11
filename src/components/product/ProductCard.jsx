@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { useTheme } from "@emotion/react";
 import { BasketIcon, HeartIcon, StarIcon } from "../icons/Icons";
 import Badge from "../common/Badge";
@@ -13,6 +14,7 @@ const ProductCard = ({
   isNew = false,
 }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [liked, setLiked] = useState(!!product.liked);
 
   const safeRating = Math.min(5, Math.max(0, Number(product.rating) || 0));
@@ -28,6 +30,22 @@ const ProductCard = ({
   };
 
   const handleAddToCart = () => onAddToCart?.(product.id);
+
+  const handleNameClick = (event) => {
+    event.stopPropagation();
+    if (!isClickable) return;
+    navigate(`/products/${product.id}`);
+  };
+
+  // 키보드(Tab 으로 포커스 → Enter / Space)로도 상세페이지 이동
+  const handleNameKeyDown = (event) => {
+    event.stopPropagation();
+    if (!isClickable) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      navigate(`/products/${product.id}`);
+    }
+  };
 
   const handleRatingClick = (event) => {
     event.stopPropagation();
@@ -87,7 +105,15 @@ const ProductCard = ({
         {showCategory && product.categoryName && (
           <S.CategoryName>{product.categoryName}</S.CategoryName>
         )}
-        <S.ProductName>{product.name}</S.ProductName>
+        <S.ProductName
+          onClick={handleNameClick}
+          onKeyDown={handleNameKeyDown}
+          role={isClickable ? "button" : undefined}
+          tabIndex={isClickable ? 0 : undefined}
+          aria-label={isClickable ? `${product.name} 상세 보기` : undefined}
+        >
+          {product.name}
+        </S.ProductName>
         <S.Price>₩ {safePrice.toLocaleString("ko-KR")}</S.Price>
         <S.Rating
           onClick={handleRatingClick}

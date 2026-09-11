@@ -49,6 +49,17 @@ export const ItemImage = styled.img(({ theme }) => ({
   objectFit: "cover",
 }));
 
+// 뱃지 묶음 (Sold out / Best / New 가로 배치)
+export const BadgeGroup = styled.div(({ theme }) => ({
+  position: "absolute",
+  top: theme.spacing.xs,
+  left: theme.spacing.xs,
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing["2xs"],
+  zIndex: 10,
+}));
+
 // 솔드아웃 이미지 블러
 export const ImageOverlay = styled.div(({ theme }) => ({
   position: "absolute",

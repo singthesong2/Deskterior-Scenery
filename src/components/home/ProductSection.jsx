@@ -16,6 +16,11 @@ import products, { isBestProduct, isNewProduct } from "../../data/products";
 import ProductCard from "../product/ProductCard";
 import categories from "../../data/categories";
 import { useState, useEffect } from "react";
+import useCartStore from "../../store/cartStore";
+import {
+    showSuccessToast,
+    showFailToast,
+} from "../common/ShowToast";
 
 // 페이지별 상품 표시 개수
 const ITEMS_PER_PAGE = 3;
@@ -32,7 +37,7 @@ function getCategoryName(categoryId) {
     return category?.name ?? categoryId;
 }
 
-function ProductGroup({title, items, isBest = false, }) {
+function ProductGroup({title, items, isBest = false, onAddToCart, }) {
     const [currentIndex, setCurrentIndex] = useState(1);
     const [direction, setDirection] = useState(1);
     const [isResetting, setIsResetting] = useState(false);
@@ -142,13 +147,16 @@ function ProductGroup({title, items, isBest = false, }) {
                 onAnimationComplete={handleAnimationComplete}
                     >
                         {sliderProducts.map((product, index) => (
-                        <ProductCard 
+                        <ProductCard
                         key={`${product.id}-${index}`}
                         product={{
                             ...product,
                             categoryName: getCategoryName(product.categoryId),
                         }}
                         showCategory
+                        isBest={isBestProduct(product.id)}
+                        isNew={isNewProduct(product.id)}
+                        onAddToCart={onAddToCart}
                         />
                     ))}
                     </SliderTrack>
@@ -200,16 +208,39 @@ function ProductSection() {
         (product) => product.isNew && !product.soldOut
     );
 
+    const addToCart = useCartStore((s) => s.addToCart);
+
+    const handleAddToCart = async (productId) => {
+        const product = products.find((p) => p.id === productId);
+        if (!product) return;
+
+        try {
+            await addToCart({
+                productId: product.id,
+                name: product.name,
+                price: product.discountPrice || product.price,
+                imageUrl: product.imageUrl,
+                isSoldOut: product.soldOut,
+            });
+            showSuccessToast("장바구니에 담겼습니다");
+        } catch (err) {
+            console.error("장바구니 담기 실패:", err);
+            showFailToast("장바구니 담기에 실패했습니다");
+        }
+    };
+
     return (
         <>
             <ProductGroup
                 title="Best Items"
                 items={bestProducts}
                 isBest
+                onAddToCart={handleAddToCart}
             />
             <ProductGroup
                 title="New Items"
                 items={newProducts}
+                onAddToCart={handleAddToCart}
             />
         </>
   )

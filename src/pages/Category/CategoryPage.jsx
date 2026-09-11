@@ -3,7 +3,11 @@ import { useSearchParams } from "react-router";
 import { isBestProduct, isNewProduct } from "../../data/products";
 import { getCategoryById } from "../../data/categories";
 import { getProducts, isForceSoldOut } from "../../api/productsApi";
-import { showSuccessToast } from "../../components/common/ShowToast";
+import useCartStore from "../../store/cartStore";
+import {
+  showSuccessToast,
+  showFailToast,
+} from "../../components/common/ShowToast";
 import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
@@ -26,6 +30,7 @@ const SORT_COMPARATORS = {
 
 const CategoryPage = ({ categoryId = "lighting" }) => {
   const category = getCategoryById(categoryId);
+  const addToCart = useCartStore((s) => s.addToCart);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("q") ?? "";
@@ -129,9 +134,23 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
     rows.push(gridItems.slice(i, i + ROW_SIZE));
   }
 
-  const handleAddToCart = (productId) => {
-    console.log("장바구니 담기", { productId });
-    showSuccessToast("장바구니에 담겼습니다");
+  const handleAddToCart = async (productId) => {
+    const product = categoryProducts.find((p) => p.id === productId);
+    if (!product) return;
+
+    try {
+      await addToCart({
+        productId: product.id,
+        name: product.name,
+        price: product.discountPrice || product.price,
+        imageUrl: product.imageUrl,
+        isSoldOut: product.soldOut,
+      });
+      showSuccessToast("장바구니에 담겼습니다");
+    } catch (err) {
+      console.error("장바구니 담기 실패:", err);
+      showFailToast("장바구니 담기에 실패했습니다");
+    }
   };
 
   return (

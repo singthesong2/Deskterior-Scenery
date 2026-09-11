@@ -110,6 +110,9 @@ export const Info = styled.div(({ theme }) => ({
 }));
 
 export const ProductName = styled.strong(({ theme }) => ({
+  position: "relative",
+  zIndex: 2,
+  cursor: "pointer",
   display: "-webkit-box",
   WebkitLineClamp: 2,
   WebkitBoxOrient: "vertical",
@@ -120,6 +123,10 @@ export const ProductName = styled.strong(({ theme }) => ({
   fontWeight: theme.fontWeight.semiBold,
   letterSpacing: "-0.18px",
   color: theme.colors.textMain,
+
+  "&:hover": {
+    textDecoration: "underline",
+  },
 }));
 
 export const CategoryName = styled.span(({ theme }) => ({
@@ -134,6 +141,8 @@ export const Price = styled.p(({ theme }) => ({
 }));
 
 export const Rating = styled.p(({ theme }) => ({
+  position: "relative",
+  zIndex: 2,
   fontSize: theme.fontSize.xs,
   color: theme.colors.secondText,
   width: "fit-content",
