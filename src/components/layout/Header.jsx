@@ -24,7 +24,8 @@ import {
 const Header = ({ activeLink }) => {
   const navigate = useNavigate();
   // 스토어에서 cartiTRem 가져옴
-  const { cartItems, syncCartWithServer } = useCartStore();
+  const { cartItems, syncCartWithServer, clearLocalCart } = useCartStore();
+
   // 로그인 확인
   const user = useAutoStore((state) => state.user);
 
@@ -38,12 +39,13 @@ const Header = ({ activeLink }) => {
       .then(setCategories)
       .catch((err) => console.error("카테고리 로딩 실패:", err));
   }, []);
+
   // 장바구니 동기화
   useEffect(() => {
-    if (isLoggedIn) {
+    if (user) {
       syncCartWithServer();
     }
-  }, [isLoggedIn, syncCartWithServer]);
+  }, [user, syncCartWithServer]);
 
   const handleLogout = async () => {
     try {
@@ -51,6 +53,9 @@ const Header = ({ activeLink }) => {
 
       localStorage.removeItem("token");
       clearUser();
+      // 장바구니 비우기
+      clearLocalCart();
+
       showSuccessToast("Logout successful");
       navigate("/");
     } catch (error) {
