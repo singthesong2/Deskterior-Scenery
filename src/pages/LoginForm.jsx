@@ -46,12 +46,7 @@ function LoginForm() {
         <LoginCard>
           <Title>Log In</Title>
 
-          <AuthForm
-            mode="login"
-            onSubmit={handleLogin}
-            setIsLoggedIn={setIsLoggedIn}
-            setUserInfo={setUserInfo}
-          />
+          <AuthForm mode="login" onSubmit={handleLogin} />
 
           <SignupLink to="/signup">Create an account</SignupLink>
         </LoginCard>
