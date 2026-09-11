@@ -163,17 +163,22 @@ const useCartStore = create(
 
       //  데이터 병합
       mergeLocalCartToServer: async () => {
-        const localItems = get().cartItems;
-        if (localItems.length === 0) {
-          // 로컬X 바로 서버 장바구니만 불러오기
+        // 비회원일때 아이템 local로 시작
+        const allLocalItems = get().cartItems;
+        const guestItems = allLocalItems.filter((item) =>
+          String(item.cartItemId).startsWith("local_"),
+        );
+
+        if (guestItems.length === 0) {
+          // 비회원일때 담은아이템 없으면 서버에서 받아옴
           await get().fetchCart();
           return;
         }
 
         try {
-          // 로컬에 있던 상품들을 서버 API로 전부 밀어넣기
+          // 필터링된 아이템만 밀어넣음
           await Promise.all(
-            localItems.map((item) =>
+            guestItems.map((item) =>
               cartApi.addToCart(item.productId, item.quantity),
             ),
           );
