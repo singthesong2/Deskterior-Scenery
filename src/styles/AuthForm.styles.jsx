@@ -174,7 +174,7 @@ export const ItemCheckbox = styled.input(({ theme }) => ({
   cursor: "pointer",
 }));
 
-export const ErrorMessage = styled.div({
+const messageStyle = {
   width: "100%",
   display: "flex",
   alignItems: "center",
@@ -182,12 +182,25 @@ export const ErrorMessage = styled.div({
   gap: "12px",
   padding: "8px 10px",
   boxSizing: "border-box",
-  backgroundColor: "#f8d1bd",
   borderRadius: "6px",
-  //fontSize: "14px",
   fontSize: "clamp(12px, calc(10px + 0.625vw), 14px)",
   color: "#000000",
   textAlign: "left",
+};
+
+export const SuccessMessage = styled.div({
+  ...messageStyle,
+  backgroundColor: "#d9f3df",
+  textAlign: "left",
+  "& svg": {
+    color: "#18a83b",
+    flexShrink: 0,
+  },
+});
+
+export const ErrorMessage = styled.div({
+  ...messageStyle,
+  backgroundColor: "#f8d1bd",
 });
 
 export const ErrorIcon = styled.span({
