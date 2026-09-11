@@ -12,6 +12,9 @@ function Toast() {
         closeOnClick={true}
         pauseOnHover={false}
         limit={3}
+        style={{
+          top: "85px",
+        }}
       />
     </ToastBox>
   );
