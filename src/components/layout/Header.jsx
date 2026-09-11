@@ -19,7 +19,7 @@ import {
 
 const Header = ({ activeLink }) => {
   // 스토어에서 cartiTRem 가져옴
-  const { clearLocalCart, cartItems } = useCartStore();
+  const { cartItems, syncCartWithServer } = useCartStore();
   // 로그인 확인
   const isLoggedIn = !!localStorage.getItem("token");
   // 뱃지 갯수 계산
@@ -31,6 +31,12 @@ const Header = ({ activeLink }) => {
       .then(setCategories)
       .catch((err) => console.error("카테고리 로딩 실패:", err));
   }, []);
+  // 장바구니 동기화
+  useEffect(() => {
+    if (isLoggedIn) {
+      syncCartWithServer();
+    }
+  }, [isLoggedIn, syncCartWithServer]);
 
   return (
     <HeaderSection>
