@@ -71,12 +71,12 @@ const borderWidth = {
 
 //  반응형
 const media = {
-  mobile: `@media (max-width: 767px)`,
+  smallMobile: `@media (max-width: 479px)`,
+  mobile: `@media (min-width: 480px) and (max-width: 767px)`,
   tablet: `@media (min-width: 768px) and (max-width: 1023px)`,
   pc: `@media (min-width: 1024px) and (max-width: 1439px)`,
   wide: `@media (min-width: 1440px)`,
 };
-
 //  레이아웃 (헤더 등 고정 요소 크기 - 다른 값들이 이걸 기준으로 계산됨)
 const layout = {
   headerHeight: "80px",

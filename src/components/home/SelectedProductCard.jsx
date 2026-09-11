@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -34,6 +35,13 @@ function SelectedProductCard({
     isProductLoading,
     productError,
     }) {
+      const navigate = useNavigate();
+      // handleViewMore(): 상세 페이지 이동 함수
+      function handleViewMore() {
+        if(!selectedProduct?.id) return;
+        navigate(`/products/${selectedProduct.id}`);
+      } 
+
         return (
           <ProductArea>
             <ProductTitleBox>
@@ -71,7 +79,10 @@ function SelectedProductCard({
                 </ProductInfo>
 
               <ProductBottomArea>
-                <ViewMoreButton type="button">View More</ViewMoreButton>
+                <ViewMoreButton
+                type="button"
+                onClick={handleViewMore}
+                >View More</ViewMoreButton>
 
                 <ProductPagination>
                   <PaginationButton
