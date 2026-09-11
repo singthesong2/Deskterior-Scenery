@@ -7,6 +7,10 @@ const headingStyle = (theme) => ({
   fontWeight: 700,
 });
 
+// PC(1024px→1088px)와 와이드(1440px→1024px) 사이 급격한 전환 없이 부드럽게 줄어들도록 보간
+const fluidContentMaxWidth =
+  "clamp(1024px, calc(1245.54px - 15.385vw), 1088px)";
+
 export const Main = styled.main(({ theme }) => ({
   display: "flex",
   width: "100%",
@@ -17,10 +21,10 @@ export const Main = styled.main(({ theme }) => ({
 export const Header = styled.div(({ theme }) => ({
   display: "flex",
   width: "100%",
-  maxWidth: "1088px",
+  maxWidth: fluidContentMaxWidth,
   height: "233px",
   margin: "0 auto",
-  padding: `${theme.spacing["2xl"]} ${theme.spacing["4xl"]} 48px ${theme.spacing["4xl"]}`,
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} 48px ${theme.spacing["3xl"]}`,
   flexDirection: "column",
   alignItems: "center",
   gap: "16px",
@@ -82,13 +86,17 @@ export const PageSubtitle = styled.p(({ theme }) => ({
 export const Content = styled.div(({ theme }) => ({
   display: "flex",
   width: "100%",
-  maxWidth: "1088px",
+  maxWidth: fluidContentMaxWidth,
   margin: "0 auto",
-  padding: `${theme.spacing["2xl"]} ${theme.spacing["4xl"]} ${theme.spacing["4xl"]} ${theme.spacing["4xl"]}`,
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["4xl"]} ${theme.spacing["3xl"]}`,
   flexDirection: "column",
   alignItems: "center",
   gap: theme.spacing.xl,
   alignSelf: "stretch",
+
+  [theme.media.wide]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]}`,
+  },
 }));
 
 export const EmptyState = styled.div(({ theme }) => ({
@@ -129,16 +137,17 @@ export const EmptySubtitle = styled.p(({ theme }) => ({
 export const ProductGrid = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  width: "896px",
+  width: "100%",
+  maxWidth: "896px",
   justifyContent: "center",
   alignItems: "flex-start",
-  alignSelf: "stretch",
+  alignSelf: "center",
   gap: theme.spacing["2xl"],
 }));
 
 export const Row = styled.div(({ theme }) => ({
   display: "flex",
-  width: "896px",
+  width: "100%",
   justifyContent: "center",
   alignItems: "center",
   gap: theme.spacing.md,

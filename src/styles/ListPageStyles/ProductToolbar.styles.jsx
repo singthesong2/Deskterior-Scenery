@@ -8,10 +8,12 @@ export const StyledSearchIcon = styled(SearchIcon)(({ theme }) => ({
 
 export const ToolbarWrapper = styled.div(({ theme }) => ({
   display: "flex",
+  width: "100%",
+  maxWidth: "896px",
   padding: `0 ${theme.spacing.md}`,
   justifyContent: "space-between",
   alignItems: "flex-start",
-  alignSelf: "stretch",
+  alignSelf: "center",
 }));
 
 export const SearchBox = styled.div(({ theme }) => ({

@@ -5,7 +5,8 @@ export const PaginationWrapper = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: theme.spacing.md,
+  gap: theme.spacing.xs,
+  alignSelf: "stretch",
 }));
 
 const forwardNonTransientProp = (prop) => !prop.startsWith("$");
