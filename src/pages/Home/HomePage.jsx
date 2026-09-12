@@ -5,33 +5,54 @@ import { ProductSection } from "../../components/home/ProductSection";
 import { useEffect, useState } from "react";
 import { getCategories } from "../../api/categoriesApi";
 import { getMain } from "../../api/mainApi";
+import useLoadingStore from "../../store/UseloadingStore";
+import { preloadingImages } from "../../utils/preloadingImages";
 
 export default function HomePage() {
   const [mainImages, setMainImages] = useState([]);
 
-  useEffect(() => {
-    async function fetchMainData() {
-      try {
-        const response = await getMain();
+  const categoryItems = mainImages.filter((item) => item.categoryId);
+  const styleItems = mainImages.filter((item) => item.styleId);
+  const [categories, setCategories] = useState([]);
 
-        setMainImages(response.data.images);
+  const startLoading = useLoadingStore((state) => state.startLoading);
+  const endLoading = useLoadingStore((state) => state.endLoading);
+
+  useEffect(() => {
+    let alive = true;
+
+    async function fetchHomeData() {
+      startLoading();
+
+      try {
+        const [mainResponse, categoryResponse] = await Promise.all([
+          getMain(),
+          getCategories(),
+        ]);
+
+        const images = mainResponse.data.images;
+
+        const imageUrls = images.map((item) => item.imageUrl);
+
+        await preloadingImages(images.map((item) => item.imageUrl));
+
+        if (!alive) return;
+
+        setMainImages(images);
+        setCategories(categoryResponse);
       } catch (error) {
-        console.error("메인 이미지 조회 실패:", error);
+        console.error("홈 데이터 로딩 실패:", error);
+      } finally {
+        endLoading();
       }
     }
 
-    fetchMainData();
-  }, []);
+    fetchHomeData();
 
-  const categoryItems = mainImages.filter((item) => item.categoryId);
-  const styleItems = mainImages.filter((item) => item.styleId);
-
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    getCategories()
-      .then(setCategories)
-      .catch((err) => console.error("카테고리 로딩 실패:", err));
-  }, []);
+    return () => {
+      alive = false;
+    };
+  }, [startLoading, endLoading]);
 
   return (
     <>

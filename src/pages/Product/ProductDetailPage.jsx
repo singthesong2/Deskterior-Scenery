@@ -9,7 +9,8 @@ import MobileCtaBar from "../../components/product/MobileCtaBar";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
 import ScrollTopButton from "../../components/common/ScrollTopButton";
-import Loading from "../../components/common/Loading";
+import useLoadingStore from "../../store/UseloadingStore";
+import { preloadingImages } from "../../utils/preloadingImages";
 import {
   showSuccessToast,
   showFailToast,
@@ -27,6 +28,9 @@ import * as S from "../../styles/ProductDetail/ProductDetailPage.styles";
 const ProductDetailPage = () => {
   const user = useAuthStore((state) => state.user);
 
+  const startLoading = useLoadingStore((state) => state.startLoading);
+  const endLoading = useLoadingStore((state) => state.endLoading);
+
   const { id } = useParams();
   const { hash } = useLocation();
 
@@ -40,20 +44,36 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     let alive = true;
-    getProduct(id)
-      .then((data) => {
+
+    const loadProduct = async () => {
+      startLoading();
+
+      try {
+        const data = await getProduct(id);
+
+        await preloadingImages(data.images ?? []);
+
         if (!alive) return;
+
         setProduct(data);
         setProductError(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("상품 로딩 실패:", err);
-        if (alive) setProductError(true);
-      });
+
+        if (alive) {
+          setProductError(true);
+        }
+      } finally {
+        endLoading();
+      }
+    };
+
+    loadProduct();
+
     return () => {
       alive = false;
     };
-  }, [id]);
+  }, [id, startLoading, endLoading]);
 
   const isCurrentProduct = product != null && String(product.id) === id;
 
@@ -157,7 +177,7 @@ const ProductDetailPage = () => {
     );
   }
 
-  if (!isCurrentProduct) return <Loading />;
+  if (!isCurrentProduct) return null;
 
   return (
     <S.Wrapper>
