@@ -2,7 +2,11 @@ import styled from "@emotion/styled";
 
 export const CurationSection = styled.section(({ theme }) => ({
   padding: theme.spacing["3xl"], //64
-}));
+
+  [theme.media.tablet]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+  }
+}))
 
 export const CurationTitleBox = styled.div(({ theme }) => ({
   display: "flex",
@@ -70,6 +74,11 @@ export const KeywordButton = styled.button(({ theme, isSelected }) => ({
 export const ClickableProductMap = styled.div(({ theme }) => ({
   display: "flex",
   gap: theme.spacing.lg,
+
+  [theme.media.tablet]: {
+    flexDirection: "column",
+    alignItems: "center",
+  }
 }));
 
 // DeskArea
@@ -81,6 +90,13 @@ export const DeskArea = styled.div(({ theme }) => ({
   overflow: "hidden",
   backgroundColor: theme.colors.imagePlaceholder,
   borderRadius: theme.radius.md,
+
+  [theme.media.tablet]: {
+    flex: "none",
+    width: "100%",
+    height: "auto",
+    aspectRatio: "1 / 1",
+  }
 }));
 
 export const HotspotButton = styled.button(({ theme, isSelected }) => ({
@@ -115,6 +131,30 @@ export const ProductArea = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.cards,
   borderRadius: theme.radius.md,
   overflow: "hidden",
+
+  [theme.media.tablet]: {
+    position: "relative",
+    flex: "none",
+    width: "80%",
+    maxWidth: "750px",
+    minWidth: "550px",
+    height: "auto",
+    minHeight: "280px",
+    justifyContent: "space-between",
+    overflow: "visible",
+  }
+}))
+
+export const ProductContent = styled.div(({theme}) => ({
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+
+    [theme.media.tablet]: {
+      flexDirection: "row",
+      alignItems: "stretch",
+      gap: theme.spacing.lg,
+    }
 }));
 
 export const ProductLoading = styled.p({
@@ -134,6 +174,10 @@ export const ProductTitleBox = styled.div(({ theme }) => ({
   justifyContent: "flex-start",
   gap: theme.spacing.xs,
   marginBottom: theme.spacing.xl, //32
+
+  [theme.media.tablet]: {
+    marginBottom: theme.spacing.md,
+  }
 }));
 
 export const ProductNumber = styled.div(({ theme }) => ({
@@ -163,13 +207,24 @@ export const ProductImage = styled.img(({ theme }) => ({
   objectPosition: "center",
   aspectRatio: "16 / 9",
   marginBottom: theme.spacing.xl, //32
+
+  [theme.media.tablet]: {
+    width: "160px",
+    height: "160px",
+    aspectRatio: "1 / 1",
+    borderRadius: theme.radius.sm,
+  }
 }));
 
 export const ProductInfo = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing.lg, // 24px
-}));
+
+  [theme.media.tablet]: {
+    gap: theme.spacing.sm, // 12
+  }
+}))
 
 export const ProductName = styled.h4(({ theme }) => ({
   color: theme.colors.textMain,
@@ -195,6 +250,10 @@ export const ProductTagContainer = styled.div(({ theme }) => ({
   alignItems: "center",
   gap: theme.spacing.xs,
   marginBottom: theme.spacing.xl, //32
+
+  // [theme.media.tablet]: {
+  //   display: "none",
+  // }
 }));
 
 export const ProductTag = styled.span(({ theme }) => ({
@@ -236,6 +295,10 @@ export const ProductPagination = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+
+  [theme.media.tablet]: {
+    display: "contents",
+  }
 }));
 
 export const PaginationButton = styled.button(({ theme }) => ({
@@ -253,10 +316,33 @@ export const PaginationButton = styled.button(({ theme }) => ({
     opacity: 0.3,
     cursor: "default",
   },
+
+  [theme.media.tablet]: {
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: "44px",
+      height: "44px",
+      borderRadius: theme.radius.full,
+      backgroundColor: theme.colors.cards,
+      border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+      zIndex: 10,
+
+      "&:first-of-type": {
+        left: "-66px",
+      },
+      "&:last-of-type": {
+        right: "-66px",
+      },
+    },
 }));
 
 export const PaginationText = styled.span(({ theme }) => ({
   color: theme.colors.textMain,
   fontSize: theme.fontSize.sm, //14
-  fontWeight: theme.fontWeight.semiBold,
+  fontWeight:theme.fontWeight.semiBold,
+
+  [theme.media.tablet]: {
+    display: "none",
+  }
 }));

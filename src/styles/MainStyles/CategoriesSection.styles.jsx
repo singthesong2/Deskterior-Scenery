@@ -9,6 +9,11 @@ export const CategoriesContainer = styled.section(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   gap: theme.spacing.xl, //32
+
+  // tablet(768-1023)
+  [theme.media.tablet] : {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+  }
 }));
 
 export const SectionTitle = styled.h2(({ theme }) => ({
@@ -22,6 +27,14 @@ export const SectionTitle = styled.h2(({ theme }) => ({
 export const CategoryList = styled.div(({ theme }) => ({
   display: "flex",
   gap: theme.spacing["2xl"], // 48px
+
+  // tablet(768-1023)
+  [theme.media.tablet]: {
+    width: "100%",
+    maxWidth: "578px",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  }
 }));
 
 export const CategoryItem = styled.div(({ theme }) => ({
