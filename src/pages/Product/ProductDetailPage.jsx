@@ -59,7 +59,8 @@ const ProductDetailPage = () => {
 
   const [reviews, setReviews] = useState([]);
 
-  // 상품(id)이 바뀌면 리뷰 목록 새로 조회
+  // 상품(id)이 바뀌거나 로그인 상태(user)가 바뀌면 리뷰 목록 새로 조회
+  // (같은 페이지에서 로그인/로그아웃해도 isAuthor 가 최신 상태로 갱신되게)
   useEffect(() => {
     let alive = true;
     getReviews(id)
@@ -70,7 +71,7 @@ const ProductDetailPage = () => {
     return () => {
       alive = false;
     };
-  }, [id]);
+  }, [id, user]);
 
   const reloadReviews = () =>
     getReviews(id)

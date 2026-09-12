@@ -43,17 +43,17 @@ const Header = ({ activeLink }) => {
   const handleLogout = async () => {
     try {
       await logout();
-
+    } catch (error) {
+      console.error("로그아웃 API 실패:", error);
+      showFailToast("Logout Fail");
+    } finally {
+      // 서버 요청 성공/실패와 상관없이 로컬(토큰·유저·장바구니)은 항상 정리한다
       localStorage.removeItem("token");
       clearUser();
-      // 장바구니 비우기
       clearLocalCart();
 
       showSuccessToast("Logout successful");
       navigate("/");
-    } catch (error) {
-      console.error("로그아웃 실패:", error);
-      showFailToast("Logout Fail");
     }
   };
 
