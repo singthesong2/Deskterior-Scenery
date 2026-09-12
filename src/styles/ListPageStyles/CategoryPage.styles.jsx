@@ -30,6 +30,15 @@ export const Header = styled.div(({ theme }) => ({
   gap: "16px",
   borderBottom: `1px solid ${theme.colors.subtle}`,
   background: theme.colors.background,
+
+  [theme.media.tablet]: {
+    maxWidth: "100%",
+    height: "auto",
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+    alignItems: "flex-start",
+    gap: theme.spacing.sm,
+    borderBottom: "none",
+  },
 }));
 
 export const Breadcrumb = styled.nav({
@@ -97,6 +106,12 @@ export const Content = styled.div(({ theme }) => ({
   [theme.media.wide]: {
     padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]}`,
   },
+
+  [theme.media.tablet]: {
+    maxWidth: "100%",
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+    gap: theme.spacing.lg,
+  },
 }));
 
 export const EmptyState = styled.div(({ theme }) => ({
@@ -143,6 +158,11 @@ export const ProductGrid = styled.div(({ theme }) => ({
   alignItems: "flex-start",
   alignSelf: "center",
   gap: theme.spacing["2xl"],
+
+  [theme.media.tablet]: {
+    maxWidth: "100%",
+    gap: theme.spacing.lg,
+  },
 }));
 
 export const Row = styled.div(({ theme }) => ({
@@ -151,6 +171,39 @@ export const Row = styled.div(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   gap: theme.spacing.md,
+
+  // 카드 높이를 고정하지 않고 내용에 맞게 자동으로 - 상품명이 몇 줄이든 카드 높이가 통일되게 함 (전 구간 공통)
+  "&& > *": {
+    height: "auto",
+  },
+
+  // 상품명이 1줄이든 2줄이든 항상 같은 높이를 차지해서, 아래 별점이 카드 밑에 눌리지 않게 함 (전 구간 공통)
+  "&& > * > div:nth-of-type(2) > strong": {
+    minHeight: "2.4em",
+  },
+
+  [theme.media.tablet]: {
+    alignItems: "flex-start",
+    gap: theme.spacing.md,
+
+    "&& > *": {
+      flex: "1 0 0",
+      minWidth: 0,
+      gap: theme.spacing.xs,
+    },
+
+    "&& > * > div:nth-of-type(2)": {
+      padding: `0 ${theme.spacing.sm}`,
+      gap: theme.spacing["2xs"],
+    },
+
+    // 찜/장바구니 버튼 크기만 축소 - 위치는 기존 IconStack이 이미지 우하단에 붙이는 방식 그대로 유지
+    "&& button[aria-label='찜하기'], && button[aria-label='장바구니 담기']": {
+      width: "30px",
+      height: "30px",
+      borderRadius: "15px",
+    },
+  },
 }));
 
 export const GridPlaceholder = styled.div({

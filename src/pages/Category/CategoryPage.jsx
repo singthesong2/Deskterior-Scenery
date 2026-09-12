@@ -254,7 +254,10 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page) => updateSearchParams({ page })}
+            onPageChange={(page) => {
+              updateSearchParams({ page });
+              window.scrollTo(0, 0);
+            }}
           />
         </S.Content>
       </S.Main>

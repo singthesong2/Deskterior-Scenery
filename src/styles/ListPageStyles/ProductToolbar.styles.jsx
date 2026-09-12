@@ -14,6 +14,15 @@ export const ToolbarWrapper = styled.div(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "flex-start",
   alignSelf: "center",
+
+  [theme.media.tablet]: {
+    maxWidth: "100%",
+    padding: 0,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    alignSelf: "stretch",
+    gap: theme.spacing.sm,
+  },
 }));
 
 export const SearchBox = styled.div(({ theme }) => ({
@@ -26,6 +35,10 @@ export const SearchBox = styled.div(({ theme }) => ({
   background: theme.colors.cards,
   padding: `${theme.spacing.sm} ${theme.spacing.md}`,
   width: "260px",
+
+  [theme.media.tablet]: {
+    width: "100%",
+  },
 }));
 
 export const SearchInput = styled.input(({ theme }) => ({
@@ -53,6 +66,21 @@ export const SortBox = styled.div(({ theme }) => ({
   padding: `${theme.spacing.sm} ${theme.spacing.md}`,
   fontSize: theme.fontSize.sm,
   cursor: "pointer",
+
+  [theme.media.tablet]: {
+    minWidth: "118px",
+    height: "41px",
+    padding: `0 ${theme.spacing.sm}`,
+    justifyContent: "center",
+    border: "none",
+    borderRadius: theme.radius.md,
+
+    "& strong": {
+      whiteSpace: "nowrap",
+    },
+    background: "#fff",
+    alignSelf: "flex-end",
+  },
 }));
 
 export const SortLabel = styled.span(({ theme }) => ({
