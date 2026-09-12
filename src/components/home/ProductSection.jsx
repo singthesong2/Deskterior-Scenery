@@ -46,7 +46,7 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
     return () => cancelAnimationFrame(frameId);
   }, [isResetting]);
 
-  // 데이터 로딩 전에 슬라이더가 오류 없이 불러와지게 설정
+  // 데이터 로딩 전에 슬라이더가 오류없이 불러와지게 설정
   if (items.length === 0) {
     return (
       <ProductsSection isBest={isBest}>
