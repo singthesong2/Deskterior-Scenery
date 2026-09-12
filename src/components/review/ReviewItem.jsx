@@ -3,7 +3,6 @@ import ReviewStars from "./ReviewStars";
 import ReviewDeleteModal from "./ReviewDeleteModal";
 import * as S from "../../styles/ProductDetail/Review.styles";
 
-/** "2026.08.15" 또는 ISO 문자열 → "2026.08.15" 로 표기 */
 const formatDate = (raw) => {
   if (!raw) return "";
   const parsed = new Date(raw);
@@ -17,7 +16,16 @@ const formatDate = (raw) => {
 const ReviewItem = ({ review, isMine = false, onEdit, onDelete }) => {
   const authorName = isMine ? "Me" : review.author;
   const rating = review.rating ?? 0;
-  const dateLabel = formatDate(review.createdAt ?? review.date);
+
+  const isEdited =
+    review.updatedAt &&
+    review.createdAt &&
+    new Date(review.updatedAt).getTime() !==
+      new Date(review.createdAt).getTime();
+
+  const dateLabel = formatDate(
+    isEdited ? review.updatedAt : (review.createdAt ?? review.date),
+  );
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -58,7 +66,12 @@ const ReviewItem = ({ review, isMine = false, onEdit, onDelete }) => {
 
         <S.Content>{review.content}</S.Content>
 
-        {dateLabel && <S.DateText>{dateLabel}</S.DateText>}
+        {dateLabel && (
+          <S.DateText>
+            {dateLabel}
+            {isEdited && " (수정됨)"}
+          </S.DateText>
+        )}
       </S.Item>
 
       {deleteModalOpen && (
