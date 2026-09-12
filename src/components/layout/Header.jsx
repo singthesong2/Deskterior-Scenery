@@ -1,4 +1,4 @@
-import useAuthStore from "../common/UseAuthStore";
+import useAuthStore from "../../store/UseAuthStore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
