@@ -14,16 +14,12 @@ import categories from "../../data/categories";
 import { getProducts, deriveBadgeFields } from "../../api/productsApi";
 import useLoadingStore from "../../store/UseloadingStore";
 import { preloadingImages } from "../../utils/preloadingImages";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useCartStore from "../../store/cartStore";
 import { showSuccessToast, showFailToast } from "../common/ShowToast";
 
 // 페이지별 상품 표시 개수
 const ITEMS_PER_PAGE = 3;
-const CARD_WIDTH = 280;
-const CARD_GAP = 24;
-const CARD_STEP = CARD_WIDTH + CARD_GAP;
-const SLIDER_SIDE_SPACE = 68;
 
 // getCategoryname(): 카테고리 이름을 찾는 함수, 일치하는 categoryId를 찾으면 category name을 반환하고 찾지 못하면 categoryId를 반환함
 function getCategoryName(categoryId) {
@@ -33,8 +29,15 @@ function getCategoryName(categoryId) {
 
 function ProductGroup({ title, items, isBest = false, onAddToCart }) {
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [direction, setDirection] = useState(1);
+  const [, setDirection] = useState(1);
   const [isResetting, setIsResetting] = useState(false);
+  const viewportRef = useRef(null);
+  const trackRef = useRef(null);
+
+  const [sliderSize, setSliderSize] = useState({
+    step: 0, // 카드 한 장 이동 거리(카드 너비 + 간격)
+    sideSpace: 0, // 카드를 가운데 두기 위한 왼쪽 여백
+  })
 
   useEffect(() => {
     if (!isResetting) return;
@@ -45,6 +48,39 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
 
     return () => cancelAnimationFrame(frameId);
   }, [isResetting]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+
+    if(!viewport || !track) return;
+
+    const firstCard = track.children[0];
+    const secondCard = track.children[1];
+
+    if(!firstCard || !secondCard) return;
+
+    function measureSlider() {
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      const gap = parseFloat(window.getComputedStyle(track).columGap) || 0;
+
+      const visibleWidth = cardWidth * ITEMS_PER_PAGE + gap * (ITEMS_PER_PAGE  - 1);
+
+      setSliderSize({
+        step: cardWidth + gap,
+        sideSpace: (viewport.clientWidth - visibleWidth) / 2,
+      });
+    }
+
+    measureSlider();
+
+    const observer = new ResizeObserver(measureSlider); // 요소 크기가 달라지면 재측정
+
+    observer.observe(viewport);
+    observer.observe(firstCard);
+
+    return () => observer.disconnect();
+  }, [items.length]); // 서버 상품이 도착해서 카드가 생겼을 때도 측정
 
   // 데이터 로딩 전에 슬라이더가 오류없이 불러와지게 설정
   if (items.length === 0) {
@@ -66,7 +102,8 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
 
   // 제품 개수를 3으로 나누면 페이지 수가 나옴
   const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
-  const activePage = Math.floor(currentIndex / ITEMS_PER_PAGE);
+  const actualIndex = (currentIndex - 1 + items.length) % items.length;
+  const activePage = Math.floor(actualIndex / ITEMS_PER_PAGE);
 
   // Page Indicator
   const pageNumbers = [];
@@ -127,16 +164,18 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
           aria-label={`${title} 이전 상품`}
           style={{
             left: 0,
-            transform: "translate(-50%, 50%)",
+            transform: "translate(-50%, -50%)",
           }}
         >
           <ChevronLeftIcon width={24} height={24} />
         </SliderButton>
 
-        <SliderViewport>
+        <SliderViewport ref={viewportRef}>
           <SliderTrack
+            ref={trackRef}
+            initial={false}
             animate={{
-              x: SLIDER_SIDE_SPACE - currentIndex * CARD_STEP,
+              x: sliderSize.sideSpace - currentIndex * sliderSize.step,
             }}
             transition={
               isResetting
@@ -191,7 +230,7 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
             aria-label={`${title} ${pageIndex + 1}페이지`}
             aria-current={pageIndex === activePage ? "page" : undefined}
             onClick={() => {
-              const nextIndex = pageIndex * ITEMS_PER_PAGE;
+              const nextIndex = pageIndex * ITEMS_PER_PAGE + 1;
 
               setDirection(nextIndex > currentIndex ? 1 : -1);
 
