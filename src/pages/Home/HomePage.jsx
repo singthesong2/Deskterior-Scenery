@@ -15,7 +15,6 @@ export default function HomePage() {
         const response = await getMain();
 
         setMainImages(response.data.images);
-        console.log("메인 이미지 목록:", response.data.images);
       } catch (error) {
         console.error("메인 이미지 조회 실패:", error);
       }
