@@ -18,6 +18,7 @@ import {
   PaginationButton,
   PaginationText,
   ProductBottomArea,
+  ProductContent,
 } from "../../styles/MainStyles/DeskCurationSection.styles";
 
 function SelectedProductCard({
@@ -55,30 +56,28 @@ function SelectedProductCard({
               <ProductTitle>Selected Product</ProductTitle>
             </ProductTitleBox>
 
-            <ProductImage
-              src={selectedProduct.imageUrl}
-              alt={selectedProduct.name}
-            />
+            {!isProductLoading && !productError && selectedProduct && (
+              <>
+                <ProductContent>
+                  <ProductImage
+                    src={selectedProduct.imageUrl}
+                    alt={selectedProduct.name}
+                  />
 
-            <ProductInfo>
-              <ProductName>{selectedProduct.name}</ProductName>
-
-              <ProductPrice>
-                ₩ {selectedProduct.price.toLocaleString()}
-              </ProductPrice>
-
-              <ProductDescription>
-                {selectedProduct.description}
-              </ProductDescription>
-
-              <ProductTagContainer>
-                {selectedCategory && (
-                  <ProductTag>{selectedCategory.name}</ProductTag>
-                )}
-
-                <ProductTag>{selectedStyleName}</ProductTag>
-              </ProductTagContainer>
-            </ProductInfo>
+                  <ProductInfo>
+                    <ProductName>{selectedProduct.name}</ProductName>
+                    <ProductPrice>₩ {selectedProduct.price.toLocaleString()}</ProductPrice>
+                    <ProductDescription>{selectedProduct.description}</ProductDescription>
+                  
+                    <ProductTagContainer>
+                      {selectedCategory && (
+                        <ProductTag>{selectedCategory.name}</ProductTag>
+                      )}
+                      <ProductTag>{selectedCategory.name}</ProductTag>
+                      <ProductTag>{selectedStyleName}</ProductTag>
+                    </ProductTagContainer>
+                  </ProductInfo>
+                </ProductContent>
 
             <ProductBottomArea>
               <ViewMoreButton type="button" onClick={handleViewMore}>
