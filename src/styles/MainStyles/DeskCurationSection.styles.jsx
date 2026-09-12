@@ -1,31 +1,31 @@
 import styled from "@emotion/styled";
 
-export const CurationSection = styled.section(({theme}) => ({
+export const CurationSection = styled.section(({ theme }) => ({
   padding: theme.spacing["3xl"], //64
-}))
+}));
 
-export const CurationTitleBox = styled.div(({theme}) => ({
+export const CurationTitleBox = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
   gap: theme.spacing.md, // 16px
-}))
+}));
 
-export const CurationSubtitle = styled.p(({theme}) => ({
+export const CurationSubtitle = styled.p(({ theme }) => ({
   fontFamily: theme.fontFamily.base,
   fontSize: theme.fontSize.md, // 16px
   fontWeight: theme.fontWeight.medium,
   color: theme.colors.emphasis,
-}))
+}));
 
-export const CurationTitle = styled.h2(({theme}) => ({
+export const CurationTitle = styled.h2(({ theme }) => ({
   fontSize: theme.fontSize["4xl"], // 32px
   fontWeight: theme.fontWeight.semiBold,
   color: theme.colors.textMain,
   marginBottom: theme.spacing.lg,
 }));
 
-export const CurationTitle2 = styled.h2(({theme}) => ({
+export const CurationTitle2 = styled.h2(({ theme }) => ({
   fontFamily: theme.fontFamily.display,
   fontSize: theme.fontSize["4xl"], // 32px
   color: theme.colors.textMain,
@@ -33,22 +33,22 @@ export const CurationTitle2 = styled.h2(({theme}) => ({
 }));
 
 // mood keyword area
-export const MoodKeywordBox = styled.div(({theme}) => ({
+export const MoodKeywordBox = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
   gap: theme.spacing.xs,
 }));
 
-export const MoodKeywordText = styled.p(({theme}) => ({
+export const MoodKeywordText = styled.p(({ theme }) => ({
   fontFamily: theme.fontFamily.base,
   fontSize: theme.fontSize.md, // 16px
   fontWeight: theme.fontWeight.regular,
   color: theme.colors.secondText,
 }));
 
-export const KeywordChipContainer=styled.div(({theme}) => ({
-  margin: `${theme.spacing.md} 0 ${theme.spacing["2xl"]}`, // 16px 0 48px 
+export const KeywordChipContainer = styled.div(({ theme }) => ({
+  margin: `${theme.spacing.md} 0 ${theme.spacing["2xl"]}`, // 16px 0 48px
   width: "100%",
   display: "flex",
   flexWrap: "wrap",
@@ -56,27 +56,24 @@ export const KeywordChipContainer=styled.div(({theme}) => ({
   gap: theme.spacing.md, // 16px
 }));
 
-export const KeywordButton = styled.button(({theme, isSelected}) => ({
+export const KeywordButton = styled.button(({ theme, isSelected }) => ({
   padding: `${theme.spacing.sm} ${theme.spacing.md}`, // 12px 16px
   borderRadius: theme.radius.full,
   backgroundColor: isSelected
     ? theme.colors.emphasis
     : `${theme.colors.subtle}80`, // secondText color에 opacity 50%
   color: theme.colors.textMain,
-  fontWeight: isSelected
-    ? theme.fontWeight.semiBold
-    : theme.fontWeight.regular,
+  fontWeight: isSelected ? theme.fontWeight.semiBold : theme.fontWeight.regular,
   fontSize: theme.fontSize.xs,
-}))
+}));
 
-export const ClickableProductMap = styled.div(({theme}) => ({
+export const ClickableProductMap = styled.div(({ theme }) => ({
   display: "flex",
   gap: theme.spacing.lg,
 }));
 
-
 // DeskArea
-export const DeskArea = styled.div(({theme}) => ({
+export const DeskArea = styled.div(({ theme }) => ({
   height: "720px",
   position: "relative",
   flex: 2,
@@ -86,7 +83,7 @@ export const DeskArea = styled.div(({theme}) => ({
   borderRadius: theme.radius.md,
 }));
 
-export const HotspotButton = styled.button(({theme, isSelected}) => ({
+export const HotspotButton = styled.button(({ theme, isSelected }) => ({
   position: "absolute",
   transform: "translate(-50%, -50%)",
   width: "40px",
@@ -94,25 +91,22 @@ export const HotspotButton = styled.button(({theme, isSelected}) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: isSelected
-  ? theme.colors.emphasis
-  : theme.colors.cards,
+  backgroundColor: isSelected ? theme.colors.emphasis : theme.colors.cards,
   borderRadius: theme.radius.full,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.semiBold,
   colors: theme.colors.textMain,
   cursor: "pointer",
-}))
+}));
 
 export const DeskImage = styled.img({
   width: "100%",
   height: "100%",
   objectFit: "cover",
-})
-
+});
 
 // ProductArea
-export const ProductArea = styled.div(({theme}) => ({
+export const ProductArea = styled.div(({ theme }) => ({
   padding: theme.spacing.lg,
   height: "720px",
   display: "flex",
@@ -121,9 +115,20 @@ export const ProductArea = styled.div(({theme}) => ({
   backgroundColor: theme.colors.cards,
   borderRadius: theme.radius.md,
   overflow: "hidden",
-}))
+}));
 
-export const ProductTitleBox = styled.div(({theme}) => ({
+export const ProductLoading = styled.p({
+  width: "100%",
+  minHeight: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "16px",
+  fontWeight: 500,
+  textAlign: "center",
+});
+
+export const ProductTitleBox = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-start",
@@ -131,7 +136,7 @@ export const ProductTitleBox = styled.div(({theme}) => ({
   marginBottom: theme.spacing.xl, //32
 }));
 
-export const ProductNumber = styled.div(({theme}) => ({
+export const ProductNumber = styled.div(({ theme }) => ({
   width: "32px",
   height: "32px",
   display: "flex",
@@ -143,15 +148,15 @@ export const ProductNumber = styled.div(({theme}) => ({
   color: theme.colors.textMain,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.semiBold,
-}))
+}));
 
-export const ProductTitle = styled.h3(({theme}) => ({
+export const ProductTitle = styled.h3(({ theme }) => ({
   color: theme.colors.textMain,
   fontWeight: theme.fontWeight.semiBold,
-  fontSize: theme.fontSize.xl // 20px
-}))
+  fontSize: theme.fontSize.xl, // 20px
+}));
 
-export const ProductImage = styled.img(({theme}) => ({
+export const ProductImage = styled.img(({ theme }) => ({
   display: "block",
   width: "100%",
   objectFit: "cover",
@@ -160,39 +165,39 @@ export const ProductImage = styled.img(({theme}) => ({
   marginBottom: theme.spacing.xl, //32
 }));
 
-export const ProductInfo = styled.div(({theme}) => ({
+export const ProductInfo = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing.lg, // 24px
-}))
+}));
 
-export const ProductName = styled.h4(({theme}) => ({
+export const ProductName = styled.h4(({ theme }) => ({
   color: theme.colors.textMain,
   fontWeight: theme.fontWeight.semiBold,
   fontSize: theme.fontSize["2xl"],
 }));
 
-export const ProductPrice = styled.p(({theme}) => ({
+export const ProductPrice = styled.p(({ theme }) => ({
   color: theme.colors.textMain,
   fontWeight: theme.fontWeight.semiBold,
   fontSize: theme.fontSize.xl, // 20px
 }));
 
-export const ProductDescription = styled.p(({theme}) => ({
+export const ProductDescription = styled.p(({ theme }) => ({
   color: theme.colors.secondText,
   fontWeight: theme.fontWeight.regular,
   fontSize: theme.fontSize.sm, // 14px
   lineHeight: 1.5,
 }));
 
-export const ProductTagContainer = styled.div(({theme}) => ({
+export const ProductTagContainer = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: theme.spacing.xs,
   marginBottom: theme.spacing.xl, //32
 }));
 
-export const ProductTag = styled.span(({theme}) => ({
+export const ProductTag = styled.span(({ theme }) => ({
   padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
   color: theme.colors.textMain,
   background: theme.colors.subtle,
@@ -201,14 +206,14 @@ export const ProductTag = styled.span(({theme}) => ({
   fontWeight: theme.fontWeight.regular,
 }));
 
-export const ProductBottomArea = styled.div(({theme}) => ({
+export const ProductBottomArea = styled.div(({ theme }) => ({
   width: "100%",
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing.lg,
   marginTop: "auto",
   flexShrink: 0,
-}))
+}));
 
 export const ViewMoreButton = styled.button(({ theme }) => ({
   width: "100%",
@@ -226,14 +231,14 @@ export const ViewMoreButton = styled.button(({ theme }) => ({
 }));
 
 // ProductPagination
-export const ProductPagination = styled.div(({theme}) => ({
+export const ProductPagination = styled.div(({ theme }) => ({
   width: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
 }));
 
-export const PaginationButton = styled.button(({theme}) => ({
+export const PaginationButton = styled.button(({ theme }) => ({
   width: "24px",
   height: "24px",
   display: "flex",
@@ -250,8 +255,8 @@ export const PaginationButton = styled.button(({theme}) => ({
   },
 }));
 
-export const PaginationText = styled.span(({theme}) => ({
+export const PaginationText = styled.span(({ theme }) => ({
   color: theme.colors.textMain,
   fontSize: theme.fontSize.sm, //14
-  fontWeight:theme.fontWeight.semiBold,
+  fontWeight: theme.fontWeight.semiBold,
 }));

@@ -13,6 +13,7 @@ import {
 } from "../../styles/MainStyles/DeskCurationSection.styles";
 import { getProductRaw } from "../../api/productsApi";
 import categories from "../../data/categories";
+import { preloadingImages } from "../../utils/preloadingImages";
 import { SelectedProductCard } from "./SelectedProductCard";
 import { DeskProductMap } from "./DeskProductMap";
 
@@ -26,9 +27,9 @@ function readCurationSelection() {
   }
 }
 
-function DeskCurationSection({items = [] }) {
+function DeskCurationSection({ items = [] }) {
   const [selectedStyleId, setSelectedStyleId] = useState(() => {
-    return readCurationSelection()?.styledId ?? null;
+    return readCurationSelection()?.styleId ?? null;
   });
 
   const [selectedProductNumber, setSelectedProductNumber] = useState(() => {
@@ -41,102 +42,142 @@ function DeskCurationSection({items = [] }) {
   const [productError, setProductError] = useState("");
 
   // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
-  const activeStyleId = selectedStyleId ?? items[0]?.styledId;
-  const selectedStyle = items.find(
-    (item) => item.styleId === activeStyleId) ?? items[0];
+  const activeStyleId = selectedStyleId ?? items[0]?.styleId;
+  const selectedStyle =
+    items.find((item) => item.styleId === activeStyleId) ?? items[0];
 
-  const activeProductNumber = selectedStyle?.coordinate?.find((item) => item.productId === selectedProductNumber)?.productId ?? selectedStyle?.coordinate?.[0]?.productId;
-  const selectedProduct = productData?.id === activeProductNumber ? productData : null;
-  const selectedCategory = categories.find((category) => category.id === selectedProduct?.categoryId);
+  const activeProductNumber =
+    selectedStyle?.coordinate?.find(
+      (item) => item.productId === selectedProductNumber,
+    )?.productId ?? selectedStyle?.coordinate?.[0]?.productId;
+  const selectedProduct =
+    productData?.id === activeProductNumber ? productData : null;
+  const selectedCategory = categories.find(
+    (category) => category.id === selectedProduct?.categoryId,
+  );
   // selectedStyle에 coordinate가 있으면 가져오고 undefined이거나 null 이면 빈 배열을 반환함
   const coordinates = selectedStyle?.coordinate ?? [];
   // 현재 상품 순서 계산
   const activeProductIndex = coordinates.findIndex(
-    (item) => item.productId === activeProductNumber
+    (item) => item.productId === activeProductNumber,
   );
 
   // 같은 탭에서 뒤로가기나 새로고침을 해도 현재 선택된 상태를 유지
-  // sessionStorage에 선택되어 있는 styledId와 ProductNumber를 저장
+  // sessionStorage에 선택되어 있는 styleId와 ProductNumber를 저장
   useEffect(() => {
-    if(activeStyleId === null || activeProductNumber === null) {
+    if (activeStyleId === null || activeProductNumber === null) {
       return;
     }
     const selection = {
-      styledId: activeStyleId,
+      styleId: activeStyleId,
       productId: activeProductNumber,
     };
 
-    sessionStorage.setItem(
-      "homeCurationSelection",
-      JSON.stringify(selection)
-    );
+    sessionStorage.setItem("homeCurationSelection", JSON.stringify(selection));
   }, [activeStyleId, activeProductNumber]);
 
   // 큐레이션 상품 정보 연결
   useEffect(() => {
-    if(activeProductNumber == null) {
+    if (activeProductNumber == null) {
       setIsProductLoading(false);
       setProductError("");
       return;
     }
 
+    if (productData?.id === activeProductNumber) return;
+
     let ignore = false;
 
     async function fetchSelectedProduct() {
+      setIsProductLoading(true);
+      setProductError("");
+
       try {
         const product = await getProductRaw(activeProductNumber);
 
-        if(!ignore) {
+        await preloadingImages([product.imageUrl]);
+
+        if (!ignore) {
           setProductData(product);
         }
-      } catch(error) {
-        if(!ignore) {
+      } catch (error) {
+        if (!ignore) {
           setProductData(null);
           setProductError("상품 정보를 불러오지 못했습니다.");
           console.error("큐레이션 상품 조회 실패:", error);
         }
       } finally {
-        if(!ignore) {
+        if (!ignore) {
           setIsProductLoading(false);
         }
       }
     }
     fetchSelectedProduct();
 
-    return() => {
+    return () => {
       ignore = true;
     };
-  }, [activeProductNumber]);
+  }, [activeProductNumber, productData?.id]);
 
   // 화면이 처음 열릴 때 imageUrl을 미리 저장
   useEffect(() => {
-    items.forEach((item) => {
+    /*items.forEach((item) => {
       const image = new Image();
       image.src = item.imageUrl;
-    });
+    });*/
+    const imageUrls = items.map((item) => item.imageUrl);
+
+    preloadingImages(imageUrls);
   }, [items]);
+
+  const handleStyleChange = async (item) => {
+    const firstProductId = item.coordinate?.[0]?.productId;
+
+    if (firstProductId == null) return;
+
+    try {
+      setIsProductLoading(true);
+
+      const [, product] = await Promise.all([
+        preloadingImages([item.imageUrl]),
+        getProductRaw(firstProductId),
+      ]);
+
+      await preloadingImages([product.imageUrl]);
+
+      setProductData(product);
+      setSelectedStyleId(item.styleId);
+      setSelectedProductNumber(firstProductId);
+
+      setProductError("");
+    } catch (error) {
+      setProductError("상품 정보를 불러오지 못했습니다.");
+      console.error("큐레이션 스타일 변경 실패:", error);
+    } finally {
+      setIsProductLoading(false);
+    }
+  };
 
   // handlePreviousProduct(): 이전 상품 정보를 불러오는 함수
   const handlePreviousProduct = () => {
-    if(coordinates.length <= 1) return;
+    if (coordinates.length <= 1) return;
 
     const previousIndex =
       activeProductIndex === 0
-      ? coordinates.length - 1
-      : activeProductIndex - 1;
+        ? coordinates.length - 1
+        : activeProductIndex - 1;
 
     setSelectedProductNumber(coordinates[previousIndex].productId);
-  }
+  };
 
   // handleNextProduct(): 다음 상품 정보를 불러오는 함수
   const handleNextProduct = () => {
-    if(coordinates.length <= 1) return;
+    if (coordinates.length <= 1) return;
 
     const nextIndex = (activeProductIndex + 1) % coordinates.length;
-    
+
     setSelectedProductNumber(coordinates[nextIndex].productId);
   };
-
 
   return (
     <CurationSection>
@@ -145,24 +186,25 @@ function DeskCurationSection({items = [] }) {
           <strong>데스크 테리어,</strong>
           <br />
           어떻게 시작해야 할지 모르겠다면
-          </CurationSubtitle>
+        </CurationSubtitle>
         <CurationTitle>내 데스크 취향부터 찾아보세요</CurationTitle>
       </CurationTitleBox>
 
       <MoodKeywordBox>
-        <MoodKeywordText>둘러보고 싶은 스타일 키워드를 선택해 보세요</MoodKeywordText>
+        <MoodKeywordText>
+          둘러보고 싶은 스타일 키워드를 선택해 보세요
+        </MoodKeywordText>
         <KeywordChipContainer>
           {/* main.js에서 keyword의 name을 가져옴 */}
           {items.map((item) => (
             <KeywordButton
-            key={item.styleId}
-            type="button"
-            isSelected={item.styleId === activeStyleId}
-            aria-pressed={item.styleId === activeStyleId}
-            onClick={() => {
-              setSelectedStyleId(item.styleId)
-              setSelectedProductNumber(null);
-            }}
+              key={item.styleId}
+              type="button"
+              isSelected={item.styleId === activeStyleId}
+              aria-pressed={item.styleId === activeStyleId}
+              onClick={() => {
+                handleStyleChange(item);
+              }}
             >
               {item.name}
             </KeywordButton>
@@ -170,27 +212,27 @@ function DeskCurationSection({items = [] }) {
         </KeywordChipContainer>
       </MoodKeywordBox>
 
-        <CurationTitle2>What's on this desk?</CurationTitle2>
+      <CurationTitle2>What's on this desk?</CurationTitle2>
 
-        <ClickableProductMap>
-          <DeskProductMap 
-            selectedStyle={selectedStyle}
-            activeProductNumber={activeProductNumber}
-            onProductSelect={setSelectedProductNumber}
-          />
+      <ClickableProductMap>
+        <DeskProductMap
+          selectedStyle={selectedStyle}
+          activeProductNumber={activeProductNumber}
+          onProductSelect={setSelectedProductNumber}
+        />
 
-          <SelectedProductCard
-            selectedProduct={selectedProduct}
-            selectedCategory={selectedCategory}
-            selectedStyleName={selectedStyle?.name}
-            activeProductIndex={activeProductIndex}
-            totalProducts={coordinates.length}
-            isProductLoading={isProductLoading}
-            productError={productError}
-            onPrevious={handlePreviousProduct}
-            onNext={handleNextProduct}
-          />
-        </ClickableProductMap>
+        <SelectedProductCard
+          selectedProduct={selectedProduct}
+          selectedCategory={selectedCategory}
+          selectedStyleName={selectedStyle?.name}
+          activeProductIndex={activeProductIndex}
+          totalProducts={coordinates.length}
+          isProductLoading={isProductLoading}
+          productError={productError}
+          onPrevious={handlePreviousProduct}
+          onNext={handleNextProduct}
+        />
+      </ClickableProductMap>
     </CurationSection>
   );
 }
