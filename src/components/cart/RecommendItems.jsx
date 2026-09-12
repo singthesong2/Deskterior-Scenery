@@ -14,25 +14,23 @@ import {
 const RecommendItems = () => {
   const [recommendList, setRecommendList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Zustand 장바구니 스토어에서 addToCart 함수 꺼내오기
   const { addToCart } = useCartStore();
 
   useEffect(() => {
     const fetchRecommend = async () => {
       try {
         setIsLoading(true);
-        // 1. 서버에서 전체 상품 리스트 가져오기
+        // 전체 상품 리스트
         const data = await getProducts();
         const products = Array.isArray(data) ? data : data.products || [];
 
-        // 2. 품절 상품 제외하기 (soldOut 값이 false인 것만 남김)
+        // 품절 상품 제외
         const availableProducts = products.filter((item) => !item.soldOut);
 
-        // 3. 랜덤으로 배열 섞기 (셔플 알고리즘)
+        // 랜덤
         const shuffled = [...availableProducts].sort(() => 0.5 - Math.random());
 
-        // 4. 앞에서부터 딱 3개만 잘라서 State에 저장
+        //3개만 저장
         setRecommendList(shuffled.slice(0, 3));
       } catch (error) {
         console.error("추천 상품을 불러오는 데 실패했습니다:", error);
@@ -44,14 +42,13 @@ const RecommendItems = () => {
     fetchRecommend();
   }, []);
 
-  // 🛒 장바구니 담기 버튼 클릭 시 실행되는 함수
+  // 장바구니 담는 함수
   const handleAddToCart = async (product) => {
     try {
-      // API 명세서 구조에 맞게 데이터 가공 (id -> productId 등)
       const cartProduct = {
         ...product,
         productId: product.id,
-        imageUrl: product.images?.[0] || product.imageUrl, // 이미지가 배열일 경우 첫 번째 이미지 사용
+        imageUrl: product.images?.[0] || product.imageUrl,
       };
 
       // 스토어의 addToCart 호출 (기본 수량 1개)
@@ -62,7 +59,7 @@ const RecommendItems = () => {
     }
   };
 
-  // 로딩 중이거나 추천할 상품이 0개라면 화면에 그리지 않음
+  // 예외처리
   if (isLoading || recommendList.length === 0) return null;
 
   return (
@@ -74,8 +71,7 @@ const RecommendItems = () => {
           <ProductCard
             key={product.id || product.productId}
             product={product}
-            showCategory={false} // 장바구니 시안에는 카테고리 이름이 없으므로 숨김
-            // 🌟 장바구니 버튼 클릭 이벤트 연결
+            showCategory={false}
             onAddToCart={() => handleAddToCart(product)}
           />
         ))}

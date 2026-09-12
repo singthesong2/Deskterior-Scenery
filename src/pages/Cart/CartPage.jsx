@@ -206,64 +206,66 @@ const CartPage = () => {
   }
 
   return (
-    <CartContainer>
-      <TitleWrapper>
-        <Course>Home &gt; Cart</Course>
-        <PageTitle>Cart</PageTitle>
-      </TitleWrapper>
+    <>
+      <CartContainer>
+        <TitleWrapper>
+          <Course>Home &gt; Cart</Course>
+          <PageTitle>Cart</PageTitle>
+        </TitleWrapper>
 
-      {cartItems.length > 0 && (
-        <ActionBar>
-          <LeftActionGroup>
-            <SelectAllLabel>
-              <SelectAllCheckbox
-                type="checkbox"
-                checked={isAllChecked}
-                onChange={handleToggleAllCheck}
-              />
-              Selected All
-            </SelectAllLabel>
+        {cartItems.length > 0 && (
+          <ActionBar>
+            <LeftActionGroup>
+              <SelectAllLabel>
+                <SelectAllCheckbox
+                  type="checkbox"
+                  checked={isAllChecked}
+                  onChange={handleToggleAllCheck}
+                />
+                Selected All
+              </SelectAllLabel>
 
-            <SelectedDeleteButton onClick={handleRemoveSelected}>
-              Selected Delete
-            </SelectedDeleteButton>
-          </LeftActionGroup>
+              <SelectedDeleteButton onClick={handleRemoveSelected}>
+                Selected Delete
+              </SelectedDeleteButton>
+            </LeftActionGroup>
 
-          <ClearAllButton onClick={() => setIsClearModalOpen(true)}>
-            All Delete
-          </ClearAllButton>
-        </ActionBar>
-      )}
+            <ClearAllButton onClick={() => setIsClearModalOpen(true)}>
+              All Delete
+            </ClearAllButton>
+          </ActionBar>
+        )}
 
-      {cartItems.length === 0 ? (
-        <EmptyCart />
-      ) : (
-        <div>
-          <ItemListSection>
-            {cartItems.map((item) => (
-              <CartItem
-                key={item.cartItemId}
-                item={item}
-                isChecked={checkedItems.includes(item.cartItemId)}
-                isSoldOut={isSoldOutProduct(item.productId)}
-                isBest={Boolean(productInfoMap[item.productId]?.isBest)}
-                isNew={Boolean(productInfoMap[item.productId]?.isNew)}
-                onToggleCheck={handleToggleCheck}
-                onIncrease={handleIncrease}
-                onDecrease={handleDecrease}
-                onDelete={handleDelete}
-              />
-            ))}
-          </ItemListSection>
+        {cartItems.length === 0 ? (
+          <EmptyCart />
+        ) : (
+          <div>
+            <ItemListSection>
+              {cartItems.map((item) => (
+                <CartItem
+                  key={item.cartItemId}
+                  item={item}
+                  isChecked={checkedItems.includes(item.cartItemId)}
+                  isSoldOut={isSoldOutProduct(item.productId)}
+                  isBest={Boolean(productInfoMap[item.productId]?.isBest)}
+                  isNew={Boolean(productInfoMap[item.productId]?.isNew)}
+                  onToggleCheck={handleToggleCheck}
+                  onIncrease={handleIncrease}
+                  onDecrease={handleDecrease}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </ItemListSection>
 
-          <CartSummary
-            subtotal={subtotal}
-            deliveryFee={deliveryFee}
-            total={total}
-            isAllSoldOut={isAllSoldOut}
-          />
-        </div>
-      )}
+            <CartSummary
+              subtotal={subtotal}
+              deliveryFee={deliveryFee}
+              total={total}
+              isAllSoldOut={isAllSoldOut}
+            />
+          </div>
+        )}
+      </CartContainer>
       <RecommendItems />
       {isClearModalOpen && (
         <Modal
@@ -274,7 +276,7 @@ const CartPage = () => {
           onConfirm={confirmClearAll}
         />
       )}
-    </CartContainer>
+    </>
   );
 };
 
