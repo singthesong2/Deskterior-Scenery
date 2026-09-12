@@ -16,9 +16,24 @@ import categories from "../../data/categories";
 import { SelectedProductCard } from "./SelectedProductCard";
 import { DeskProductMap } from "./DeskProductMap";
 
+function readCurationSelection() {
+  try {
+    const saved = sessionStorage.getItem("homeCurationSelection");
+
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+}
+
 function DeskCurationSection({items = [] }) {
-  const [selectedStyleId, setSelectedStyleId] = useState(null);
-  const [selectedProductNumber, setSelectedProductNumber] = useState(null);
+  const [selectedStyleId, setSelectedStyleId] = useState(() => {
+    return readCurationSelection()?.styledId ?? null;
+  });
+
+  const [selectedProductNumber, setSelectedProductNumber] = useState(() => {
+    return readCurationSelection()?.productId ?? null;
+  });
   // 서버에서 받은 상품을 저장할 상태
   const [productData, setProductData] = useState(null);
   // 로딩, 오류 상태
@@ -26,12 +41,11 @@ function DeskCurationSection({items = [] }) {
   const [productError, setProductError] = useState("");
 
   // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
-  const activeStyleId = selectedStyleId ?? items[0]?.styleId;
+  const activeStyleId = selectedStyleId ?? items[0]?.styledId;
   const selectedStyle = items.find(
-    (item) => item.styleId === activeStyleId
-  );
+    (item) => item.styleId === activeStyleId) ?? items[0];
 
-  const activeProductNumber = selectedProductNumber ?? selectedStyle?.coordinate?.[0]?.productId;
+  const activeProductNumber = selectedStyle?.coordinate?.find((item) => item.productId === selectedProductNumber)?.productId ?? selectedStyle?.coordinate?.[0]?.productId;
   const selectedProduct = productData?.id === activeProductNumber ? productData : null;
   const selectedCategory = categories.find((category) => category.id === selectedProduct?.categoryId);
   // selectedStyle에 coordinate가 있으면 가져오고 undefined이거나 null 이면 빈 배열을 반환함
@@ -40,6 +54,23 @@ function DeskCurationSection({items = [] }) {
   const activeProductIndex = coordinates.findIndex(
     (item) => item.productId === activeProductNumber
   );
+
+  // 같은 탭에서 뒤로가기나 새로고침을 해도 현재 선택된 상태를 유지
+  // sessionStorage에 선택되어 있는 styledId와 ProductNumber를 저장
+  useEffect(() => {
+    if(activeStyleId === null || activeProductNumber === null) {
+      return;
+    }
+    const selection = {
+      styledId: activeStyleId,
+      productId: activeProductNumber,
+    };
+
+    sessionStorage.setItem(
+      "homeCurationSelection",
+      JSON.stringify(selection)
+    );
+  }, [activeStyleId, activeProductNumber]);
 
   // 큐레이션 상품 정보 연결
   useEffect(() => {
