@@ -46,6 +46,8 @@ export const Trail = styled.ol(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   flexWrap: "wrap",
+  width: "100%",
+  minWidth: 0,
   color: theme.colors.secondText,
   fontSize: theme.fontSize.xs, // 0.75rem
   fontWeight: theme.fontWeight.regular, // 400

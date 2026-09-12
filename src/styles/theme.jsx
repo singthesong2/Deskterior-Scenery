@@ -72,7 +72,7 @@ const borderWidth = {
 //  반응형
 const media = {
   smallMobile: `@media (width < 480px)`,
-  mobile: `@media (width >= 480px) and (width < 768px)`,
+  mobile: `@media (width < 768px)`,
   tablet: `@media (width >= 768px) and (width < 1024px)`,
   pc: `@media (width >= 1024px) and (width < 1440px)`,
   wide: `@media (width >= 1440px)`,
