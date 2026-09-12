@@ -58,6 +58,7 @@ export const NavItem = styled.li({});
 export const NavButton = styled("a", {
   shouldForwardProp: (prop) => prop !== "isActive" && prop !== "as",
 })(({ theme, isActive }) => ({
+  position: "relative",
   fontSize: `clamp(12px, 1.1vw, ${theme.fontSize.sm})`,
   fontWeight: isActive ? theme.fontWeight.semiBold : theme.fontWeight.regular,
   color: isActive ? theme.colors.textMain : theme.colors.secondText,
@@ -65,6 +66,20 @@ export const NavButton = styled("a", {
   whiteSpace: "nowrap",
   "&:hover": {
     color: theme.colors.textMain,
+  },
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    left: "50%",
+    bottom: `-${theme.spacing["2xs"]}`,
+    height: "1.5px",
+    background: theme.colors.textMain,
+    width: "0%",
+    transform: "translateX(-50%)",
+    transition: "width 0.25s ease",
+  },
+  "&:hover::after": {
+    width: "100%",
   },
 }));
 

@@ -1,6 +1,6 @@
 import useAuthStore from "../../store/UseAuthStore";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
 import { logout } from "../../api/authApi";
 import { BasketIcon, LoginIcon, LogoutIcon } from "../icons/Icons";
@@ -21,8 +21,9 @@ import {
   CartBadge,
 } from "../../styles/Header.styles";
 
-const Header = ({ activeLink }) => {
+const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   // 스토어에서 cartiTRem 가져옴
   const { cartItems, syncCartWithServer, clearLocalCart } = useCartStore();
 
@@ -78,7 +79,7 @@ const Header = ({ activeLink }) => {
               <NavButton
                 as={Link}
                 to={category.path}
-                isActive={category.name === activeLink}
+                isActive={category.path === pathname}
                 aria-label={`${category.name} 버튼`}
               >
                 {category.name}
