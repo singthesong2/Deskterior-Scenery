@@ -1,4 +1,5 @@
 import { useTheme } from "@emotion/react";
+import { Link } from "react-router";
 import Badge from "../common/Badge";
 import {
   ItemWrapper,
@@ -58,17 +59,19 @@ const CartItem = ({
           disabled={isSoldOut}
         />
 
-        <ImageBox>
-          <ItemImage src={item.imageUrl} alt={item.name} />
-          {isSoldOut && <ImageOverlay />}
-          {badges.length > 0 && (
-            <BadgeGroup>
-              {badges.map((badge) => (
-                <Badge key={badge.text} {...badge} />
-              ))}
-            </BadgeGroup>
-          )}
-        </ImageBox>
+        <Link to={`/products/${item.productId}`}>
+          <ImageBox>
+            <ItemImage src={item.imageUrl} alt={item.name} />
+            {isSoldOut && <ImageOverlay />}
+            {badges.length > 0 && (
+              <BadgeGroup>
+                {badges.map((badge) => (
+                  <Badge key={badge.text} {...badge} />
+                ))}
+              </BadgeGroup>
+            )}
+          </ImageBox>
+        </Link>
 
         <InfoBox>
           <ItemName>{item.name}</ItemName>
