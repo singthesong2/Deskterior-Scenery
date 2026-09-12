@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
-import { getProducts } from "../../api/productsApi";
+import { getProducts, deriveBadgeFields } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
 import {
   showSuccessToast,
@@ -84,9 +84,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
         setPageProducts(
           data.products.map((product) => ({
             ...product,
-            soldOut: (product.stock ?? 0) <= 0,
-            isBest: (product.badge ?? []).includes("best"),
-            isNew: (product.badge ?? []).includes("new"),
+            ...deriveBadgeFields(product),
           })),
         );
         setTotalPages(Math.max(1, data.pagination.totalPages));
@@ -256,7 +254,10 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page) => updateSearchParams({ page })}
+            onPageChange={(page) => {
+              updateSearchParams({ page });
+              window.scrollTo(0, 0);
+            }}
           />
         </S.Content>
       </S.Main>

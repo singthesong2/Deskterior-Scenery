@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { checkId } from "../api/authApi";
-import { IconEye, IconEyeClosed } from "@tabler/icons-react";
-import { showSuccessToast } from "./common/ShowToast";
+import { IconEye, IconEyeClosed, IconCircleCheck } from "@tabler/icons-react";
+import { showSuccessToast, showFailToast } from "./common/ShowToast";
 import { loginSchema, signupSchema } from "../schema/AuthSchema";
 import { useNavigate } from "react-router";
 import {
@@ -15,6 +15,7 @@ import {
   AllTerms,
   TermsGroup,
   ItemCheckbox,
+  SuccessMessage,
   ErrorMessage,
   ErrorIcon,
   Required,
@@ -34,9 +35,10 @@ const inputForm = {
   marketing: false,
 };
 
-function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
+function AuthForm({ mode, onSubmit }) {
   const [formData, setFormData] = useState(inputForm);
   const [idCheck, setIdCheck] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [shakingButton, setShakingButton] = useState(false);
@@ -96,7 +98,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    setMessage("");
+    clearMessage();
     setShakingButton(false);
 
     if (name === "id") {
@@ -149,25 +151,41 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
 
     if (!id) {
       showError("아이디를 입력해주세요.", idRef);
+      setIdShakingButton(true);
       return;
     }
 
     try {
       const result = await checkId(id);
 
-      if (currentIdRef.current !== id) return;
+      if (currentIdRef.current !== id) {
+        setMessage("서버 응답이 오기 전 확인할 아이디와 다릅니다.");
+        return;
+      }
+
+      if (!result.success) {
+        setIdCheck("");
+        setSuccessMessage("");
+        setMessage(result.message || "아이디 중복 확인에 실패했습니다.");
+        setIdShakingButton(true);
+        return;
+      }
 
       setIdCheck(id);
+      //showSuccessToast("사용 가능한 ID입니다!");
       setMessage("");
-      //setMessage(result.message); 삭제 X
+      setSuccessMessage("사용 가능한 ID입니다!");
+      //setMessage(result.message);
     } catch (error) {
       if (currentIdRef.current !== id) {
         return;
       }
 
       setIdCheck("");
+      setSuccessMessage("");
       //showError(error.message, idRef);  삭제 X
-      setMessage("아이디가 중복 되었습니다.");
+      setMessage(error.message || "아이디 중복 확인에 실패했습니다.");
+      //showFailToast(error.message || "아이디 중복 확인에 실패했습니다.");
       setIdShakingButton(true);
     }
   };
@@ -186,27 +204,11 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
     ref?.current?.focus();
   };
 
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userInfo");
-
-    setIsLoggedIn(false);
-    setUserInfo(null);
-
-    console.log("로그아웃");
-    resetUser();
-  };
-
-  const handleCancel = () => {
-    console.log("취소");
-    resetUser();
-  };
-
   const resetUser = () => {
     setFormData({ ...inputForm });
     currentIdRef.current = "";
     setIdCheck("");
-    setMessage("");
+    clearMessage();
   };
 
   const handleAllCheck = (e) => {
@@ -219,6 +221,11 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
       marketing: checked,
     }));
 
+    clearMessage();
+  };
+
+  const clearMessage = () => {
+    setSuccessMessage("");
     setMessage("");
   };
 
@@ -235,7 +242,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
                 ref={firstNameRef}
                 name="firstName"
                 type="text"
-                placeholder="홍"
+                placeholder="길동"
                 value={formData.firstName}
                 onChange={handleChange}
               />
@@ -249,7 +256,7 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
                 ref={lastNameRef}
                 name="lastName"
                 type="text"
-                placeholder="길동"
+                placeholder="홍"
                 value={formData.lastName}
                 onChange={handleChange}
               />
@@ -400,6 +407,13 @@ function AuthForm({ mode, onSubmit, setIsLoggedIn, setUserInfo }) {
               [선택] 마케팅 정보 수신 동의
             </label>
           </TermsGroup>
+        )}
+
+        {successMessage && !message && (
+          <SuccessMessage>
+            <IconCircleCheck size={20} />
+            <span>{successMessage}</span>
+          </SuccessMessage>
         )}
 
         {message && (

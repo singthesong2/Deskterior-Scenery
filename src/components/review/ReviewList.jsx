@@ -4,7 +4,7 @@ import * as S from "../../styles/ProductDetail/Review.styles";
 
 const INITIAL_COUNT = 3;
 
-const ReviewList = ({ reviews = [], onEdit, onDelete }) => {
+const ReviewList = ({ reviews = [], isLoggedIn = false, onEdit, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (reviews.length === 0) {
@@ -34,8 +34,9 @@ const ReviewList = ({ reviews = [], onEdit, onDelete }) => {
           <ReviewItem
             key={review.id}
             review={review}
-            // 명세대로: 서버가 준 isAuthor 그대로 사용
-            isMine={Boolean(review.isAuthor)}
+            // 서버가 비로그인 요청에도 isAuthor:true 를 잘못 주는 버그가 있어서,
+            // 로그인 상태가 아니면 무조건 false로 덮어써서 방어한다 (백엔드 수정 요청함)
+            isMine={isLoggedIn && Boolean(review.isAuthor)}
             onEdit={onEdit}
             onDelete={onDelete}
           />

@@ -4,11 +4,8 @@ import ReviewSummary from "./ReviewSummary";
 import ReviewList from "./ReviewList";
 import * as S from "../../styles/ProductDetail/Review.styles";
 
-/**
- * 리뷰 영역 UI.
- * 리뷰 목록(reviews)은 부모가 소유하고, 이 컴포넌트는
- * "수정 중인 리뷰"(editingId) 같은 UI 상태만 로컬로 관리한다.
- */
+//리뷰 영역 UI.
+
 const ReviewSection = ({
   reviews = [],
   isLoggedIn = false,
@@ -64,6 +61,7 @@ const ReviewSection = ({
 
       <ReviewList
         reviews={reviews}
+        isLoggedIn={isLoggedIn}
         onEdit={setEditingId}
         onDelete={handleDelete}
       />

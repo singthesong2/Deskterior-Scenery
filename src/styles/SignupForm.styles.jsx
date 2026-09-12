@@ -6,7 +6,7 @@ export const SignupPage = styled.main({
   justifyContent: "center",
   alignItems: "stretch",
   gap: "20px",
-  padding: "60px clamp(16px, 6vw, 96px)",
+  padding: "60px clamp(16px, 6vw, 64px)",
 
   "@media (min-width: 320px) and (width < 768px)": {
     alignItems: "center",

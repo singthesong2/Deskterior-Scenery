@@ -1,6 +1,6 @@
-import useAuthStore from "../common/UseAuthStore";
+import useAuthStore from "../../store/UseAuthStore";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
 import { logout } from "../../api/authApi";
 import { BasketIcon, LoginIcon, LogoutIcon } from "../icons/Icons";
@@ -21,8 +21,9 @@ import {
   CartBadge,
 } from "../../styles/Header.styles";
 
-const Header = ({ activeLink }) => {
+const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   // 스토어에서 cartiTRem 가져옴
   const { cartItems, syncCartWithServer, clearLocalCart } = useCartStore();
 
@@ -43,17 +44,17 @@ const Header = ({ activeLink }) => {
   const handleLogout = async () => {
     try {
       await logout();
-
+    } catch (error) {
+      console.error("로그아웃 API 실패:", error);
+      showFailToast("Logout Fail");
+    } finally {
+      // 서버 요청 성공/실패와 상관없이 로컬(토큰·유저·장바구니)은 항상 정리한다
       localStorage.removeItem("token");
       clearUser();
-      // 장바구니 비우기
       clearLocalCart();
 
       showSuccessToast("Logout successful");
       navigate("/");
-    } catch (error) {
-      console.error("로그아웃 실패:", error);
-      showFailToast("Logout Fail");
     }
   };
 
@@ -78,7 +79,7 @@ const Header = ({ activeLink }) => {
               <NavButton
                 as={Link}
                 to={category.path}
-                isActive={category.name === activeLink}
+                isActive={category.path === pathname}
                 aria-label={`${category.name} 버튼`}
               >
                 {category.name}
