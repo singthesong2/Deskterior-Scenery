@@ -6,6 +6,10 @@ export const ProductsSection = styled.section(({theme, isBest}) => ({
   backgroundColor: isBest
     ? theme.colors.cards
     : theme.colors.background,
+
+    [theme.media.tablet]: {
+        padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+    },
 }));
 
 export const ProductTitle = styled.h2(({theme}) => ({
@@ -13,6 +17,11 @@ export const ProductTitle = styled.h2(({theme}) => ({
     fontFamily: theme.fontFamily.display,
     fontSize: theme.fontSize["4xl"], //32
     color: theme.colors.textMain,
+
+    [theme.media.tablet]: {
+        fontSize: theme.fontSize["3xl"],
+        marginBottom: theme.spacing.lg,
+    },
 }));
 
 // 화면에 보여줄 상품 카드 범위를 제한
@@ -30,6 +39,17 @@ export const SliderTrack = styled(motion.div)(({theme}) => ({
     alignSelf: "stretch",
     gap: theme.spacing.lg,
     width: "max-content",
+
+    [theme.media.tablet]: {
+        gap: theme.spacing.md,
+        alignItems: "stretch",
+
+        "& > div": {
+            width: "min(260px, calc((100vw -160px) / 3))",
+            height: "auto",
+            minHeight: "350px",
+        },
+    },
 }));
 
 export const ProductCards = styled.div(({theme}) => ({
@@ -39,12 +59,18 @@ export const ProductCards = styled.div(({theme}) => ({
 }))
 
 // previous, next slider button
-export const ProductSlider = styled.div({
+export const ProductSlider = styled.div(({theme}) => ({
     position: "relative",
     width: "min(1024px, 100vw)",
     left: "50%",
     transform: "translateX(-50%)",
-});
+
+    [theme.media.tablet]: {
+        width: "100%",
+        left: "auto",
+        transform: "none",
+    },
+}));
 
 export const SliderButton = styled.button(({theme}) => ({
     position: "absolute",
