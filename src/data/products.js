@@ -373,11 +373,4 @@ const products = [
   },
 ];
 
-// Best/New는 각 상품의 isBest/isNew 필드로 직접 관리한다.
-// 홈/카테고리/상세 페이지가 전부 이 필드 하나만 참조해서 어디서든 같은 결과를 보장한다.
-export const isBestProduct = (productId) =>
-  Boolean(products.find((product) => product.id === productId)?.isBest);
-export const isNewProduct = (productId) =>
-  Boolean(products.find((product) => product.id === productId)?.isNew);
-
 export default products;
