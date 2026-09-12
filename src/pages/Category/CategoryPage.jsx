@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
+import staticCategories from "../../data/categories";
 import { getProducts, deriveBadgeFields } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
 import {
@@ -11,6 +12,7 @@ import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
 import Loading from "../../components/common/Loading";
+import { EmptyBoxIcon } from "../../components/icons/Icons";
 import * as S from "../../styles/ListPageStyles/CategoryPage.styles";
 
 const PAGE_SIZE = 6;
@@ -33,7 +35,9 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
         console.error("카테고리 로딩 실패:", err);
         if (!alive) return;
         setCategoriesFailed(true);
-        showFailToast("카테고리 이름을 불러오지 못했어요.");
+        // API가 실패해도 이름/경로는 항상 같은 정적 목록으로 대체해서 slug 대신 정상 표기되게 함
+        setCategories(staticCategories);
+        showFailToast("페이지 정보를 불러오지 못했습니다.");
       });
     return () => {
       alive = false;
@@ -155,7 +159,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
   if (isCurrentError && !hasLoadedOnce) {
     resultsContent = (
       <S.EmptyState>
-        <S.StyledLoadFailIcon width={96} height={96} aria-hidden="true" />
+        <EmptyBoxIcon width={96} height={96} aria-hidden="true" />
         <S.EmptyTitle>상품을 불러올 수 없습니다</S.EmptyTitle>
         <S.EmptySubtitle>다시 시도해 주세요</S.EmptySubtitle>
       </S.EmptyState>
