@@ -5,6 +5,7 @@ import { getProduct } from "../../api/productsApi";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
+import RecommendItems from "../../components/cart/RecommendItems";
 import Modal from "../../components/common/Modal";
 import FailToast from "../../components/common/FailToast";
 import SuccessToast from "../../components/common/SuccessToast";
@@ -263,7 +264,7 @@ const CartPage = () => {
           />
         </div>
       )}
-
+      <RecommendItems />
       {isClearModalOpen && (
         <Modal
           title="All Delete?"

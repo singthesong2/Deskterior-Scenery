@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { cartApi } from "../api/cartApi";
+import useAuthStore from "../components/common/UseAuthStore"; //우원님 합치면 임포트만 지워주세용 ♥
 
 // 로그인 여부
-const checkIsLoggedIn = () => !!localStorage.getItem("token");
+const checkIsLoggedIn = () => !!useAuthStore.getState().user;
 
 const useCartStore = create(
   persist(
