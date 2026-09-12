@@ -8,7 +8,8 @@ import { Routes, Route } from "react-router";
 //import ProductDetailPage from "./pages/Product/ProductDetailPage";
 //import NotFoundPage from "./pages/NotFoundPage";
 import { getMe } from "./api/authApi";
-import useAuthStore from "./components/common/UseAuthStore";
+import useAuthStore from "./store/UseAuthStore";
+import useLoadingStore from "./store/UseLoadingStore";
 //import CategoryPage from "./pages/Category/CategoryPage";
 import categories from "./data/categories";
 //import HomePage from "./pages/Home/HomePage";
@@ -29,6 +30,8 @@ function App() {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
+
+  const isLoading = useLoadingStore((state) => state.loadingCount > 0);
 
   useEffect(() => {
     const restoreLogin = async () => {
@@ -65,6 +68,9 @@ function App() {
       {/*<Loading />*/}
 
       <Toast />
+
+      {isLoading && <Loading />}
+
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route element={<CommonLayout />}>
