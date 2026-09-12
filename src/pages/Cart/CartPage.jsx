@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import useCartStore from "../../store/cartStore";
-import { isForceSoldOut } from "../../api/productsApi";
+import { getProduct } from "../../api/productsApi";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
@@ -37,22 +37,55 @@ const CartPage = () => {
 
   const [checkedItems, setCheckedItems] = useState([]);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [productInfoMap, setProductInfoMap] = useState({});
 
   // 최초 서버에서 장바구니 조회
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
-  // 체크 초기화 (cartItems가 로드된 후 1회)
+  // 장바구니 상품들의 최신 품절/뱃지 상태를 상품 상세 API로 조회
+  const productIdsKey = [...new Set(cartItems.map((item) => item.productId))]
+    .sort()
+    .join(",");
+
   useEffect(() => {
-    if (cartItems.length > 0 && checkedItems.length === 0) {
+    if (!productIdsKey) return;
+    const productIds = productIdsKey.split(",").map(Number);
+
+    Promise.all(
+      productIds.map((id) =>
+        getProduct(id)
+          .then((product) => [id, product])
+          .catch(() => [id, null]),
+      ),
+    ).then((results) => {
+      setProductInfoMap(Object.fromEntries(results));
+    });
+  }, [productIdsKey]);
+
+  const isSoldOutProduct = (productId) =>
+    Boolean(productInfoMap[productId]?.soldOut);
+
+  // 품절 정보(productInfoMap) 조회가 끝났는지 여부 - 끝나기 전엔 체크 초기화를 미룬다
+  const productInfoLoaded = cartItems.every(
+    (item) => item.productId in productInfoMap,
+  );
+
+  // 체크 초기화 (cartItems + 품절 정보가 로드된 후 1회)
+  useEffect(() => {
+    if (
+      cartItems.length > 0 &&
+      productInfoLoaded &&
+      checkedItems.length === 0
+    ) {
       setCheckedItems(
         cartItems
-          .filter((item) => !isForceSoldOut(item.productId))
+          .filter((item) => !isSoldOutProduct(item.productId))
           .map((item) => item.cartItemId),
       );
     }
-  }, [cartItems]);
+  }, [cartItems, productInfoLoaded]);
 
   // 토스트 공통 헬퍼
   const showFailToast = (message) => toast(<FailToast message={message} />);
@@ -77,7 +110,7 @@ const CartPage = () => {
 
   // 전체 선택 계산)
   const availableItems = cartItems.filter(
-    (item) => !isForceSoldOut(item.productId),
+    (item) => !isSoldOutProduct(item.productId),
   );
   const isAllChecked =
     availableItems.length > 0 && availableItems.length === checkedItems.length;
@@ -157,7 +190,7 @@ const CartPage = () => {
 
   const isAllSoldOut =
     cartItems.length > 0 &&
-    cartItems.every((item) => isForceSoldOut(item.productId));
+    cartItems.every((item) => isSoldOutProduct(item.productId));
 
   if (isLoading) {
     return (
@@ -211,6 +244,9 @@ const CartPage = () => {
                 key={item.cartItemId}
                 item={item}
                 isChecked={checkedItems.includes(item.cartItemId)}
+                isSoldOut={isSoldOutProduct(item.productId)}
+                isBest={Boolean(productInfoMap[item.productId]?.isBest)}
+                isNew={Boolean(productInfoMap[item.productId]?.isNew)}
                 onToggleCheck={handleToggleCheck}
                 onIncrease={handleIncrease}
                 onDecrease={handleDecrease}

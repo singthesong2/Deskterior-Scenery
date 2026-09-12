@@ -1,9 +1,14 @@
 import { clientApi } from "./clientApi";
 import { getCategoryById } from "../data/categories";
 
-// 장바구니 등 상품 원본(raw) 없이 productId만으로 품절 여부가 필요한 곳에서 사용
-const FORCE_SOLD_OUT_IDS = new Set([14]); // Minimal Desk Pegboard
-export const isForceSoldOut = (id) => FORCE_SOLD_OUT_IDS.has(id);
+// raw.stock/raw.badge → soldOut/isBest/isNew — 목록/상세 어디서든 이 함수 하나로만 판단한다
+export function deriveBadgeFields(raw) {
+  return {
+    soldOut: (raw.stock ?? 0) <= 0,
+    isBest: (raw.badge ?? []).includes("best"),
+    isNew: (raw.badge ?? []).includes("new"),
+  };
+}
 
 // 서버 응답 → 프론트 컴포넌트가 쓰는 모양으로 변환
 function toProduct(raw) {
@@ -28,9 +33,7 @@ function toProduct(raw) {
       title: item.title ?? "",
       body: item.description ?? "",
     })),
-    soldOut: (raw.stock ?? 0) <= 0,
-    isBest: (raw.badge ?? []).includes("best"),
-    isNew: (raw.badge ?? []).includes("new"),
+    ...deriveBadgeFields(raw),
     rating: raw.rating ?? 0,
     reviewCount: raw.reviewCount ?? 0,
   };

@@ -12,10 +12,9 @@ import {
     ChevronLeftIcon,
     ChevronRightIcon,
 } from "../icons/Icons";
-import products, { isBestProduct, isNewProduct } from "../../data/products";
 import ProductCard from "../product/ProductCard";
 import categories from "../../data/categories";
-import { getProducts } from "../../api/productsApi";
+import { getProducts, deriveBadgeFields } from "../../api/productsApi";
 import { useState, useEffect } from "react";
 import useCartStore from "../../store/cartStore";
 import {
@@ -157,19 +156,23 @@ function ProductGroup({title, items, isBest = false, onAddToCart, }) {
                 }
                 onAnimationComplete={handleAnimationComplete}
                     >
-                        {sliderProducts.map((product, index) => (
+                        {sliderProducts.map((product, index) => {
+                        const badgeFields = deriveBadgeFields(product);
+                        return (
                         <ProductCard
                         key={`${product.id}-${index}`}
                         product={{
                             ...product,
                             categoryName: getCategoryName(product.categoryId),
+                            ...badgeFields,
                         }}
                         showCategory
-                        isBest={isBestProduct(product.id)}
-                        isNew={isNewProduct(product.id)}
+                        isBest={badgeFields.isBest}
+                        isNew={badgeFields.isNew}
                         onAddToCart={onAddToCart}
                         />
-                    ))}
+                        );
+                    })}
                     </SliderTrack>
                 </SliderViewport>
 

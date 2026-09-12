@@ -1,7 +1,5 @@
 import { useTheme } from "@emotion/react";
 import Badge from "../common/Badge";
-import { isBestProduct, isNewProduct } from "../../data/products";
-import { isForceSoldOut } from "../../api/productsApi";
 import {
   ItemWrapper,
   ItemLeft,
@@ -25,13 +23,15 @@ import {
 const CartItem = ({
   item,
   isChecked,
+  isSoldOut,
+  isBest,
+  isNew,
   onToggleCheck,
   onIncrease,
   onDecrease,
   onDelete,
 }) => {
   const theme = useTheme();
-  const isSoldOut = isForceSoldOut(item.productId);
 
   const badges = [
     isSoldOut && {
@@ -39,8 +39,8 @@ const CartItem = ({
       size: "sm",
       background: theme.colors.error,
     },
-    isBestProduct(item.productId) && { text: "Best", size: "sm" },
-    isNewProduct(item.productId) && {
+    isBest && { text: "Best", size: "sm" },
+    isNew && {
       text: "New",
       size: "sm",
       background: theme.colors.textMain,
