@@ -2,6 +2,7 @@ import useAuthStore from "../../store/UseAuthStore";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { getCategories } from "../../api/categoriesApi";
+import staticCategories from "../../data/categories";
 import { logout } from "../../api/authApi";
 import { BasketIcon, LoginIcon, LogoutIcon } from "../icons/Icons";
 import useCartStore from "../../store/cartStore";
@@ -38,7 +39,11 @@ const Header = () => {
   useEffect(() => {
     getCategories()
       .then(setCategories)
-      .catch((err) => console.error("카테고리 로딩 실패:", err));
+      .catch((err) => {
+        console.error("카테고리 로딩 실패:", err);
+        // API가 실패해도 페이지 라우트 자체는 항상 존재하니, 메뉴가 통째로 사라지지 않게 정적 목록으로 대체
+        setCategories(staticCategories);
+      });
   }, []);
 
   const handleLogout = async () => {

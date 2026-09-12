@@ -6,12 +6,16 @@ export const FailToastStyle = {
 };
 
 export const FailBox = styled.div({
+  position: "relative",
   display: "flex",
   alignItems: "center",
-  gap: "12px",
   width: "100%",
   padding: 0,
   "& svg": {
+    position: "absolute",
+    left: 0,
+    top: "50%",
+    transform: "translateY(-50%)",
     color: "#F87171",
     flexShrink: 0,
   },
@@ -19,9 +23,10 @@ export const FailBox = styled.div({
 
 export const ToastText = styled.p({
   margin: 0,
+  width: "100%",
   fontSize: "16px",
   fontWeight: 500,
   lineHeight: "20px",
-  transform: "translateY(-2px)",
+  textAlign: "center",
   color: "#222",
 });

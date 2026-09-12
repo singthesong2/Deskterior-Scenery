@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { NoResultIcon, LoadFailIcon } from "../../components/icons/Icons";
+import { NoResultIcon } from "../../components/icons/Icons";
 
 const headingStyle = (theme) => ({
   fontFamily: theme.fontFamily.display,
@@ -126,10 +126,6 @@ export const EmptyState = styled.div(({ theme }) => ({
   background: theme.colors.cards,
   border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
   borderRadius: theme.radius.md,
-}));
-
-export const StyledLoadFailIcon = styled(LoadFailIcon)(({ theme }) => ({
-  color: theme.colors.imagePlaceholder,
 }));
 
 export const StyledNoResultIcon = styled(NoResultIcon)(({ theme }) => ({
