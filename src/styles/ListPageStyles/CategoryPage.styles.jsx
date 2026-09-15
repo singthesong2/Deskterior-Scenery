@@ -59,7 +59,7 @@ export const Trail = styled.ol(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   fontFamily: theme.fontFamily.base,
-  fontSize: theme.fontSize.xs,
+  fontSize: theme.fontSize.md,
   fontWeight: theme.fontWeight.regular,
   lineHeight: "normal",
   letterSpacing: "-0.12px",
@@ -77,10 +77,9 @@ export const Crumb = styled.li(({ theme }) => ({
   },
 }));
 
+// 클릭 가능한 링크임을 알 수 있게 기본 상태에서도 밑줄 표시
 export const CrumbLink = styled(Link)({
-  "&:hover": {
-    textDecoration: "underline",
-  },
+  textDecoration: "underline",
 });
 
 export const PageTitle = styled.h2(({ theme }) => ({
@@ -94,7 +93,9 @@ export const PageTitle = styled.h2(({ theme }) => ({
   margin: 0,
 
   [theme.media.mobile]: {
-    fontSize: "40px",
+    // 767px에서 768px(데스크탑 48px)로 넘어갈 때 뚝 끊기지 않도록, 34px(320px
+    // 기준)~44px(767px 기준)까지 뷰포트 폭에 비례해 자연스럽게 커지게 함
+    fontSize: "clamp(34px, 2.2vw + 27px, 44px)",
     fontWeight: theme.fontWeight.regular,
     letterSpacing: "normal",
     lineHeight: "normal",
@@ -104,7 +105,7 @@ export const PageTitle = styled.h2(({ theme }) => ({
 
 export const PageSubtitle = styled.p(({ theme }) => ({
   fontFamily: theme.fontFamily.base,
-  fontSize: theme.fontSize.sm,
+  fontSize: theme.fontSize.md,
   fontWeight: theme.fontWeight.regular,
   lineHeight: "normal",
   letterSpacing: "-0.14px",
@@ -123,15 +124,11 @@ export const Content = styled.div(({ theme }) => ({
   width: "100%",
   maxWidth: fluidContentMaxWidth,
   margin: "0 auto",
-  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["4xl"]} ${theme.spacing["3xl"]}`,
+  padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]}`,
   flexDirection: "column",
   alignItems: "center",
   gap: theme.spacing.xl,
   alignSelf: "stretch",
-
-  [theme.media.wide]: {
-    padding: `${theme.spacing["2xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]} ${theme.spacing["3xl"]}`,
-  },
 
   [theme.media.tablet]: {
     maxWidth: "100%",
@@ -252,9 +249,9 @@ export const Row = styled.div(({ theme }) => ({
     },
 
     "&& button[aria-label='찜하기'], && button[aria-label='장바구니 담기']": {
-      width: "28px",
-      height: "28px",
-      borderRadius: "15px",
+      width: "34px",
+      height: "34px",
+      borderRadius: theme.radius.full,
     },
   },
 }));

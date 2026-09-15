@@ -2,17 +2,30 @@ import styled from "@emotion/styled";
 import { motion } from "motion/react";
 
 export const ProductsSection = styled.section(({theme, isBest}) => ({
-  padding: theme.spacing["3xl"], //64
-  backgroundColor: isBest
-    ? theme.colors.cards
-    : theme.colors.background,
+    width: "100%",
+    boxSizing: "border-box",
+    padding: theme.spacing["3xl"], //64
+    backgroundColor: isBest
+        ? theme.colors.cards
+        : theme.colors.background,
 
     [theme.media.tablet]: {
         padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
     },
+
+    [theme.media.mobile]: {
+        padding: `${theme.spacing["2xl"]} ${theme.spacing.lg}`,
+    },
+
+    [theme.media.smallMobile]: {
+        padding: `${theme.spacing["2xl"]} ${theme.spacing.md}`,
+    }
 }));
 
 export const ProductTitle = styled.h2(({theme}) => ({
+    width: "100%",
+    maxWidth: "896px",
+    marginInline: "auto",
     marginBottom: theme.spacing.xl,
     fontFamily: theme.fontFamily.display,
     fontSize: theme.fontSize["4xl"], //32
@@ -22,6 +35,15 @@ export const ProductTitle = styled.h2(({theme}) => ({
         fontSize: theme.fontSize["3xl"],
         marginBottom: theme.spacing.lg,
     },
+
+    [theme.media.mobile]: {
+        fontSize: theme.fontSize["3xl"],
+        marginBottom: theme.spacing.lg,
+    },
+
+    [theme.media.smallMobile]: {
+        fontSize: theme.fontSize["2xl"],
+    }
 }));
 
 // 화면에 보여줄 상품 카드 범위를 제한
@@ -51,7 +73,7 @@ export const SliderTrack = styled(motion.div)(({theme}) => ({
         alignItems: "stretch",
 
         "& > div": {
-            width: "min(260px, calc((100vw -160px) / 3))",
+            width: "min(260px, calc((100vw - 160px) / 3))",
             height: "auto",
             minHeight: "350px",
         },
@@ -77,7 +99,10 @@ export const SlideItem = styled(motion.div)({
 });
 
 // 가운데(활성)가 아닌 카드는 상세이동/찜/담기 등 내부 클릭이 전혀 먹지 않게 덮는 투명 오버레이.
-// 상품 탐색은 화살표로만 하도록, 클릭했을 때 가운데로 이동시키는 동작은 두지 않음
+// 화면에 보이는 좌우 이웃 카드(currentIndex/currentIndex+2)는 눌렀을 때 그 카드가
+// 가운데로 오도록(=이전/다음 한 칸) 자체 클릭 핸들러가 붙는데, 화살표 옆으로 살짝
+// 삐져나온(화면에 온전히 안 보이는) 나머지 여분 카드까지 포인터 커서가 뜨면 클릭
+// 가능한 것처럼 보여 혼동을 주므로, 커서는 실제로 클릭 핸들러가 붙는 경우에만 표시
 export const SlideOverlay = styled.div({
     position: "absolute",
     inset: 0,
@@ -111,11 +136,11 @@ export const SliderButton = styled.button(({theme}) => ({
     backgroundColor: theme.colors.cards,
     color: theme.colors.textMain,
     cursor: "pointer",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.12)",
-    transition: "box-shadow 0.15s ease",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
+    transition: "box-shadow 0.15s ease, transform 0.2s ease",
 
     "&:hover": {
-        boxShadow: "0 3px 14px rgba(0, 0, 0, 0.2)",
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.12)",
     },
 }));
 
@@ -143,4 +168,83 @@ export const IndicatorButton = styled.button(({theme}) => ({
         width: "32px",
         backgroundColor: theme.colors.textMain,
     }
-}))
+}));
+
+// mobile
+
+export const MobileProductGrid = styled.div(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  columnGap: theme.spacing.md,
+  rowGap: theme.spacing.lg,
+
+  [theme.media.smallMobile]: {
+    columnGap: theme.spacing.sm,
+  },
+}));
+
+export const MobileCardSlot = styled.div(({ theme }) => ({
+  minWidth: 0,
+
+  // 이 영역 안의 상품 카드만 고정 너비 해제
+  "& > div": {
+    width: "100%",
+    minWidth: 0,
+    height: "100%",
+    boxSizing: "border-box",
+  },
+
+  // 상품 정보 영역
+  "& > div > div:last-child": {
+    minWidth: 0,
+    boxSizing: "border-box",
+    padding: `0 ${theme.spacing.xs}`,
+    overflowWrap: "anywhere",
+    fontSize: "14px",
+  },
+
+  // 상품명
+  "& strong": {
+    width: "100%",
+    fontSize: theme.fontSize.md,
+    lineHeight: 1.4,
+    minHeight: "2.8em",
+  },
+
+  // 카테고리명
+  "& > div > div:last-child > span": {
+    fontSize: theme.fontSize.xs,
+  },
+
+  // 가격
+  "& > div > div:last-child > p:first-of-type": {
+    fontSize: theme.fontSize.md,
+  },
+
+  // 리뷰
+  "& > div > div:last-child > p:last-of-type": {
+    marginTop: "auto",
+    fontSize: theme.fontSize.sm,
+  },
+}));
+
+export const MobileMoreButton = styled.button(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "44px",
+  height: "44px",
+  margin: `${theme.spacing.xl} auto 0`,
+  padding: 0,
+  border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+  borderRadius: theme.radius.full,
+  backgroundColor: theme.colors.cards,
+  color: theme.colors.textMain,
+  fontSize: theme.fontSize["2xl"],
+  cursor: "pointer",
+
+  "&:focus-visible": {
+    outline: `${theme.borderWidth.focus} solid ${theme.colors.emphasis}`,
+    outlineOffset: theme.spacing["2xs"],
+  },
+}));

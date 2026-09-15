@@ -10,12 +10,18 @@ import {
   KeywordChipContainer,
   KeywordButton,
   ClickableProductMap,
+  KeywordDropdown,
+  KeywordTrigger,
+  KeywordMenu,
+  KeywordMenuButton,
+  CurationInner,
 } from "../../styles/MainStyles/DeskCurationSection.styles";
 import { getProductRaw } from "../../api/productsApi";
 import categories from "../../data/categories";
 import { preloadingImages } from "../../utils/preloadingImages";
 import { SelectedProductCard } from "./SelectedProductCard";
 import { DeskProductMap } from "./DeskProductMap";
+import { ChevronDownIcon } from "../icons/Icons";
 
 function readCurationSelection() {
   try {
@@ -40,6 +46,7 @@ function DeskCurationSection({ items = [] }) {
   // 로딩, 오류 상태
   const [isProductLoading, setIsProductLoading] = useState(false);
   const [productError, setProductError] = useState("");
+  const [isKeywordOpen, setIsKeywordOpen] = useState(false);
 
   // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
   const activeStyleId = selectedStyleId ?? items[0]?.styleId;
@@ -181,6 +188,8 @@ function DeskCurationSection({ items = [] }) {
 
   return (
     <CurationSection>
+      <CurationInner>
+
       <CurationTitleBox>
         <CurationSubtitle>
           <strong>데스크 테리어,</strong>
@@ -210,6 +219,56 @@ function DeskCurationSection({ items = [] }) {
             </KeywordButton>
           ))}
         </KeywordChipContainer>
+
+        <KeywordDropdown
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) {
+              setIsKeywordOpen(false);
+            }
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              setIsKeywordOpen(false);
+              event.currentTarget.querySelector("button")?.focus();
+            }
+          }}
+        >
+          <KeywordTrigger
+            type="button"
+            aria-label="데스크 스타일 선택"
+            aria-expanded={isKeywordOpen}
+            onClick={() => {
+              setIsKeywordOpen((previous) => !previous);
+            }}
+          >
+            <strong>{selectedStyle?.name ?? "스타일 선택"}</strong>
+          <ChevronDownIcon width={14} height={14} />
+          </KeywordTrigger>
+
+          {isKeywordOpen && (
+            <KeywordMenu>
+              {items.map((item) => (
+                <li key={item.styleId}>
+                  <KeywordMenuButton
+                    type="button"
+                    aria-pressed={item.styleId === activeStyleId}
+                    onClick={(event) => {
+                      handleStyleChange(item);
+                      setIsKeywordOpen(false);
+
+                      event.currentTarget
+                        .closest("[data-keyword-dropdown]")
+                        ?.querySelector("button")
+                        ?.focus();
+                    }}
+                  >
+                    {item.name}
+                  </KeywordMenuButton>
+                </li>
+              ))}
+            </KeywordMenu>
+          )}
+        </KeywordDropdown>      
       </MoodKeywordBox>
 
       <CurationTitle2>What's on this desk?</CurationTitle2>
@@ -233,6 +292,8 @@ function DeskCurationSection({ items = [] }) {
           onNext={handleNextProduct}
         />
       </ClickableProductMap>
+
+      </CurationInner>
     </CurationSection>
   );
 }

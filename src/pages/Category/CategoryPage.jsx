@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router";
-import { getCategories } from "../../api/categoriesApi";
-import staticCategories from "../../data/categories";
 import { getProducts, deriveBadgeFields } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
 import {
@@ -12,7 +10,8 @@ import ProductCard from "../../components/product/ProductCard";
 import ProductToolbar from "../../components/product/ProductToolbar";
 import Pagination from "../../components/product/Pagination";
 import useLoadingStore from "../../store/UseLoadingStore";
-import { preloadingImages } from "../../utils/preloadingImages";
+import useCategoriesStore from "../../store/categoriesStore";
+//import { preloadingImages } from "../../utils/preloadingImages";
 import { EmptyBoxIcon } from "../../components/icons/Icons";
 import * as S from "../../styles/ListPageStyles/CategoryPage.styles";
 
@@ -24,7 +23,9 @@ const MOBILE_BREAKPOINT = 768;
 const PLACEHOLDER_PRODUCT = { id: "placeholder", name: " ", price: 0 };
 
 const CategoryPage = ({ categoryId = "lighting" }) => {
+  const cartItems = useCartStore((s) => s.cartItems);
   const addToCart = useCartStore((s) => s.addToCart);
+  const removeItem = useCartStore((s) => s.removeItem);
 
   const finishPageLoading = useLoadingStore((state) => state.finishPageLoading);
 
@@ -42,33 +43,18 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
   }, []);
   const rowSize = isMobile ? 2 : 3;
 
-  const [categories, setCategories] = useState(null);
-  const [categoriesFailed, setCategoriesFailed] = useState(false);
-
-  const [categoriesReady, setCategoriesReady] = useState(false);
+  // 스토어가 앱 전체에서 딱 한 번만 요청/캐시하므로, 다른 페이지에서 이미
+  // 불러왔다면 여기선 다시 요청하지 않고 캐시된 값을 그대로 씀
+  // (실패 시 정적 목록 대체와 실패 토스트도 스토어 안에서 한 번만 처리됨)
+  const categories = useCategoriesStore((state) => state.categories);
+  const categoriesStatus = useCategoriesStore((state) => state.status);
+  const categoriesFailed = categoriesStatus === "error";
+  const categoriesReady =
+    categoriesStatus === "success" || categoriesStatus === "error";
+  const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
   useEffect(() => {
-    let alive = true;
-    getCategories()
-      .then((data) => {
-        if (alive) setCategories(data);
-      })
-      .catch((err) => {
-        console.error("카테고리 로딩 실패:", err);
-        if (!alive) return;
-        setCategoriesFailed(true);
-        // API가 실패해도 이름/경로는 항상 같은 정적 목록으로 대체해서 slug 대신 정상 표기되게 함
-        setCategories(staticCategories);
-        showFailToast("페이지 정보를 불러오지 못했습니다.");
-      })
-      .finally(() => {
-        if (alive) {
-          setCategoriesReady(true);
-        }
-      });
-    return () => {
-      alive = false;
-    };
-  }, []);
+    fetchCategories();
+  }, [fetchCategories]);
 
   const category = categories?.find((c) => c.id === categoryId);
   // 카테고리 이름을 못 가져와도(로딩 실패) 상품목록 자체는 볼 수 있도록 categoryId로 폴백
@@ -103,41 +89,6 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
   const queryKey = `${categoryId}|${currentPage}|${sortBy}|${search}`;
   const hasLoadedRef = useRef(false);
 
-  /*useEffect(() => {
-    let alive = true;
-    getProducts({
-      category: categoryId,
-      page: currentPage,
-      limit: PAGE_SIZE,
-      sort: sortBy,
-      q: search,
-    })
-      .then((data) => {
-        if (!alive) return;
-        setPageProducts(
-          data.products.map((product) => ({
-            ...product,
-            ...deriveBadgeFields(product),
-          })),
-        );
-        setTotalPages(Math.max(1, data.pagination.totalPages));
-        setErroredKey(null);
-        hasLoadedRef.current = true;
-      })
-      .catch((err) => {
-        console.error("상품목록 로딩 실패:", err);
-        if (!alive) return;
-        setErroredKey(queryKey);
-        // 이미 목록을 보여준 상태라 화면은 그대로 유지되니, 실패했다는 것만 토스트로 알림
-        if (hasLoadedRef.current) {
-          showFailToast("목록을 불러오지 못했어요. 다시 시도해주세요.");
-        }
-      });
-    return () => {
-      alive = false;
-    };
-  }, [categoryId, currentPage, sortBy, search, queryKey]);*/
-
   useEffect(() => {
     let alive = true;
 
@@ -156,7 +107,11 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
           ...deriveBadgeFields(product),
         }));
 
-        await preloadingImages(products.map((product) => product.imageUrl));
+        // 이미지가 전부 로드될 때까지 기다렸다가 스피너를 끄면, 캐시가 없는
+        // 상태(시크릿 모드 등)에서 이미지 호스트가 느릴 때 전체 화면이 오래
+        // 덮여있게 된다. 홈페이지와 같은 방식으로 데이터만 오면 바로 렌더하고
+        // 이미지는 ProductCard의 lazy loading으로 각자 채워지게 둔다
+        //await preloadingImages(products.map((product) => product.imageUrl));
 
         if (!alive) return;
 
@@ -175,7 +130,7 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
         setErroredKey(queryKey);
 
         if (hasLoadedRef.current) {
-          showFailToast("목록을 불러오지 못했어요. 다시 시도해주세요.");
+          showFailToast("목록을 불러오지 못했습니다. 다시 시도해 주세요.");
         }
       } finally {
         if (alive) {
@@ -232,17 +187,29 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
     if (!product) return;
 
     try {
-      await addToCart({
-        productId: product.id,
-        name: product.name,
-        price: product.discountPrice || product.price,
-        imageUrl: product.imageUrl,
-        isSoldOut: product.soldOut,
-      });
-      showSuccessToast("상품이 장바구니에 담겼습니다");
+      // 1. 장바구니에 해당 상품이 이미 있는지 찾기
+      const existingItem = cartItems.find(
+        (item) => item.productId === product.id,
+      );
+
+      if (existingItem) {
+        // 2. 이미 있다면? -> 장바구니에서 빼기
+        await removeItem(existingItem.cartItemId);
+        showSuccessToast("장바구니에서 삭제했습니다.");
+      } else {
+        // 3. 없다면? -> 장바구니에 담기
+        await addToCart({
+          productId: product.id,
+          name: product.name,
+          price: product.discountPrice || product.price,
+          imageUrl: product.imageUrl,
+          isSoldOut: product.soldOut,
+        });
+        showSuccessToast("장바구니에 담았습니다.");
+      }
     } catch (err) {
-      console.error("장바구니 담기 실패:", err);
-      showFailToast("장바구니 담기에 실패했습니다");
+      console.error("장바구니 업데이트 실패:", err);
+      showFailToast("장바구니 처리에 실패했습니다.");
     }
   };
 
@@ -265,7 +232,12 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
       </S.EmptyState>
     );
   } else {
-    const placeholderCount = PAGE_SIZE - pageProducts.length;
+    // PAGE_SIZE(6)만큼 항상 채우면, 실제 상품이 적은 페이지(ex. 2개)에서도
+    // 안 보이는 빈 칸이 남은 줄만큼 생겨 페이지네이션이 상품 개수와 무관하게
+    // 항상 같은 위치(맨 아래)에 고정돼버린다. 마지막 줄만 채워서 페이지네이션이
+    // 실제 상품 개수에 맞게 자연스럽게 따라오게 함 (뷰포트별 한 줄당 개수는 rowSize)
+    const placeholderCount =
+      (rowSize - (pageProducts.length % rowSize)) % rowSize;
 
     const gridItems = [
       ...pageProducts.map((product) => ({ key: String(product.id), product })),
@@ -320,7 +292,9 @@ const CategoryPage = ({ categoryId = "lighting" }) => {
                     aria-current={isCurrent ? "page" : undefined}
                   >
                     {crumb.path && !isCurrent ? (
-                      <S.CrumbLink to={crumb.path}>{crumb.label}</S.CrumbLink>
+                      <S.CrumbLink to={crumb.path} title="홈으로 이동">
+                        {crumb.label}
+                      </S.CrumbLink>
                     ) : (
                       crumb.label
                     )}

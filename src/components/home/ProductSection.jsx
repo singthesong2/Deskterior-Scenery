@@ -9,18 +9,24 @@ import {
   SliderTrack,
   SlideItem,
   SlideOverlay,
+  MobileProductGrid,
+  MobileCardSlot,
+  MobileMoreButton,
 } from "../../styles/MainStyles/ProductSection.styles";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons/Icons";
 import ProductCard from "../product/ProductCard";
 import categories from "../../data/categories";
 import { getProducts, deriveBadgeFields } from "../../api/productsApi";
-import { preloadingImages } from "../../utils/preloadingImages";
+//import { preloadingImages } from "../../utils/preloadingImages";
 import { useState, useEffect, useRef } from "react";
 import useCartStore from "../../store/cartStore";
 import { showSuccessToast, showFailToast } from "../common/ShowToast";
+import { useTheme } from "@emotion/react";
 
 // 페이지별 상품 표시 개수
 const ITEMS_PER_PAGE = 3;
+// 새로고침 전까지만 모바일 표시 개수 기억
+const mobileVisibleCounts = new Map();
 
 // 카드 이동(트랙)과 확대/축소(가운데 카드 강조)를 같은 스프링 설정으로 움직여서
 // 서로 다른 애니메이션 엔진(타이밍/이징 곡선)을 쓸 때 생기던 어긋남을 없앤다.
@@ -53,7 +59,8 @@ function readCarouselSelection() {
   }
 }
 
-function ProductGroup({ title, items, isBest = false, onAddToCart }) {
+function DesktopProductGroup({ title, items, isBest = false, onAddToCart }) {
+  const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(1);
   const [, setDirection] = useState(1);
   const [isResetting, setIsResetting] = useState(false);
@@ -204,10 +211,17 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
 
     setDirection(-1);
 
+    if (isResetting) {
+      pendingDirectionRef.current = "previous";
+      return;
+    }
+
     // 끝(경계)에 도달하는 애니메이션이 아직 안 끝났는데 또 눌렀다면, 지금 애니메이션을
     // 도중에 끊어서 튀어 보이게 하지 않고, 리셋이 끝난 직후 자연스럽게 이어서 한 칸 더 이동되도록 예약만 해둔다
     if (currentIndex <= 0) {
       pendingDirectionRef.current = "previous";
+      setIsResetting(true);
+      setCurrentIndex(items.length);
       return;
     }
 
@@ -220,10 +234,17 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
 
     setDirection(1);
 
+    if (isResetting) {
+      pendingDirectionRef.current = "next";
+      return;
+    }
+
     // 끝(경계)에 도달하는 애니메이션이 아직 안 끝났는데 또 눌렀다면, 지금 애니메이션을
     // 도중에 끊어서 튀어 보이게 하지 않고, 리셋이 끝난 직후 자연스럽게 이어서 한 칸 더 이동되도록 예약만 해둔다
     if (currentIndex >= items.length + 1) {
       pendingDirectionRef.current = "next";
+      setIsResetting(true);
+      setCurrentIndex(1);
       return;
     }
 
@@ -271,6 +292,10 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
               // 3칸짜리 보이는 창(currentIndex, currentIndex+1, currentIndex+2) 중
               // 가운데(currentIndex+1)에 오는 카드가 시각적으로도 중앙에 위치함
               const isActive = index === currentIndex + 1;
+
+              const isVisible =
+                index >= currentIndex && index <= currentIndex + 2;
+
               return (
                 <SlideItem
                   key={`${product.id}-${index}`}
@@ -282,19 +307,61 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
                   transition={isResetting ? { duration: 0 } : SLIDE_SPRING}
                   style={{ zIndex: isActive ? 2 : 1 }}
                 >
-                  <ProductCard
-                    product={{
-                      ...product,
-                      categoryName: getCategoryName(product.categoryId),
-                      ...badgeFields,
-                    }}
-                    showCategory
-                    isBest={badgeFields.isBest}
-                    isNew={badgeFields.isNew}
-                    useListBackground={isBest}
-                    onAddToCart={onAddToCart}
-                  />
-                  {!isActive && <SlideOverlay />}
+                  {/* inert: 비활성 카드는 오버레이가 마우스 클릭은 막아주지만, 키보드
+                      Tab 이동은 z-index(시각적 가림)와 무관하게 DOM 순서를 그대로 따라가서
+                      가려진 카드 내부의 이미지/이름/찜/담기 버튼에 그대로 포커스가 가고
+                      Enter로 실행까지 돼버리는 문제가 있었다. inert로 이 안쪽 전체를
+                      포커스/클릭 대상에서 완전히 제외해 마우스·키보드 동작을 일치시킴 */}
+                  <div inert={!isActive}>
+                    <ProductCard
+                      product={{
+                        ...product,
+                        categoryName: getCategoryName(product.categoryId),
+                        ...badgeFields,
+                      }}
+                      showCategory
+                      isBest={badgeFields.isBest}
+                      isNew={badgeFields.isNew}
+                      background={isBest ? theme.colors.background : undefined}
+                      onAddToCart={onAddToCart}
+                      imagePriority={isVisible} //
+                    />
+                  </div>
+                  {!isActive &&
+                    (() => {
+                      // 화면엔 항상 currentIndex(왼쪽)/currentIndex+1(가운데)/
+                      // currentIndex+2(오른쪽) 3장만 보이므로, 왼쪽 카드를 누르면
+                      // "이전" 한 칸, 오른쪽 카드를 누르면 "다음" 한 칸과 정확히 같다
+                      const isLeftNeighbor = index === currentIndex;
+                      const isRightNeighbor = index === currentIndex + 2;
+                      if (!isLeftNeighbor && !isRightNeighbor) {
+                        // 화면에 보이지 않는(클립된) 여분의 카드는 그대로 클릭 차단만
+                        return <SlideOverlay />;
+                      }
+                      const goToThisCard = isLeftNeighbor
+                        ? handlePrevious
+                        : handleNext;
+                      return (
+                        <SlideOverlay
+                          role="button"
+                          tabIndex={0}
+                          style={{ cursor: "pointer" }}
+                          aria-label={
+                            isLeftNeighbor
+                              ? `${product.name} - 이전 상품으로 이동`
+                              : `${product.name} - 다음 상품으로 이동`
+                          }
+                          onClick={goToThisCard}
+                          onKeyDown={(event) => {
+                            if (event.key !== "Enter" && event.key !== " ") {
+                              return;
+                            }
+                            event.preventDefault();
+                            goToThisCard();
+                          }}
+                        />
+                      );
+                    })()}
                 </SlideItem>
               );
             })}
@@ -333,24 +400,126 @@ function ProductGroup({ title, items, isBest = false, onAddToCart }) {
   );
 }
 
+// mobile
+function MobileProductGroup({ title, items, isBest = false, onAddToCart }) {
+  const theme = useTheme();
+
+  const [visibleCount, setVisibleCount] = useState(() => {
+    return mobileVisibleCounts.get(title) ?? 2;
+  });
+
+  useEffect(() => {
+    mobileVisibleCounts.set(title, visibleCount);
+  }, [title, visibleCount]);
+  const visibleProducts = items.slice(0, visibleCount);
+  const hasMore = visibleCount < items.length;
+
+  return (
+    <ProductsSection isBest={isBest}>
+      <ProductTitle>{title}</ProductTitle>
+
+      {items.length === 0 ? (
+        <p>표시할 상품이 없습니다.</p>
+      ) : (
+        <>
+          <MobileProductGrid>
+            {visibleProducts.map((product) => {
+              const badgeFields = deriveBadgeFields(product);
+
+              return (
+                <MobileCardSlot key={product.id}>
+                  <ProductCard
+                    product={{
+                      ...product,
+                      categoryName: getCategoryName(product.categoryId),
+                      ...badgeFields,
+                    }}
+                    showCategory
+                    isBest={badgeFields.isBest}
+                    isNew={badgeFields.isNew}
+                    background={isBest ? theme.colors.background : undefined}
+                    onAddToCart={onAddToCart}
+                  />
+                </MobileCardSlot>
+              );
+            })}
+          </MobileProductGrid>
+
+          {hasMore && (
+            <MobileMoreButton
+              type="button"
+              aria-label={`${title} 상품 더 보기`}
+              onClick={() => {
+                setVisibleCount((count) => Math.min(count + 2, items.length));
+              }}
+            >
+              <span aria-hidden="true">+</span>
+            </MobileMoreButton>
+          )}
+        </>
+      )}
+    </ProductsSection>
+  );
+}
+
+function ProductGroup({ title, items, isBest = false, onAddToCart }) {
+  const theme = useTheme();
+  const mobileQuery = theme.media.mobile.replace("@media", "").trim();
+
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia(mobileQuery).matches,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(mobileQuery);
+
+    setIsMobile(mediaQuery.matches);
+
+    function handleChange(event) {
+      setIsMobile(event.matches);
+    }
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, [mobileQuery]);
+
+  if (isMobile) {
+    return (
+      <MobileProductGroup
+        title={title}
+        items={items}
+        isBest={isBest}
+        onAddToCart={onAddToCart}
+      />
+    );
+  }
+
+  return (
+    <DesktopProductGroup
+      title={title}
+      items={items}
+      isBest={isBest}
+      onAddToCart={onAddToCart}
+    />
+  );
+}
+
 function ProductSection({ onInitialLoadComplete }) {
   const [bestProducts, setBestProducts] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
 
+  const cartItems = useCartStore((s) => s.cartItems);
   const addToCart = useCartStore((s) => s.addToCart);
+  const removeItem = useCartStore((s) => s.removeItem);
 
   // 서버 API 호출 및 상태 업데이트
   useEffect(() => {
     let alive = true;
     // 이미지 미리 로딩 중 페이지를 떠나도(unmount) 전역 로딩 카운트가 남지 않도록,
     // 자연 완료/언마운트 둘 중 먼저 오는 시점에 한 번만 endLoading을 호출한다
-
-    /*let loadingEnded = false;
-    const finishLoading = () => {
-      if (loadingEnded) return;
-      loadingEnded = true;
-      endLoading();
-    };*/
 
     const fetchMainProducts = async () => {
       try {
@@ -373,9 +542,9 @@ function ProductSection({ onInitialLoadComplete }) {
         const bestItems = bestResult.products || [];
         const newItems = newResult.products || [];
 
-        await preloadingImages(
+        /*await preloadingImages(
           [...bestItems, ...newItems].map((product) => product.imageUrl),
-        );
+        );*/
 
         if (!alive) return;
 
@@ -407,17 +576,29 @@ function ProductSection({ onInitialLoadComplete }) {
     if (!product) return;
 
     try {
-      await addToCart({
-        productId: product.id,
-        name: product.name,
-        price: product.discountPrice || product.price,
-        imageUrl: product.imageUrl,
-        isSoldOut: product.soldOut,
-      });
-      showSuccessToast("상품이 장바구니에 담겼습니다");
+      // 장바구니에 해당 상품이 이미 있는지 검사
+      const existingItem = cartItems.find(
+        (item) => item.productId === product.id,
+      );
+
+      if (existingItem) {
+        // 이미 담겨있으면 삭제
+        await removeItem(existingItem.cartItemId);
+        showSuccessToast("장바구니에서 삭제했습니다.");
+      } else {
+        // 안 담겨있으면 추가
+        await addToCart({
+          productId: product.id,
+          name: product.name,
+          price: product.discountPrice || product.price,
+          imageUrl: product.imageUrl,
+          isSoldOut: product.soldOut,
+        });
+        showSuccessToast("장바구니에 담았습니다.");
+      }
     } catch (err) {
-      console.error("장바구니 담기 실패:", err);
-      showFailToast("장바구니 담기에 실패했습니다");
+      console.error("장바구니 업데이트 실패:", err);
+      showFailToast("장바구니 처리에 실패했습니다.");
     }
   };
 

@@ -2,8 +2,11 @@ import styled from "@emotion/styled";
 
 // 소계 and 버튼 컨테이너
 export const SummaryContainer = styled.div(({ theme }) => ({
-  marginTop: theme.spacing.xl,
+  marginTop: `clamp(${theme.spacing.lg}, calc(10.667px + 2.778vw), ${theme.spacing.xl})`,
   marginBottom: theme.spacing["3xl"],
+  [theme.media.mobile]: {
+    marginBottom: 0,
+  },
 }));
 
 // 토탈 박스
@@ -28,6 +31,17 @@ export const SubtotalRow = styled(SummaryRow)(({ theme }) => ({
 // 배송비
 export const DeliveryRow = styled(SummaryRow)(({ theme }) => ({
   marginBottom: theme.spacing.xs,
+  [theme.media.tablet]: {
+    position: "relative",
+    marginBottom: "72px",
+  },
+  [theme.media.mobile]: {
+    position: "relative",
+    marginBottom: "72px",
+  },
+  "@media (max-width: 327px)": {
+    marginBottom: "96px",
+  },
 }));
 
 // 총합
@@ -43,7 +57,7 @@ export const LabelText = styled.span(({ theme }) => ({
 }));
 
 // 툴팁
-export const IconWrapper = styled.div({
+export const IconWrapper = styled.div(({ theme }) => ({
   position: "relative",
   display: "flex",
   alignItems: "center",
@@ -51,25 +65,60 @@ export const IconWrapper = styled.div({
   paddingTop: "2px",
   paddingRight: "4px",
   cursor: "pointer",
-});
+  [theme.media.pc]: {
+    "&:hover > div": {
+      display: "block",
+    },
+  },
+  [theme.media.wide]: {
+    "&:hover > div": {
+      display: "block",
+    },
+  },
+  [theme.media.tablet]: {
+    position: "static",
+  },
+  [theme.media.mobile]: {
+    position: "static",
+  },
+}));
 
 // 툴팁 박스
 export const TooltipBox = styled.div(({ theme }) => ({
+  display: "none",
   position: "absolute",
   left: "20px", //오른쪽
   backgroundColor: theme.colors.subtle,
-  padding: "8px 12px",
+  padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
   borderRadius: theme.radius.sm,
   fontSize: theme.fontSize.xs,
   fontWeight: theme.fontWeight.regular,
   color: theme.colors.secondText,
   whiteSpace: "nowrap",
   zIndex: 9,
+  [theme.media.tablet]: {
+    display: "block",
+    top: theme.spacing.xl,
+    left: 0,
+    width: "100%",
+    whiteSpace: "normal",
+    padding: theme.spacing.sm,
+    backgroundColor: theme.colors.background,
+  },
+  [theme.media.mobile]: {
+    display: "block",
+    top: theme.spacing.xl,
+    left: 0,
+    width: "100%",
+    whiteSpace: "normal",
+    padding: theme.spacing.sm,
+    backgroundColor: theme.colors.background,
+  },
 }));
 
 // 소계 배송비 가격
 export const PriceText = styled.span(({ theme }) => ({
-  fontSize: theme.fontSize.md, // 16px
+  fontSize: theme.fontSize.md,
   color: theme.colors.secondText,
   fontWeight: theme.fontWeight.regular,
 }));
@@ -92,7 +141,7 @@ export const TotalPriceText = styled.strong(({ theme }) => ({
 export const CheckoutButton = styled.button(({ theme }) => ({
   width: "100%",
   height: "48px",
-  marginTop: theme.spacing.xl,
+  marginTop: `clamp(${theme.spacing.lg}, calc(10.667px + 2.778vw), ${theme.spacing.xl})`,
   padding: `${theme.spacing.sm} 0`,
   backgroundColor: theme.colors.textMain,
   color: theme.colors.cards,
@@ -108,5 +157,8 @@ export const CheckoutButton = styled.button(({ theme }) => ({
   "&:disabled": {
     opacity: 0.5,
     cursor: "not-allowed",
+  },
+  "&:hover": {
+    filter: "brightness(1.3)",
   },
 }));

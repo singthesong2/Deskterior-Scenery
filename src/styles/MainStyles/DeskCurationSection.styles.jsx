@@ -2,11 +2,28 @@ import styled from "@emotion/styled";
 
 export const CurationSection = styled.section(({ theme }) => ({
   padding: theme.spacing["3xl"], //64
+  width: "100%",
+  boxSizing: "border-box",
+  backgroundColor: theme.colors.background,
 
   [theme.media.tablet]: {
     padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+  },
+
+  [theme.media.mobile]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.lg}`,
+  },
+
+  [theme.media.smallMobile]: {
+    padding: `${theme.spacing["2xl"]} ${theme.spacing.md}`,
   }
-}))
+}));
+
+export const CurationInner = styled.div({
+  width: "100%",
+  maxWidth: "896px",
+  marginInline: "auto",
+})
 
 export const CurationTitleBox = styled.div(({ theme }) => ({
   display: "flex",
@@ -20,6 +37,10 @@ export const CurationSubtitle = styled.p(({ theme }) => ({
   fontSize: theme.fontSize.md, // 16px
   fontWeight: theme.fontWeight.medium,
   color: theme.colors.emphasis,
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.sm,
+  },
 }));
 
 export const CurationTitle = styled.h2(({ theme }) => ({
@@ -27,6 +48,14 @@ export const CurationTitle = styled.h2(({ theme }) => ({
   fontWeight: theme.fontWeight.semiBold,
   color: theme.colors.textMain,
   marginBottom: theme.spacing.lg,
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize["3xl"],
+  },
+
+  [theme.media.smallMobile]: {
+    fontSize: theme.fontSize["2xl"],
+  },
 }));
 
 export const CurationTitle2 = styled.h2(({ theme }) => ({
@@ -34,6 +63,14 @@ export const CurationTitle2 = styled.h2(({ theme }) => ({
   fontSize: theme.fontSize["4xl"], // 32px
   color: theme.colors.textMain,
   marginBottom: theme.spacing.lg,
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize["3xl"],
+  },
+
+  [theme.media.smallMobile]: {
+    fontSize: theme.fontSize["2xl"],
+  },
 }));
 
 // mood keyword area
@@ -42,13 +79,10 @@ export const MoodKeywordBox = styled.div(({ theme }) => ({
   flexDirection: "column",
   alignItems: "flex-start",
   gap: theme.spacing.xs,
-}));
 
-export const MoodKeywordText = styled.p(({ theme }) => ({
-  fontFamily: theme.fontFamily.base,
-  fontSize: theme.fontSize.md, // 16px
-  fontWeight: theme.fontWeight.regular,
-  color: theme.colors.secondText,
+  [theme.media.mobile]: {
+    marginBottom: theme.spacing.lg,
+  },
 }));
 
 export const KeywordChipContainer = styled.div(({ theme }) => ({
@@ -58,6 +92,21 @@ export const KeywordChipContainer = styled.div(({ theme }) => ({
   flexWrap: "wrap",
   alignItems: "flex-start",
   gap: theme.spacing.md, // 16px
+
+  [theme.media.mobile]: {
+    display: "none",
+  }
+}));
+
+export const MoodKeywordText = styled.p(({ theme }) => ({
+  fontFamily: theme.fontFamily.base,
+  fontSize: theme.fontSize.md, // 16px
+  fontWeight: theme.fontWeight.regular,
+  color: theme.colors.secondText,
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.sm,
+  },
 }));
 
 export const KeywordButton = styled.button(({ theme, isSelected }) => ({
@@ -68,7 +117,7 @@ export const KeywordButton = styled.button(({ theme, isSelected }) => ({
     : `${theme.colors.subtle}80`, // secondText color에 opacity 50%
   color: theme.colors.textMain,
   fontWeight: isSelected ? theme.fontWeight.semiBold : theme.fontWeight.regular,
-  fontSize: theme.fontSize.xs,
+  fontSize: theme.fontSize.sm,
 }));
 
 export const ClickableProductMap = styled.div(({ theme }) => ({
@@ -78,7 +127,13 @@ export const ClickableProductMap = styled.div(({ theme }) => ({
   [theme.media.tablet]: {
     flexDirection: "column",
     alignItems: "center",
-  }
+  },
+
+  [theme.media.mobile]: {
+    flexDirection: "column",
+    alignItems: "center",
+    gap: theme.spacing.lg,
+  },
 }));
 
 // DeskArea
@@ -90,13 +145,21 @@ export const DeskArea = styled.div(({ theme }) => ({
   overflow: "hidden",
   backgroundColor: theme.colors.imagePlaceholder,
   borderRadius: theme.radius.md,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
 
   [theme.media.tablet]: {
     flex: "none",
     width: "100%",
     height: "auto",
     aspectRatio: "1 / 1",
-  }
+  },
+
+  [theme.media.mobile]: {
+    flex: "none",
+    width: "100%",
+    height: "auto",
+    aspectRatio: "1 / 1",
+  },
 }));
 
 export const HotspotButton = styled.button(({ theme, isSelected }) => ({
@@ -111,7 +174,7 @@ export const HotspotButton = styled.button(({ theme, isSelected }) => ({
   borderRadius: theme.radius.full,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.semiBold,
-  colors: theme.colors.textMain,
+  color: theme.colors.textMain,
   cursor: "pointer",
 }));
 
@@ -130,6 +193,7 @@ export const ProductArea = styled.div(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.cards,
   borderRadius: theme.radius.md,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
   overflow: "hidden",
 
   [theme.media.tablet]: {
@@ -142,7 +206,22 @@ export const ProductArea = styled.div(({ theme }) => ({
     minHeight: "280px",
     justifyContent: "space-between",
     overflow: "visible",
-  }
+  },
+
+  [theme.media.mobile]: {
+    position: "relative",
+    flex: "none",
+    width: "100%",
+    maxWidth: "none",
+    minWidth: 0,
+    height: "auto",
+    padding: `${theme.spacing.md} ${theme.spacing.xl}`,
+    overflow: "visible",
+  },
+
+  [theme.media.smallMobile]: {
+    padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+  },
 }))
 
 export const ProductContent = styled.div(({theme}) => ({
@@ -154,19 +233,45 @@ export const ProductContent = styled.div(({theme}) => ({
       flexDirection: "row",
       alignItems: "stretch",
       gap: theme.spacing.lg,
-    }
+    },
+
+    [theme.media.mobile]: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      gap: theme.spacing.md,
+    },
+
+    [theme.media.smallMobile]: {
+      flexDirection: "column",
+      gap: theme.spacing.sm,
+    },
 }));
 
-export const ProductLoading = styled.p({
+export const ProductLoading = styled.div(({ theme }) => ({
   width: "100%",
+  height: "100%",
   minHeight: "100%",
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  fontSize: "16px",
-  fontWeight: 500,
+  gap: theme.spacing.md, // 스피너와 텍스트 사이 간격
+  color: theme.colors.secondText,
+  fontFamily: theme.fontFamily.base,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.medium,
   textAlign: "center",
-});
+  boxSizing: "border-box",
+
+  [theme.media.tablet]: {
+    minHeight: "280px",
+  },
+
+  [theme.media.mobile]: {
+    minHeight: "220px",
+    padding: `${theme.spacing.xl} 0`,
+  },
+}));
 
 export const ProductTitleBox = styled.div(({ theme }) => ({
   display: "flex",
@@ -177,6 +282,10 @@ export const ProductTitleBox = styled.div(({ theme }) => ({
 
   [theme.media.tablet]: {
     marginBottom: theme.spacing.md,
+  },
+
+  [theme.media.mobile]: {
+    marginBottom: theme.spacing.md,
   }
 }));
 
@@ -184,7 +293,7 @@ export const ProductNumber = styled.div(({ theme }) => ({
   width: "32px",
   height: "32px",
   display: "flex",
-  flexShrin: 0,
+  flexShrink: 0,
   alignItems: "center",
   justifyContent: "center",
   borderRadius: theme.radius.full,
@@ -198,6 +307,14 @@ export const ProductTitle = styled.h3(({ theme }) => ({
   color: theme.colors.textMain,
   fontWeight: theme.fontWeight.semiBold,
   fontSize: theme.fontSize.xl, // 20px
+
+  [theme.media.tablet]: {
+    fontSize: theme.fontSize.xl,
+  },
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.xl,
+  }
 }));
 
 export const ProductImage = styled.img(({ theme }) => ({
@@ -213,6 +330,23 @@ export const ProductImage = styled.img(({ theme }) => ({
     height: "160px",
     aspectRatio: "1 / 1",
     borderRadius: theme.radius.sm,
+  },
+
+  [theme.media.mobile]: {
+    width: "32%",
+    maxWidth: "160px",
+    height: "auto",
+    aspectRatio: "1 / 1",
+    objectFit: "contain",
+    flexShrink: 0,
+    marginBottom: 0,
+    borderRadius: theme.radius.sm,
+  },
+
+  [theme.media.smallMobile]: {
+    width: "100%",
+    maxWidth: "none",
+    height: "auto",
   }
 }));
 
@@ -223,6 +357,17 @@ export const ProductInfo = styled.div(({ theme }) => ({
 
   [theme.media.tablet]: {
     gap: theme.spacing.sm, // 12
+  },
+
+  [theme.media.mobile]: {
+    flex: 1,
+    minWidth: 0,
+    gap: theme.spacing.xs,
+  },
+
+  [theme.media.smallMobile]: {
+    width: "100%",
+    flex: "none",
   }
 }))
 
@@ -230,12 +375,36 @@ export const ProductName = styled.h4(({ theme }) => ({
   color: theme.colors.textMain,
   fontWeight: theme.fontWeight.semiBold,
   fontSize: theme.fontSize["2xl"],
+
+  [theme.media.tablet]: {
+    fontSize: theme.fontSize.xl,
+  },
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.xl,
+  },
+
+  [theme.media.smallMobile]: {
+    fontSize: theme.fontSize.lg,
+  }
 }));
 
 export const ProductPrice = styled.p(({ theme }) => ({
   color: theme.colors.textMain,
   fontWeight: theme.fontWeight.semiBold,
   fontSize: theme.fontSize.xl, // 20px
+
+  [theme.media.tablet]: {
+    fontSize: theme.fontSize.lg,
+  },
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.lg,
+  },
+
+  [theme.media.smallMobile]: {
+    fontSize: theme.fontSize.md,
+  },
 }));
 
 export const ProductDescription = styled.p(({ theme }) => ({
@@ -243,6 +412,10 @@ export const ProductDescription = styled.p(({ theme }) => ({
   fontWeight: theme.fontWeight.regular,
   fontSize: theme.fontSize.sm, // 14px
   lineHeight: 1.5,
+
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.sm,
+  }
 }));
 
 export const ProductTagContainer = styled.div(({ theme }) => ({
@@ -251,9 +424,11 @@ export const ProductTagContainer = styled.div(({ theme }) => ({
   gap: theme.spacing.xs,
   marginBottom: theme.spacing.xl, //32
 
-  // [theme.media.tablet]: {
-  //   display: "none",
-  // }
+  [theme.media.mobile]: {
+    flexWrap: "wrap",
+    gap: theme.spacing["2xs"],
+    marginBottom: 0,
+  },
 }));
 
 export const ProductTag = styled.span(({ theme }) => ({
@@ -263,6 +438,16 @@ export const ProductTag = styled.span(({ theme }) => ({
   borderRadius: theme.radius.full,
   fontSize: theme.fontSize.sm,
   fontWeight: theme.fontWeight.regular,
+
+  [theme.media.mobile]: {
+  padding: `${theme.spacing["2xs"]} ${theme.spacing.xs}`,
+  fontSize: theme.fontSize.sm,
+  maxWidth: "100%",
+},
+
+[theme.media.smallMobile]: {
+  fontSize: theme.fontSize.sm,
+}
 }));
 
 export const ProductBottomArea = styled.div(({ theme }) => ({
@@ -272,6 +457,10 @@ export const ProductBottomArea = styled.div(({ theme }) => ({
   gap: theme.spacing.lg,
   marginTop: "auto",
   flexShrink: 0,
+
+  [theme.media.mobile]: {
+    marginTop: theme.spacing.md,
+  },
 }));
 
 export const ViewMoreButton = styled.button(({ theme }) => ({
@@ -287,6 +476,11 @@ export const ViewMoreButton = styled.button(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+
+  // 호버
+  "&:hover": {
+    filter: "brightness(1.5)",
+  },
 }));
 
 // ProductPagination
@@ -298,7 +492,11 @@ export const ProductPagination = styled.div(({ theme }) => ({
 
   [theme.media.tablet]: {
     display: "contents",
-  }
+  },
+
+  [theme.media.mobile]: {
+    display: "contents",
+  },
 }));
 
 export const PaginationButton = styled.button(({ theme }) => ({
@@ -312,9 +510,8 @@ export const PaginationButton = styled.button(({ theme }) => ({
   color: theme.colors.textMain,
   cursor: "pointer",
 
-  "&:disabled": {
-    opacity: 0.3,
-    cursor: "default",
+  "&:hover": {
+    opacity: "0.7",
   },
 
   [theme.media.tablet]: {
@@ -335,6 +532,26 @@ export const PaginationButton = styled.button(({ theme }) => ({
         right: "-66px",
       },
     },
+
+    [theme.media.mobile]: {
+        position: "absolute",
+        top: "50%",
+        transform: "translateY(-50%)",
+        width: "44px",
+        height: "44px",
+        borderRadius: theme.radius.full,
+        backgroundColor: theme.colors.cards,
+        border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+        zIndex: 10,
+
+        "&:first-of-type": {
+          left: `calc(0px - ${theme.spacing.md})`,
+        },
+
+        "&:last-of-type": {
+          right: `calc(0px - ${theme.spacing.md})`,
+        },
+    },
 }));
 
 export const PaginationText = styled.span(({ theme }) => ({
@@ -344,5 +561,89 @@ export const PaginationText = styled.span(({ theme }) => ({
 
   [theme.media.tablet]: {
     display: "none",
+  },
+
+  [theme.media.mobile]: {
+    display: "none",
   }
+}));
+
+export const KeywordDropdown = styled.div(({ theme }) => ({
+  display: "none",
+  position: "relative",
+  alignSelf: "flex-start",
+
+  [theme.media.mobile]: {
+    display: "block",
+  },
+}));
+
+export const KeywordTrigger = styled.button(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: theme.spacing.xs,
+  minWidth: "118px",
+  height: "40px",
+  padding: theme.spacing.xs,
+  border: "none",
+  borderRadius: theme.radius.md,
+  backgroundColor: theme.colors.cards,
+  color: theme.colors.textMain,
+  fontFamily: theme.fontFamily.base,
+  fontSize: theme.fontSize.sm,
+  cursor: "pointer",
+
+  "& strong": {
+    fontWeight: theme.fontWeight.medium,
+    whiteSpace: "nowrap",
+    display: "inline-flex",
+    alignItems: "center",
+    lineHeight: 1,
+  },
+}));
+
+export const KeywordMenu = styled.ul(({ theme }) => ({
+  position: "absolute",
+  top: `calc(100% + ${theme.spacing["2xs"]})`,
+  left: 0,
+  minWidth: "140px",
+  backgroundColor: theme.colors.cards,
+  border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+  borderRadius: theme.radius.md,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.12)",
+  listStyle: "none",
+  margin: 0,
+  padding: theme.spacing["2xs"],
+  zIndex: 20,
+}));
+
+export const KeywordMenuButton = styled.button(({ theme }) => ({
+  display: "block",
+  width: "100%",
+  padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+  border: "none",
+  borderRadius: theme.radius.sm,
+  textAlign: "left",
+  cursor: "pointer",
+  fontFamily: theme.fontFamily.base,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.medium,
+  lineHeight: "normal",
+  letterSpacing: "-0.14px",
+  color: theme.colors.textMain,
+  backgroundColor: "transparent",
+
+  '&[aria-pressed="true"]': {
+    backgroundColor: theme.colors.subtle,
+  },
+
+  "&:hover": {
+    backgroundColor: theme.colors.subtle,
+  },
+
+  "&:focus-visible": {
+    outline: `${theme.borderWidth.focus} solid ${theme.colors.emphasis}`,
+    outlineOffset: "-2px",
+  },
 }));

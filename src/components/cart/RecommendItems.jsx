@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "@emotion/react";
 import { toast } from "react-toastify";
 import SuccessToast from "../../components/common/SuccessToast";
 import FailToast from "../../components/common/FailToast";
@@ -12,9 +13,10 @@ import {
 } from "../../styles/CartStyles/RecommendItems.styles";
 
 const RecommendItems = () => {
+  const theme = useTheme();
   const [recommendList, setRecommendList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { addToCart } = useCartStore();
+  const addToCart = useCartStore((s) => s.addToCart);
 
   useEffect(() => {
     const fetchRecommend = async () => {
@@ -53,7 +55,7 @@ const RecommendItems = () => {
 
       // 스토어의 addToCart 호출 (기본 수량 1개)
       await addToCart(cartProduct, 1);
-      toast(<SuccessToast message="상품이 장바구니에 담겼습니다." />);
+      toast(<SuccessToast message="장바구니에 담았습니다." />);
     } catch (error) {
       toast(<FailToast message="장바구니 담기에 실패했습니다." />);
     }
@@ -72,7 +74,7 @@ const RecommendItems = () => {
             key={product.id || product.productId}
             product={product}
             showCategory={false}
-            useListBackground
+            background={theme.colors.background}
             onAddToCart={() => handleAddToCart(product)}
           />
         ))}

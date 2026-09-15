@@ -8,6 +8,7 @@ import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
 import RecommendItems from "../../components/cart/RecommendItems";
 import Modal from "../../components/common/Modal";
+import PaymentModal from "../../components/common/PaymentModal";
 import FailToast from "../../components/common/FailToast";
 import SuccessToast from "../../components/common/SuccessToast";
 import useLoadingStore from "../../store/UseLoadingStore";
@@ -44,6 +45,7 @@ const CartPage = () => {
 
   const [checkedItems, setCheckedItems] = useState([]);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [productInfoMap, setProductInfoMap] = useState({});
 
   // 최초 장바구니 조회 완료 여부
@@ -80,6 +82,22 @@ const CartPage = () => {
       alive = false;
     };
   }, [fetchCart]);
+  // 결제 모달
+  const confirmPayment = async () => {
+    try {
+      if (checkedItems.length > 0) {
+        await removeSelectedItems(checkedItems);
+        setCheckedItems([]);
+      }
+
+      setIsPaymentModalOpen(false);
+      showSuccessToast("결제가 완료되었습니다.");
+    } catch (err) {
+      showFailToast(
+        err.message || "결제는 완료되었으나 장바구니 비우기에 실패했습니다.",
+      );
+    }
+  };
 
   // 장바구니 상품들의 최신 품절/뱃지 상태를 상품 상세 API로 조회
   const productIdsKey = [...new Set(cartItems.map((item) => item.productId))]
@@ -248,7 +266,7 @@ const CartPage = () => {
     try {
       await removeItem(id);
       setCheckedItems((prev) => prev.filter((itemId) => itemId !== id));
-      showSuccessToast("상품이 삭제되었습니다.");
+      showSuccessToast("장바구니에서 삭제했습니다.");
     } catch (err) {
       showFailToast(err.message || "삭제에 실패했습니다.");
     }
@@ -263,7 +281,7 @@ const CartPage = () => {
     try {
       await removeSelectedItems(checkedItems);
       setCheckedItems([]);
-      showSuccessToast("선택한 상품이 삭제되었습니다.");
+      showSuccessToast("선택한 상품을 삭제했습니다.");
     } catch (err) {
       showFailToast(err.message || "선택 삭제에 실패했습니다.");
     }
@@ -274,7 +292,7 @@ const CartPage = () => {
     try {
       await clearCart();
       setCheckedItems([]);
-      showSuccessToast("장바구니가 비워졌습니다.");
+      showSuccessToast("장바구니를 비웠습니다.");
     } catch (err) {
       showFailToast(err.message || "전체 삭제에 실패했습니다.");
     } finally {
@@ -331,7 +349,7 @@ const CartPage = () => {
         <TitleWrapper>
           <Course>
             {/* 🌟 2. as={Link} 를 써서 껍데기는 a태그, 기능은 라우터 Link로 합체! */}
-            <BreadcrumbLink as={Link} to="/">
+            <BreadcrumbLink as={Link} to="/" title="홈으로 이동">
               Home
             </BreadcrumbLink>{" "}
             &gt; Cart
@@ -388,6 +406,7 @@ const CartPage = () => {
               deliveryFee={deliveryFee}
               total={total}
               isAllSoldOut={isAllSoldOut}
+              onCheckout={() => setIsPaymentModalOpen(true)}
             />
           </div>
         )}
@@ -400,6 +419,12 @@ const CartPage = () => {
           confirmText="Delete"
           onClose={() => setIsClearModalOpen(false)}
           onConfirm={confirmClearAll}
+        />
+      )}
+      {isPaymentModalOpen && (
+        <PaymentModal
+          onClose={() => setIsPaymentModalOpen(false)}
+          onConfirm={confirmPayment}
         />
       )}
     </>

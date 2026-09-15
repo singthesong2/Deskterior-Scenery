@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
+import { Global, css } from "@emotion/react";
 import { useLocation, useParams } from "react-router";
 import useAuthStore from "../../store/UseAuthStore";
 import ProductBreadcrumb from "../../components/product/ProductBreadcrumb";
@@ -8,7 +9,7 @@ import PurchaseBox from "../../components/product/PurchaseBox";
 import MobileCtaBar from "../../components/product/MobileCtaBar";
 import ProductDetailContent from "../../components/product/ProductDetailContent";
 import ReviewSection from "../../components/review/ReviewSection";
-import ScrollTopButton from "../../components/common/ScrollTopButton";
+import PaymentModal from "../../components/common/PaymentModal";
 import useLoadingStore from "../../store/UseLoadingStore";
 import { preloadingImages } from "../../utils/preloadingImages";
 import {
@@ -17,6 +18,7 @@ import {
 } from "../../components/common/ShowToast";
 import { getProduct } from "../../api/productsApi";
 import useCartStore from "../../store/cartStore";
+import useWishlistStore from "../../store/wishlistStore";
 import {
   getReviews,
   createReview,
@@ -33,22 +35,22 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const { hash, pathname } = useLocation();
 
-  // 이전 페이지의 스크롤 위치가 그대로 이어지지 않도록, 상품이 바뀔 때마다 항상 맨 위에서 시작
-  // (해시가 있으면 ScrollRestoration이 리셋을 건너뛰기 때문에, 리뷰로 스크롤하는 방향이
-  //  이전 스크롤 위치에 따라 위/아래로 들쭉날쭉해지는 것을 막기 위함)
   useLayoutEffect(() => {
-    // CSS의 scroll-behavior: smooth 때문에 인자 없는 scrollTo(0,0)도 애니메이션이 걸리므로,
-    // behavior: "instant"를 명시해서 진짜로 즉시 이동시킨다
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [id]);
 
   const [quantity, setQuantity] = useState(1);
-  const [isWished, setIsWished] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const addToCart = useCartStore((s) => s.addToCart);
 
   const [product, setProduct] = useState(null);
   const [productError, setProductError] = useState(false);
+
+  // ProductCard와 동일한 전역 스토어를 사용
+
+  const isWished = useWishlistStore((state) => state.likedIds.has(product?.id));
+  const toggleWish = useWishlistStore((state) => state.toggleLike);
 
   const [loadedProductForId, setLoadedProductForId] = useState(null);
 
@@ -56,13 +58,6 @@ const ProductDetailPage = () => {
     let alive = true;
     // 이미지 미리 로딩 중 페이지를 떠나도(unmount) 전역 로딩 카운트가 남지 않도록,
     // 자연 완료/언마운트 둘 중 먼저 오는 시점에 한 번만 endLoading을 호출한다
-
-    /*let loadingEnded = false;
-    const finishLoading = () => {
-      if (loadingEnded) return;
-      loadingEnded = true;
-      endLoading();
-    };*/
 
     const loadProduct = async () => {
       try {
@@ -81,7 +76,6 @@ const ProductDetailPage = () => {
           setProductError(true);
         }
       } finally {
-        //finishLoading();
         if (alive) setLoadedProductForId(id);
       }
     };
@@ -90,7 +84,6 @@ const ProductDetailPage = () => {
 
     return () => {
       alive = false;
-      //finishLoading();
     };
   }, [id]);
 
@@ -131,9 +124,6 @@ const ProductDetailPage = () => {
       .then((data) => setReviews(data.reviews))
       .catch((err) => console.error("리뷰 로딩 실패:", err));
 
-  // 상세 이미지들이 하나씩 늦게 로드되며 레이아웃이 계속 바뀌기 때문에,
-  // 크기 변화가 잠잠해지면 스크롤하되 - 한 번 스크롤한 뒤에는 이후 이미지 로딩으로
-  // 또 움직이지 않도록 더 이상 반응하지 않는다 (약간의 위치 오차보다 정확한 위치가 우선)
   useEffect(() => {
     if (!hash || !isCurrentProduct || !reviewsLoaded) return;
 
@@ -162,7 +152,6 @@ const ProductDetailPage = () => {
     };
   }, [hash, isCurrentProduct, reviewsLoaded]);
 
-  //별점·리뷰 수는 리뷰 목록에서 계산
   const reviewCount = reviews.length;
   const averageRating =
     reviewCount === 0
@@ -173,7 +162,6 @@ const ProductDetailPage = () => {
   const handleAddToCart = async () => {
     if (!product) return;
 
-    // 상세페이지 상품(id/images/soldOut) → 장바구니가 쓰는 모양(productId/imageUrl/isSoldOut)
     try {
       await addToCart(
         {
@@ -185,42 +173,48 @@ const ProductDetailPage = () => {
         },
         quantity,
       );
-      showSuccessToast("상품이 장바구니에 담겼습니다");
+      showSuccessToast("장바구니에 담았습니다.");
     } catch (err) {
       console.error("장바구니 담기 실패:", err);
-      showFailToast("장바구니 담기에 실패했습니다");
+      showFailToast("장바구니 담기에 실패했습니다.");
     }
   };
 
   const handleToggleWish = () => {
-    setIsWished((prev) => !prev);
-    console.log("찜 토글", { productId: id });
+    if (!product) return;
+    toggleWish(product.id);
   };
 
   const handleCheckout = () => {
-    console.log("결제하기", { productId: id, quantity });
+    if (!product || product.soldOut) return;
+    setIsPaymentModalOpen(true);
+  };
+
+  const confirmPayment = async () => {
+    setIsPaymentModalOpen(false);
+    showSuccessToast("결제가 완료되었습니다.");
   };
 
   //리뷰 CRUD — 서버 연동. 작성/수정은 실패 시 throw 하여 폼이 에러 표시
   const handleCreateReview = async (payload) => {
     await createReview(id, payload);
     await reloadReviews();
-    showSuccessToast("리뷰가 등록되었습니다");
+    showSuccessToast("리뷰가 등록되었습니다.");
   };
 
   const handleUpdateReview = async (reviewId, payload) => {
     await updateReview(reviewId, payload);
     await reloadReviews();
-    showSuccessToast("리뷰가 수정되었습니다");
+    showSuccessToast("리뷰가 수정되었습니다.");
   };
 
   const handleDeleteReview = async (reviewId) => {
     try {
       await deleteReview(reviewId);
       await reloadReviews();
-      showSuccessToast("리뷰가 삭제되었습니다");
+      showSuccessToast("리뷰가 삭제되었습니다.");
     } catch (err) {
-      showFailToast(err.message || "리뷰 삭제에 실패했습니다");
+      showFailToast(err.message || "리뷰 삭제에 실패했습니다.");
     }
   };
 
@@ -237,69 +231,92 @@ const ProductDetailPage = () => {
   if (!isCurrentProduct) return null;
 
   return (
-    <S.Wrapper>
-      <S.Page>
-        <ProductBreadcrumb
-          category={product.category}
-          categoryPath={product.categoryPath}
-          productName={product.name}
+    <>
+      {/* 이 페이지에 떠있는 모바일 CTA 바(81px)에 푸터 하단 콘텐츠가 가리지 않도록,
+          이 페이지가 떠있는 동안만 전역 footer에 여백을 추가한다 (Footer.styles.jsx는 안 건드림) */}
+      <Global
+        styles={css`
+          @media (width < 768px) {
+            /* footer[class]: footer(태그) + [class](속성) 선택자를 합쳐서
+               Footer.styles.jsx의 단일 클래스 선택자(.css-xxxx)보다
+               우선순위를 한 단계 높임 (!important 없이 이김) */
+            footer[class] {
+              padding-bottom: calc(
+                32px + 81px + env(safe-area-inset-bottom, 0px)
+              );
+            }
+          }
+        `}
+      />
+      <S.Wrapper>
+        <S.Page>
+          <ProductBreadcrumb
+            category={product.category}
+            categoryPath={product.categoryPath}
+            productName={product.name}
+          />
+
+          <S.TopSection>
+            <S.GalleryColumn>
+              <ProductImageGallery
+                key={id}
+                images={product.images}
+                alt={product.name}
+                soldOut={product.soldOut}
+                isBest={product.isBest}
+                isNew={product.isNew}
+              />
+            </S.GalleryColumn>
+
+            <S.InfoColumn>
+              <ProductInfo
+                name={product.name}
+                category={product.category}
+                rating={averageRating}
+                reviewCount={reviewCount}
+                price={product.price}
+                description={product.description}
+              />
+              <PurchaseBox
+                quantity={quantity}
+                onQuantityChange={setQuantity}
+                onAddToCart={handleAddToCart}
+                onCheckout={handleCheckout}
+                isWished={isWished}
+                onToggleWish={handleToggleWish}
+                soldOut={product.soldOut}
+              />
+            </S.InfoColumn>
+          </S.TopSection>
+
+          <ProductDetailContent sections={product.detailSections} />
+
+          <ReviewSection
+            key={id}
+            reviews={reviews}
+            isLoggedIn={Boolean(user)}
+            onCreate={handleCreateReview}
+            onUpdate={handleUpdateReview}
+            onDelete={handleDeleteReview}
+          />
+
+          <MobileCtaBar
+            isWished={isWished}
+            onToggleWish={handleToggleWish}
+            onAddToCart={handleAddToCart}
+            onCheckout={handleCheckout}
+            soldOut={product.soldOut}
+          />
+        </S.Page>
+      </S.Wrapper>
+
+      {isPaymentModalOpen && (
+        <PaymentModal
+          onClose={() => setIsPaymentModalOpen(false)}
+          onConfirm={confirmPayment}
         />
-
-        <S.TopSection>
-          <S.GalleryColumn>
-            <ProductImageGallery
-              key={id}
-              images={product.images}
-              alt={product.name}
-              soldOut={product.soldOut}
-              isBest={product.isBest}
-              isNew={product.isNew}
-            />
-          </S.GalleryColumn>
-
-          <S.InfoColumn>
-            <ProductInfo
-              name={product.name}
-              category={product.category}
-              rating={averageRating}
-              reviewCount={reviewCount}
-              price={product.price}
-              description={product.description}
-            />
-            <PurchaseBox
-              quantity={quantity}
-              onQuantityChange={setQuantity}
-              onAddToCart={handleAddToCart}
-              onCheckout={handleCheckout}
-              isWished={isWished}
-              onToggleWish={handleToggleWish}
-              soldOut={product.soldOut}
-            />
-          </S.InfoColumn>
-        </S.TopSection>
-
-        <ProductDetailContent sections={product.detailSections} />
-
-        <ReviewSection
-          key={id}
-          reviews={reviews}
-          isLoggedIn={Boolean(user)}
-          onCreate={handleCreateReview}
-          onUpdate={handleUpdateReview}
-          onDelete={handleDeleteReview}
-        />
-
-        <ScrollTopButton />
-
-        <MobileCtaBar
-          isWished={isWished}
-          onToggleWish={handleToggleWish}
-          onAddToCart={handleAddToCart}
-          onCheckout={handleCheckout}
-          soldOut={product.soldOut}
-        />
-      </S.Page>
-    </S.Wrapper>
+      )}
+    </>
   );
 };
 
