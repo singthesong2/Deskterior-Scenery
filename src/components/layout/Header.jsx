@@ -125,7 +125,9 @@ const Header = () => {
     };
   }, [isMenuOpen]);
   // 스토어에서 cartiTRem 가져옴
-  const { cartItems, syncCartWithServer, clearLocalCart } = useCartStore();
+  const cartItems = useCartStore((s) => s.cartItems);
+  const syncCartWithServer = useCartStore((s) => s.syncCartWithServer);
+  const clearLocalCart = useCartStore((s) => s.clearLocalCart);
 
   // 로그인 확인
   const user = useAuthStore((state) => state.user);
@@ -192,7 +194,11 @@ const Header = () => {
       </MenuButton>
 
       <Logo>
-        <Link to="/" aria-label="타이틀 메인화면 버튼" title="SCENERY 홈페이지로 이동">
+        <Link
+          to="/"
+          aria-label="타이틀 메인화면 버튼"
+          title="SCENERY 홈페이지로 이동"
+        >
           SCENERY
         </Link>
       </Logo>

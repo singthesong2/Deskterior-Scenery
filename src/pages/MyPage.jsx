@@ -1,17 +1,31 @@
 import useAuthStore from "../store/UseAuthStore";
 import useWishlistStore from "../store/wishlistStore";
+import { z } from "zod";
 import { signupSchema } from "../schema/AuthSchema";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import useLoadingStore from "../store/UseLoadingStore";
-import { logout } from "../api/authApi";
+import useCartStore from "../store/cartStore";
+import {
+  logout,
+  getMe,
+  updateMe,
+  updatePassword,
+  deleteMe,
+} from "../api/authApi";
 import {
   showSuccessToast,
   showFailToast,
 } from "../components/common/ShowToast";
 import Modal from "../components/common/Modal";
 import { useNavigate } from "react-router";
-import { IconPencil } from "@tabler/icons-react";
+import {
+  IconPencil,
+  IconCircleX,
+  IconEye,
+  IconEyeClosed,
+} from "@tabler/icons-react";
+import { WishlistSection } from "./WishListSection";
 
 import {
   MypageBox,
@@ -28,19 +42,33 @@ import {
   AccountGrid,
   AccountField,
   AccountLabel,
+  ReadonlyText,
   Required,
   AccountInput,
   AddressField,
+  SaveArea,
+  ErrorText,
   SaveButton,
-  WishlistCard,
-  WishlistTitle,
   SettingsCard,
   SettingsTitle,
   Settingstext,
   SettingsBtnGroup,
   SettingsDeleteBtn,
   SettingsChangeBtn,
+  PasswordFormBox,
+  PasswordField,
+  PasswordLabel,
+  PasswordInput,
+  CurrentPasswordGroup,
+  CurrentPasswordHidenButton,
+  NewPasswordGroup,
+  NewPasswordHidenButton,
+  PasswordError,
 } from "../styles/MyPage.styles";
+
+const ChangePasswordSchema = z.object({
+  newPassword: signupSchema.shape.password,
+});
 
 function Mypage() {
   const { pathname } = useLocation();
@@ -50,34 +78,121 @@ function Mypage() {
 
   const clearUser = useAuthStore((state) => state.clearUser);
   const clearWishlist = useWishlistStore((state) => state.clearWishlist);
+  const clearLocalCart = useCartStore((s) => s.clearLocalCart);
 
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState(false);
   const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
     useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [errors, setErrors] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [shakingButton, setShakingButton] = useState(false);
 
-  useEffect(() => {
+  const [isSaving, setIsSaving] = useState(false);
+  const [isPasswordSaving, setIsPasswordSaving] = useState(false);
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
+  /*useEffect(() => {
     finishPageLoading(pathname);
-  }, [pathname, finishPageLoading]);
+  }, [pathname, finishPageLoading]);*/
 
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [savedFirstName, setSavedFirstName] = useState("");
+  const [savedLastName, setSavedLastName] = useState("");
   const [contact, setContact] = useState("");
   const [id, setId] = useState("");
   const [address, setAddress] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const contactRef = useRef(null);
+  const addressRef = useRef(null);
 
-    const updatedUserInfo = {
-      first,
-      last,
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const result = await getMe();
+
+        setFirstName(result.userInfo.firstName ?? "");
+        setLastName(result.userInfo.lastName ?? "");
+        setSavedFirstName(result.userInfo.firstName ?? "");
+        setSavedLastName(result.userInfo.lastName ?? "");
+        setContact(result.userInfo.contact ?? "");
+        setAddress(result.userInfo.address ?? "");
+        setId(result.userInfo.id ?? "");
+        finishPageLoading(pathname);
+      } catch (error) {
+        showFailToast(
+          "회원정보를 불러오기 실패하였습니다. 다시 시도 해주세요.",
+        );
+        navigate("/");
+      }
+    };
+
+    fetchUserInfo();
+  }, [pathname, finishPageLoading, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isSaving) return;
+
+    const updatedUserInfo = MyPageSchema.safeParse({
+      firstName,
+      lastName,
       id,
       contact,
       address,
-    };
+    });
 
-    console.log("수정할 회원정보:", updatedUserInfo);
+    if (!updatedUserInfo.success) {
+      const ErrorsMsg = z.flattenError(updatedUserInfo.error).fieldErrors;
+      setErrors(Object.values(ErrorsMsg).flat()[0]);
+      setShakingButton(true);
+
+      const firstErrorField = updatedUserInfo.error.issues[0]?.path[0];
+
+      const inputRefs = {
+        firstName: firstNameRef,
+        lastName: lastNameRef,
+        contact: contactRef,
+        address: addressRef,
+      };
+
+      inputRefs[firstErrorField]?.current?.focus();
+
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+
+      const formattedUserInfo = {
+        ...updatedUserInfo.data,
+        contact: formatPhoneNumber(updatedUserInfo.data.contact),
+      };
+
+      await updateMe(formattedUserInfo);
+      setSavedFirstName(formattedUserInfo.firstName);
+      setSavedLastName(formattedUserInfo.lastName);
+      setContact(formattedUserInfo.contact);
+      setAddress(formattedUserInfo.address);
+      setSavedFirstName(formattedUserInfo.firstName);
+      setSavedLastName(formattedUserInfo.lastName);
+      showSuccessToast("회원정보 수정 완료!");
+      setShakingButton(false);
+      setErrors("");
+    } catch (error) {
+      setShakingButton(true);
+      showFailToast("회원정보 수정이 실패하였습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const MyPageSchema = signupSchema.pick({
@@ -87,33 +202,97 @@ function Mypage() {
     address: true,
   });
 
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setErrors("");
+    setShakingButton(false);
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
-    } catch (error) {
-      console.error("로그아웃 API 실패:", error);
-      showFailToast("로그아웃에 실패했습니다.");
-    } finally {
-      // 서버 요청 성공/실패와 상관없이 로컬(토큰·유저·장바구니·찜)은 항상 정리한다
       localStorage.removeItem("token");
       clearUser();
       clearWishlist();
+      clearLocalCart();
       setIsLogOutModalOpen(false);
       showSuccessToast("로그아웃되었습니다.");
       navigate("/");
+    } catch (error) {
+      showFailToast("로그아웃에 실패했습니다.");
     }
   };
 
-  const handleDeleteUser = () => {
-    setIsDeleteUserModalOpen(false);
-    showSuccessToast("회원 탈퇴가 완료되었습니다.");
-    navigate("/");
+  const handleDeleteUser = async () => {
+    try {
+      await deleteMe();
+      localStorage.removeItem("token");
+      clearUser();
+      clearWishlist();
+      clearLocalCart();
+      showSuccessToast("회원 탈퇴가 완료되었습니다.");
+      navigate("/");
+    } catch (error) {
+      showFailToast("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsDeleteUserModalOpen(false);
+    }
   };
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
+    if (isPasswordSaving) return;
+
+    if (!currentPassword) {
+      setPasswordError("현재 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    const passwordCheck = ChangePasswordSchema.safeParse({
+      newPassword,
+    });
+
+    if (!passwordCheck.success) {
+      setPasswordError(passwordCheck.error.issues[0].message);
+      return;
+    }
+
+    try {
+      setIsPasswordSaving(true);
+
+      await updatePassword({
+        currentPassword,
+        newPassword,
+      });
+
+      resetPasswordModal();
+      setIsPasswordChangeModalOpen(false);
+      showSuccessToast("비밀번호가 성공적으로 변경되었습니다.");
+    } catch (error) {
+      setPasswordError(error.message);
+    } finally {
+      setIsPasswordSaving(false);
+    }
+  };
+
+  const formatPhoneNumber = (phone) => {
+    if (!/^010\d{8}$/.test(phone)) return phone;
+
+    return `${phone.slice(0, 3)}-${phone.slice(3, 7)}-${phone.slice(7)}`;
+  };
+
+  const resetPasswordModal = () => {
+    setCurrentPassword("");
+    setNewPassword("");
+    setPasswordError("");
+
+    setShowCurrentPassword(false);
+    setShowNewPassword(false);
+  };
+
+  const handlePasswordModalClose = () => {
+    if (isPasswordSaving) return;
+    resetPasswordModal();
     setIsPasswordChangeModalOpen(false);
-    showSuccessToast("비밀번호가 성공적으로 변경되었습니다.");
-    navigate("/");
   };
 
   return (
@@ -124,7 +303,10 @@ function Mypage() {
         <CardBox>
           <UserCard>
             <UserHead>
-              <UserName>홍길동</UserName>
+              <UserName>
+                {savedLastName}
+                {savedFirstName}
+              </UserName>
               <UserLogOut
                 type="button"
                 aria-label="로그아웃 버튼"
@@ -133,7 +315,7 @@ function Mypage() {
                 Log out
               </UserLogOut>
             </UserHead>
-            <UserId>hong</UserId>
+            <UserId>{id}</UserId>
           </UserCard>
 
           <AccountCard>
@@ -141,67 +323,93 @@ function Mypage() {
             <AccountForm onSubmit={handleSubmit}>
               <AccountGrid>
                 <AccountField>
-                  <AccountLabel>
+                  <AccountLabel htmlFor="firstName">
                     First Name<Required>*</Required>
                   </AccountLabel>
 
                   <AccountInput
-                    id="first"
+                    ref={firstNameRef}
+                    id="firstName"
                     type="text"
-                    value={first}
-                    onChange={(e) => setFirst(e.target.value)}
+                    value={firstName}
+                    placeholder="ex)길동"
+                    onChange={handleInputChange(setFirstName)}
                   />
                 </AccountField>
 
                 <AccountField>
-                  <AccountLabel>
+                  <AccountLabel htmlFor="lastName">
                     Last Name<Required>*</Required>
                   </AccountLabel>
 
                   <AccountInput
-                    id="last"
+                    ref={lastNameRef}
+                    id="lastName"
+                    placeholder="ex)홍"
                     type="text"
-                    value={last}
-                    onChange={(e) => setLast(e.target.value)}
+                    value={lastName}
+                    onChange={handleInputChange(setLastName)}
                   />
                 </AccountField>
 
                 <AccountField>
-                  <AccountLabel>ID</AccountLabel>
+                  <AccountLabel htmlFor="userId">
+                    ID<ReadonlyText>(readOnly)</ReadonlyText>
+                  </AccountLabel>
 
                   <AccountInput id="userId" type="text" value={id} readOnly />
                 </AccountField>
 
                 <AccountField>
-                  <AccountLabel>Contact</AccountLabel>
+                  <AccountLabel htmlFor="contact">Contact</AccountLabel>
 
                   <AccountInput
+                    ref={contactRef}
                     id="contact"
                     type="tel"
+                    placeholder="ex)010-0000-0000"
                     value={contact}
-                    onChange={(e) => setContact(e.target.value)}
+                    onChange={handleInputChange(setContact)}
+                    onBlur={() => {
+                      setContact(formatPhoneNumber(contact));
+                    }}
                   />
                 </AccountField>
 
                 <AddressField>
-                  <AccountLabel>Address</AccountLabel>
+                  <AccountLabel htmlFor="address">Address</AccountLabel>
 
                   <AccountInput
+                    ref={addressRef}
                     id="address"
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={handleInputChange(setAddress)}
                   />
                 </AddressField>
               </AccountGrid>
 
-              <SaveButton type="submit">Save Changes</SaveButton>
+              <SaveArea>
+                {errors && (
+                  <ErrorText>
+                    <IconCircleX size={18} stroke={1.5} color="#e64b3c" />
+                    {errors}
+                  </ErrorText>
+                )}
+
+                <SaveButton
+                  className={shakingButton ? "shake" : ""}
+                  type="submit"
+                  disabled={isSaving}
+                  onAnimationEnd={() => setShakingButton(false)}
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </SaveButton>
+              </SaveArea>
             </AccountForm>
           </AccountCard>
 
-          <WishlistCard>
-            <WishlistTitle>Wish List</WishlistTitle>
-          </WishlistCard>
+          <WishlistSection />
 
           <SettingsCard>
             <SettingsTitle>Account Settings</SettingsTitle>
@@ -244,12 +452,88 @@ function Mypage() {
           {isPasswordChangeModalOpen && (
             <Modal
               title="Change Password"
-              icon={<IconPencil size={24} stroke={1.5} color="#ff5a2f" />}
               description="현재 비밀번호와 변경할 비밀번호를 입력해 주세요."
               confirmText="Save"
-              onClose={() => setIsPasswordChangeModalOpen(false)}
+              icon={<IconPencil size={24} stroke={1.5} color="#ff5a2f" />}
+              onClose={handlePasswordModalClose}
               onConfirm={handlePasswordChange}
-            />
+            >
+              <PasswordFormBox
+                as="form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handlePasswordChange();
+                }}
+              >
+                <PasswordField>
+                  <PasswordLabel htmlFor="currentPassword">
+                    Current Password
+                  </PasswordLabel>
+                  <CurrentPasswordGroup>
+                    <PasswordInput
+                      id="currentPassword"
+                      type={showCurrentPassword ? "text" : "password"}
+                      placeholder="Current Password"
+                      value={currentPassword}
+                      onChange={(e) => {
+                        setCurrentPassword(e.target.value);
+                        setPasswordError("");
+                      }}
+                    />
+
+                    <CurrentPasswordHidenButton
+                      type="button"
+                      onClick={() =>
+                        setShowCurrentPassword(!showCurrentPassword)
+                      }
+                    >
+                      {showCurrentPassword ? (
+                        <IconEyeClosed size={25} />
+                      ) : (
+                        <IconEye size={25} />
+                      )}
+                    </CurrentPasswordHidenButton>
+                  </CurrentPasswordGroup>
+                </PasswordField>
+
+                <PasswordField>
+                  <PasswordLabel htmlFor="newPassword">
+                    New Password
+                  </PasswordLabel>
+
+                  <NewPasswordGroup>
+                    <PasswordInput
+                      id="newPassword"
+                      type={showNewPassword ? "text" : "password"}
+                      placeholder="New Password (4자 이상)"
+                      value={newPassword}
+                      onChange={(e) => {
+                        setNewPassword(e.target.value);
+                        setPasswordError("");
+                      }}
+                    />
+
+                    <NewPasswordHidenButton
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    >
+                      {showNewPassword ? (
+                        <IconEyeClosed size={25} />
+                      ) : (
+                        <IconEye size={25} />
+                      )}
+                    </NewPasswordHidenButton>
+                  </NewPasswordGroup>
+
+                  {passwordError && (
+                    <PasswordError>
+                      <IconCircleX size={18} stroke={1.5} color="#e64b3c" />
+                      {passwordError}
+                    </PasswordError>
+                  )}
+                </PasswordField>
+              </PasswordFormBox>
+            </Modal>
           )}
         </CardBox>
       </MypageBox>
