@@ -1,73 +1,81 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
 
-export const SignupPage = styled.main({
+export const SignupPage = styled.main(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "stretch",
-  gap: "20px",
+  gap: theme.spacing.md,
   padding: "60px clamp(16px, 6vw, 64px)",
 
-  "@media (min-width: 320px) and (width < 768px)": {
+  [theme.media.mobile]: {
     alignItems: "center",
   },
-});
+}));
 
-export const SignupImageWrap = styled.div({
+export const SignupImageWrap = styled.div(({ theme }) => ({
   flex: "1 1 50%",
   minWidth: 0,
+  maxWidth: "520px",
   position: "relative",
-
-  "@media (min-width: 320px) and (width < 768px)": {
+  aspectRatio: "1 / 1.35",
+  borderRadius: theme.radius.md,
+  overflow: "hidden",
+  alignSelf: "stretch",
+  [theme.media.mobile]: {
     display: "none",
   },
-});
+}));
 
 export const SignupImage = styled.img({
   position: "absolute",
   width: "100%",
   height: "100%",
-  objectFit: "fill",
+  objectFit: "cover",
 });
 
-export const SignupCard = styled.section({
+export const SignupCard = styled.section(({ theme }) => ({
   flex: "1 1 50%",
   minWidth: 0,
+  maxWidth: "520px",
   boxSizing: "border-box",
-  padding: "50px 30px",
-  border: "1px solid #eee",
-  borderRadius: "5px",
-  backgroundColor: "#fff",
+  padding: theme.spacing.xl,
+  border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+  borderRadius: theme.radius.md,
+  backgroundColor: theme.colors.cards,
+  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.06)",
 
-  "@media (min-width: 320px) and (width < 768px)": {
+
+  [theme.media.mobile]: {
     flex: "none",
     width: "100%",
-    padding: "28px 20px",
+    padding: `${theme.spacing.xl} ${theme.spacing.lg}`,
   },
-});
+}));
 
-export const Title = styled.h1({
+export const Title = styled.h1(({ theme }) => ({
   margin: "0 0 40px",
   textAlign: "left",
-  fontSize: "20px",
-  fontWeight: 550,
+  fontSize: theme.fontSize.xl,
+  fontWeight: theme.fontWeight.semiBold,
+  color: theme.colors.textMain,
 
-  "@media (min-width: 320px) and (width < 768px)": {
-    marginBottom: "28px",
-    fontSize: "16px",
+  [theme.media.mobile]: {
+    marginBottom: theme.spacing.lg,
+    fontSize: theme.spacing.lg,
   },
-});
+}));
 
-export const SignupLink = styled(Link)({
+export const SignupLink = styled(Link)(({ theme }) => ({
   display: "block",
   textAlign: "center",
-  marginTop: "20px",
-  fontSize: "15px",
+  marginTop: theme.spacing.lg,
+  fontSize: theme.fontSize.sm,
   textDecoration: "none",
-  color: "#000000",
+  color: theme.colors.textMain,
 
-  "@media (min-width: 320px) and (width < 768px)": {
+  [theme.media.mobile]: {
     marginTop: "16px",
     fontSize: "13px",
   },
-});
+}));

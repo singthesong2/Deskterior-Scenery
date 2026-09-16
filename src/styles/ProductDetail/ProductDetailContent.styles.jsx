@@ -9,6 +9,11 @@ export const Section = styled.section(({ theme }) => ({
   padding: "64px 0",
   background: theme.colors.cards, // #FDFDFD
 
+  [theme.media.wide]: {
+    marginTop: theme.spacing["3xl"], // 64
+    padding: 0,
+  },
+
   [theme.media.tablet]: {
     padding: `${theme.spacing["2xl"]} 0`,
   },
@@ -18,25 +23,12 @@ export const Section = styled.section(({ theme }) => ({
     padding: `${theme.spacing["2xl"]} ${theme.spacing.md}`,
     background: theme.colors.background,
   },
-
-  [theme.media.wide]: {
-    marginTop: theme.spacing["3xl"], // 64
-    padding: 0,
-  },
 }));
 
 export const Inner = styled.div(({ theme }) => ({
   maxWidth: "1024px",
   margin: "0 auto",
   padding: "0 144px",
-
-  [theme.media.mobile]: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: theme.spacing.lg, // 24
-    padding: 0,
-  },
 
   [theme.media.wide]: {
     display: "flex",
@@ -45,25 +37,32 @@ export const Inner = styled.div(({ theme }) => ({
     gap: theme.spacing.xl, // 32
     padding: `${theme.spacing["3xl"]} 9rem`, // 64 144
   },
+
+  [theme.media.mobile]: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: theme.spacing.lg, // 24
+    padding: 0,
+  },
 }));
 
 export const Title = styled.h2(({ theme }) => ({
   margin: "0 0 24px",
   fontFamily: theme.fontFamily.display,
-  fontSize: theme.fontSize["5xl"], // 2.5rem (40px)
+  fontSize: theme.fontSize["4xl"], // 2rem (32px)
   fontStyle: "normal",
   fontWeight: theme.fontWeight.regular, // 400
   lineHeight: "normal",
   letterSpacing: "-0.01em",
   color: theme.colors.textMain, // #1F211F
 
-  [theme.media.mobile]: {
-    margin: 0,
-    fontSize: theme.fontSize["4xl"], // 32px
+  [theme.media.wide]: {
     letterSpacing: "normal",
   },
 
-  [theme.media.wide]: {
+  [theme.media.mobile]: {
+    margin: 0,
     letterSpacing: "normal",
   },
 }));

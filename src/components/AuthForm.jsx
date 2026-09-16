@@ -80,10 +80,13 @@ function AuthForm({ mode, onSubmit }) {
 
       resetUser();
 
-      if (mode === "login") showSuccessToast("로그인되었습니다.");
-      else if (mode === "signup") showSuccessToast("회원가입이 완료되었습니다.");
-
-      navigate("/");
+      if (mode === "login") {
+        showSuccessToast("로그인되었습니다.");
+        navigate("/");
+      } else if (mode === "signup") {
+        showSuccessToast("회원가입이 완료되었습니다.");
+        navigate("/login");
+      }
     } catch (error) {
       setMessage(error.message);
       setShakingButton(true);
@@ -309,6 +312,8 @@ function AuthForm({ mode, onSubmit }) {
             <PasswordHidenButton
               type="button"
               onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+              title={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
               {showPassword ? (
                 <IconEyeClosed size={25} />
@@ -426,6 +431,7 @@ function AuthForm({ mode, onSubmit }) {
         <Button
           className={shakingButton ? "shake" : ""}
           type="submit"
+          title={mode === "signup" ? "회원가입" : "로그인"}
           onAnimationEnd={() => setShakingButton(false)}
         >
           {mode === "signup" ? "Sign Up" : "Log in"}

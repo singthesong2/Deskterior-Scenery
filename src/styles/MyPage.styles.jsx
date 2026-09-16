@@ -9,6 +9,8 @@ export const MypageBox = styled.main({
   backgroundColor: "#f7f5ef",
 });
 
+export const MypageInner = styled.div({});
+
 export const MypageTitle = styled.h1({
   margin: "0 0 32px",
   fontSize: "40px",
@@ -35,18 +37,21 @@ export const UserHead = styled.div({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-
   width: "100%",
   marginBottom: "10px",
 });
 
-export const UserName = styled.p({
+export const UserName = styled.p(({ theme }) => ({
   margin: 0,
   fontSize: "35px",
   fontWeight: 700,
   lineHeight: 1.4,
   letterSpacing: 10,
-});
+
+  [theme.media.smallMobile]: {
+    fontSize: "clamp(25px, calc(20vw - 39px), 35px)",
+  },
+}));
 
 export const UserLogOut = styled.button({
   width: "120px",
@@ -79,14 +84,18 @@ export const AccountCard = styled.section({
   borderRadius: "8px",
 });
 
-export const AccountTitle = styled.h2({
+export const AccountTitle = styled.h2(({ theme }) => ({
   margin: "0 0 28px",
   paddingBottom: "16px",
   borderBottom: "3px solid #e5e5e5",
   fontSize: "28px",
   fontWeight: 700,
   lineHeight: 1.2,
-});
+
+  [theme.media.smallMobile]: {
+    fontSize: "clamp(20px, calc(5vw + 4px), 28px)",
+  },
+}));
 
 export const AccountForm = styled.form({
   display: "flex",
@@ -94,13 +103,19 @@ export const AccountForm = styled.form({
   width: "100%",
 });
 
-export const AccountGrid = styled.div({
+export const AccountGrid = styled.div(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
   columnGap: "36px",
   rowGap: "32px",
   width: "100%",
-});
+
+  [theme.media.smallMobile]: {
+    gridTemplateColumns: "1fr",
+    columnGap: 0,
+    rowGap: "24px",
+  },
+}));
 
 export const AccountField = styled.div({
   display: "flex",
@@ -156,26 +171,61 @@ export const AccountInput = styled.input({
   },
 });
 
-export const SaveArea = styled.div({
+export const SaveArea = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   width: "100%",
   marginTop: "40px",
-});
 
-export const ErrorText = styled.div({
+  [theme.media.mobile]: {
+    flexDirection: "column",
+    alignItems: "stretch",
+    gap: "12px",
+  },
+}));
+
+export const ErrorIconWrapper = styled.span(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+
+  "& svg": {
+    width: "18px",
+    height: "18px",
+  },
+
+  [theme.media.smallMobile]: {
+    "& svg": {
+      width: "15px",
+      height: "15px",
+    },
+  },
+}));
+
+export const ErrorText = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "8px",
-  padding: "10px 14px",
+  padding: "12.7px 14px",
   border: "1px solid #f0b49b",
   borderRadius: "5px",
   backgroundColor: "#f8d0bb",
   color: "#222",
   fontSize: "13px",
-});
 
-export const SaveButton = styled.button({
+  [theme.media.mobile]: {
+    width: "100%",
+    boxSizing: "border-box",
+  },
+
+  [theme.media.smallMobile]: {
+    fontSize: "clamp(10px, calc(1.875vw + 4px), 13px)",
+    gap: "2px",
+  },
+}));
+
+export const SaveButton = styled.button(({ theme }) => ({
   marginLeft: "auto",
   padding: "14px 24px",
   border: "none",
@@ -184,6 +234,8 @@ export const SaveButton = styled.button({
   color: "#fff",
   fontSize: "14px",
   cursor: "pointer",
+
+  [theme.media.mobile]: { width: "100%", marginLeft: 0 },
 
   "@media (prefers-reduced-motion: no-preference)": {
     "&.shake": {
@@ -215,7 +267,7 @@ export const SaveButton = styled.button({
       transform: "translateX(0)",
     },
   },
-});
+}));
 
 export const SettingsCard = styled.section({
   width: "100%",
@@ -225,27 +277,41 @@ export const SettingsCard = styled.section({
   borderRadius: "8px",
 });
 
-export const SettingsTitle = styled.h2({
+export const SettingsTitle = styled.h2(({ theme }) => ({
   margin: "0 0 30px",
   fontSize: "28px",
   fontWeight: 700,
   lineHeight: 1.2,
-});
+
+  [theme.media.smallMobile]: {
+    fontSize: "25px",
+  },
+}));
 
 export const Settingstext = styled.p({
   margin: "0 0 30px",
   fontSize: "14px",
   lineHeight: 1.5,
   color: "#777",
+
+  "@media (width < 506px)": {
+    fontSize: "12px",
+  },
 });
 
-export const SettingsBtnGroup = styled.div({
+export const SettingsBtnGroup = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "16px",
-});
 
-export const SettingsDeleteBtn = styled.button({
+  [theme.media.smallMobile]: {
+    flexDirection: "column",
+    alignItems: "stretch",
+    gap: "12px",
+  },
+}));
+
+export const SettingsDeleteBtn = styled.button(({ theme }) => ({
   padding: "12px 18px",
   border: "1px solid #ef4d4d",
   borderRadius: "8px",
@@ -253,9 +319,13 @@ export const SettingsDeleteBtn = styled.button({
   color: "#ef4d4d",
   fontSize: "14px",
   cursor: "pointer",
-});
 
-export const SettingsChangeBtn = styled.button({
+  [theme.media.smallMobile]: {
+    width: "100%",
+  },
+}));
+
+export const SettingsChangeBtn = styled.button(({ theme }) => ({
   padding: "12px 18px",
   border: "none",
   borderRadius: "8px",
@@ -263,7 +333,11 @@ export const SettingsChangeBtn = styled.button({
   color: "#666",
   fontSize: "14px",
   cursor: "pointer",
-});
+
+  [theme.media.smallMobile]: {
+    width: "100%",
+  },
+}));
 
 export const PasswordFormBox = styled.div({
   display: "flex",

@@ -3,9 +3,7 @@ import { login } from "../api/authApi";
 import useCartStore from "../store/cartStore";
 import loginbanner from "../assets/loginbanner.webp";
 import useAuthStore from "../store/UseAuthStore";
-import { useEffect } from "react";
-import { useLocation } from "react-router";
-import useLoadingStore from "../store/UseLoadingStore";
+import usePageLoading from "../hook/usePageLoading";
 
 import {
   LoginPage,
@@ -17,15 +15,9 @@ import {
 } from "../styles/LoginForm.styles";
 
 function LoginForm() {
-  const { pathname } = useLocation();
-
   const setUser = useAuthStore((state) => state.setUser);
 
-  const finishPageLoading = useLoadingStore((state) => state.finishPageLoading);
-
-  useEffect(() => {
-    finishPageLoading(pathname);
-  }, [pathname, finishPageLoading]);
+  usePageLoading();
 
   // 장바구니 병합 함수
   const { mergeLocalCartToServer } = useCartStore();
@@ -51,7 +43,11 @@ function LoginForm() {
     <>
       <LoginPage>
         <LoginImageWrap>
-          <LoginImage src={loginbanner} alt="Login banner" />
+          <LoginImage
+            src={loginbanner}
+            alt="Login banner"
+            fetchPriority="high"
+          />
         </LoginImageWrap>
 
         <LoginCard>
@@ -59,7 +55,9 @@ function LoginForm() {
 
           <AuthForm mode="login" onSubmit={handleLogin} />
 
-          <SignupLink to="/signup">Create an account</SignupLink>
+          <SignupLink to="/signup" title="회원가입">
+            Create an account
+          </SignupLink>
         </LoginCard>
       </LoginPage>
     </>

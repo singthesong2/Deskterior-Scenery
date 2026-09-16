@@ -1,46 +1,45 @@
 import styled from "@emotion/styled";
 
-export const Form = styled.form({
+export const Form = styled.form(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
-  gap: "30px",
-});
+  gap: theme.spacing.xl,
+}));
 
-export const NameGroup = styled.div({
+export const NameGroup = styled.div(({ theme }) => ({
   display: "flex",
   width: "100%",
-  gap: "20px",
-});
+  gap: theme.spacing.md,
+}));
 
-export const AllTerms = styled.div({
-  marginBottom: "15px",
-});
+export const AllTerms = styled.div(({ theme }) => ({
+  marginBottom: theme.spacing.md,
+}));
 
-export const Label = styled.label({
+export const Label = styled.label(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
-  gap: "5px",
-  //fontSize: "15px",
+  gap: theme.spacing["2xs"],
+  color: theme.colors.textMain,
   fontSize: "clamp(13px, calc(11px + 0.625vw), 15px)",
-  color: "#000000",
-  fontWeight: 600,
+  fontWeight: theme.fontWeight.medium,
   flex: 1,
-});
+}));
 
-export const Input = styled.input({
+export const Input = styled.input(({ theme }) => ({
   width: "100%",
-  padding: "8px 0",
+  padding: `${theme.spacing.xs} 0`,
   border: "none",
-  borderBottom: "2px solid #e6e6e6",
+  borderBottom: `${theme.borderWidth.focus} solid ${theme.colors.subtle}`,
   outline: "none",
   backgroundColor: "transparent",
   "&:focus": {
-    borderBottomColor: "#000000",
+    borderBottomColor: theme.colors.textMain,
   },
   "&::placeholder": {
-    color: "#b0b0b0",
+    color: theme.colors.secondText,
     fontSize: "clamp(13px, calc(11px + 0.625vw), 15px)",
   },
 
@@ -49,38 +48,38 @@ export const Input = styled.input({
       fontSize: "clamp(10px, calc(2.352941vw - 9.070588px), 15px)",
     },
   },
-  "@media (min-width: 320px) and (width < 480px)": {
+  [theme.media.smallMobile]: {
     "&.id-input::placeholder": {
       fontSize: "clamp(10px, calc(2px + 2.5vw), 14px)",
     },
   },
-});
+}));
 
-export const InputIdGroup = styled.div({
+export const InputIdGroup = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   width: "100%",
-  borderBottom: "2px solid #e6e6e6",
+  borderBottom: `${theme.borderWidth.focus} solid ${theme.colors.subtle}`,
   "& input": {
     flex: 1,
     minWidth: 0,
     width: "auto",
     borderBottom: "none",
   },
-
   "&:focus-within": {
-    borderBottomColor: "#000000",
-  },
-});
+    borderBottomColor: theme.colors.textMain,
+  }
+}));
 
-export const IdCheckButton = styled.button({
+export const IdCheckButton = styled.button(({ theme }) => ({
   flexShrink: 0,
   padding: "6px 14px",
   border: "none",
-  borderRadius: "20px",
-  backgroundColor: "#000000",
-  color: "#ffffff",
-  fontSize: "12px",
+  borderRadius: theme.radius.full,
+  backgroundColor: theme.colors.textMain,
+  color: theme.colors.cards,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.medium,
   lineHeight: 1,
   cursor: "pointer",
   "&:hover": {
@@ -116,13 +115,13 @@ export const IdCheckButton = styled.button({
       transform: "translateX(0)",
     },
   },
-});
+}));
 
-export const PasswordGroup = styled.div({
+export const PasswordGroup = styled.div(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   width: "100%",
-  borderBottom: "2px solid #e6e6e6",
+  borderBottom: `${theme.borderWidth.focus} solid ${theme.colors.subtle}`,
   "& input": {
     flex: 1,
     minWidth: 0,
@@ -130,39 +129,39 @@ export const PasswordGroup = styled.div({
     borderBottom: "none",
   },
   "&:focus-within": {
-    borderBottomColor: "#000",
+    borderBottomColor: theme.colors.textMain,
   },
-});
+}));
 
-export const PasswordHidenButton = styled.button({
+export const PasswordHidenButton = styled.button(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 0,
-  padding: "6px",
+  padding: theme.spacing["2xs"],
   border: "none",
   backgroundColor: "transparent",
   cursor: "pointer",
-});
+}));
 
-export const TermsGroup = styled.div({
+export const TermsGroup = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   fontSize: "clamp(13px, calc(11px + 0.625vw), 15px)",
-  gap: "10px",
-  color: "#5f5e5e",
+  gap: theme.spacing.xs,
+  color: theme.colors.secondText,
   textAlign: "left",
   "& p": {
-    color: "#000000",
-    fontWeight: 600,
-    marginBottom: "5px",
+    color: theme.colors.textMain,
+    fontWeight: theme.fontWeight.semiBold,
+    marginBottom: theme.spacing["2xs"],
   },
   "& label": {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
+    gap: theme.spacing.xs,
   },
-});
+}));
 
 export const ItemCheckbox = styled.input(({ theme }) => ({
   flexShrink: 0,
@@ -184,7 +183,7 @@ const messageStyle = {
   boxSizing: "border-box",
   borderRadius: "6px",
   fontSize: "clamp(12px, calc(10px + 0.625vw), 14px)",
-  color: "#000000",
+  color: "#1F211F",
   textAlign: "left",
 };
 
@@ -198,18 +197,23 @@ export const SuccessMessage = styled.div({
   },
 });
 
-export const ErrorMessage = styled.div({
+export const ErrorMessage = styled.div(({ theme }) => ({
   ...messageStyle,
   backgroundColor: "#f8d1bd",
-});
+  "@media (width < 409px)": {
+    fontSize: "clamp(11px, calc(3.37vw - 1.79px), 12px)",
+    padding: "8px",
+    gap: "6px",
+  },
+}));
 
-export const ErrorIcon = styled.span({
+export const ErrorIcon = styled.span(({theme}) => ({
   position: "relative",
   width: "20px",
   height: "20px",
   flexShrink: 0,
-  border: "1.5px solid #e32626",
-  borderRadius: "50%",
+  border: `1.5px solid ${theme.colors.error}`,
+  borderRadius: theme.radius.full,
   "&::before, &::after": {
     content: '""',
     position: "absolute",
@@ -217,7 +221,7 @@ export const ErrorIcon = styled.span({
     left: "52%",
     width: "9px",
     height: "1.5px",
-    backgroundColor: "#e32626",
+    backgroundColor: theme.colors.error,
   },
   "&::before": {
     transform: "translate(-50%, -50%) rotate(45deg)",
@@ -225,16 +229,28 @@ export const ErrorIcon = styled.span({
   "&::after": {
     transform: "translate(-50%, -50%) rotate(-45deg)",
   },
-});
 
-export const Button = styled.button({
+  "@media (width < 409px)": {
+    width: "16px",
+    height: "16px",
+    borderWidth: "1.2px",
+
+    "&::before, &::after": {
+      width: "7px",
+      height: "1.2px",
+    },
+  },
+}));
+
+export const Button = styled.button(({ theme }) => ({
   width: "100%",
-  padding: "12px",
-  marginTop: "15px",
+  padding: theme.spacing.sm,
+  marginTop: theme.spacing.md,
   border: "none",
-  borderRadius: "5px",
-  backgroundColor: "#000000",
-  color: "#fff",
+  borderRadius: theme.radius.sm,
+  backgroundColor: theme.colors.textMain,
+  fontWeight: theme.fontWeight.medium,
+  color: theme.colors.cards,
   cursor: "pointer",
   "&:hover": {
     filter: "brightness(1.5)",
@@ -269,13 +285,13 @@ export const Button = styled.button({
       transform: "translateX(0)",
     },
   },
-});
+}));
 
-export const Message = styled.p({
-  marginTop: "8px",
+export const Message = styled.p(({ theme }) => ({
+  marginTop: theme.spacing["2xs"],
   fontSize: "clamp(10px, calc(8px + 0.625vw), 12px)",
-});
+}));
 
-export const Required = styled.span({
-  color: "#ff6b35",
-});
+export const Required = styled.span(({ theme }) => ({
+  color: theme.colors.emphasis,
+}));

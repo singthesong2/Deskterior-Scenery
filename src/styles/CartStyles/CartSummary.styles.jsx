@@ -65,12 +65,12 @@ export const IconWrapper = styled.div(({ theme }) => ({
   paddingTop: "2px",
   paddingRight: "4px",
   cursor: "pointer",
-  [theme.media.pc]: {
+  [theme.media.wide]: {
     "&:hover > div": {
       display: "block",
     },
   },
-  [theme.media.wide]: {
+  [theme.media.pc]: {
     "&:hover > div": {
       display: "block",
     },
@@ -159,6 +159,6 @@ export const CheckoutButton = styled.button(({ theme }) => ({
     cursor: "not-allowed",
   },
   "&:hover": {
-    filter: "brightness(1.3)",
+    filter: "brightness(1.5)",
   },
 }));

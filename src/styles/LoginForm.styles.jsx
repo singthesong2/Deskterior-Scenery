@@ -1,78 +1,86 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
 
-export const LoginPage = styled.main({
+export const LoginPage = styled.main(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
-  gap: "20px",
-  padding: "60px clamp(16px, 6vw, 64px)",
+  alignItems: "stretch",
+  gap: theme.spacing.xl,
+  padding: `${theme.spacing["3xl"]} clamp(16px, 6vw, 64px)`,
 
-  "@media (min-width: 320px) and (width < 768px)": {
+  [theme.media.mobile]: {
     alignItems: "center",
   },
-});
+}));
 
-export const LoginImageWrap = styled.div({
+export const LoginImageWrap = styled.div(({ theme }) => ({
   flex: "1 1 50%",
+  alignSelf: "stretch",
   minWidth: 0,
+  maxWidth: "520px",
   position: "relative",
+  aspectRatio: "1 / 1.15",
+  borderRadius: theme.radius.md,
+  overflow: "hidden",
 
-  "@media (min-width: 320px) and (width < 768px)": {
+  [theme.media.mobile]: {
     display: "none",
   },
-});
+}));
 
 export const LoginImage = styled.img({
   position: "absolute",
   width: "100%",
+  maxWidth: "520px",
   height: "100%",
-  objectFit: "fill",
+  objectFit: "cover",
 });
 
-export const LoginCard = styled.section({
+export const LoginCard = styled.section(({ theme }) => ({
   flex: "1 1 50%",
   minWidth: 0,
+  maxWidth: "520px",
   boxSizing: "border-box",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  height: "700px",
-  padding: "50px 30px",
-  border: "1px solid #eee",
-  borderRadius: "5px",
-  backgroundColor: "#fff",
+  padding: `${theme.spacing["2xl"]} ${theme.spacing.xl}`,
+  border: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+  borderRadius: theme.radius.md,
+  backgroundColor: theme.colors.cards,
+  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.06)",
 
-  "@media (min-width: 320px) and (width < 768px)": {
+  [theme.media.mobile]: {
     flex: "none",
     height: "auto",
     width: "100%",
     maxWidth: "360px",
-    padding: "36px 24px",
-  },
-});
-
-export const Title = styled.h1(({ theme }) => ({
-  fontFamily: theme.fontFamily.display,
-  margin: "0 0 40px",
-  textAlign: "center",
-  fontSize: "40px",
-
-  "@media (min-width: 320px) and (width < 768px)": {
-    marginBottom: "30px",
-    fontSize: "32px",
+    padding: `${theme.spacing.xl} ${theme.spacing.lg}`,
   },
 }));
 
-export const SignupLink = styled(Link)({
+export const Title = styled.h1(({ theme }) => ({
+  fontFamily: theme.fontFamily.display,
+  fontSize: theme.fontSize["dpMd"],
+  margin: `0 0 ${theme.spacing["2xl"]}`,
+  textAlign: "center",
+  color: theme.colors.textMain,
+
+  [theme.media.mobile]: {
+    marginBottom: theme.spacing.xl,
+  },
+}));
+
+export const SignupLink = styled(Link)(({ theme }) => ({
   display: "block",
   textAlign: "center",
-  marginTop: "30px",
-  fontSize: "15px",
+  marginTop: theme.spacing.xl,
+  fontSize: theme.fontSize.sm,
+  fontWeight: theme.fontWeight.regular,
   textDecoration: "none",
-  color: "#000000",
-
-  "@media (min-width: 320px) and (width < 768px)": {
-    marginTop: "24px",
-    fontSize: "13px",
+  color: theme.colors.textMain,
+  [theme.media.mobile]: {
+    marginTop: theme.spacing.lg,
+    fontSize: theme.fontSize.xs,
   },
-});
+}));

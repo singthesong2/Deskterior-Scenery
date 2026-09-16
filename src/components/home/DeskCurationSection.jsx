@@ -19,28 +19,30 @@ import {
 import { getProductRaw } from "../../api/productsApi";
 import categories from "../../data/categories";
 import { preloadingImages } from "../../utils/preloadingImages";
-import { SelectedProductCard } from "./SelectedProductCard";
-import { DeskProductMap } from "./DeskProductMap";
+import { toResizedImageUrl } from "../../utils/imageProxy";
+import {
+  SelectedProductCard,
+  PRODUCT_SHOWCASE_WIDTH,
+} from "./SelectedProductCard";
+import { DeskProductMap, DESK_IMAGE_WIDTH } from "./DeskProductMap";
 import { ChevronDownIcon } from "../icons/Icons";
 
-function readCurationSelection() {
-  try {
-    const saved = sessionStorage.getItem("homeCurationSelection");
-
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
-}
+// 스타일 키워드 데이터(main.js)에 한글 이름이 없어서, 호버 텍스트용으로만 따로 매핑
+const STYLE_NAME_KO = {
+  minimal: "미니멀",
+  natural: "내추럴",
+  hip: "힙",
+  metallic: "메탈릭",
+  vintage: "빈티지",
+  cozy: "코지",
+  pastel: "파스텔",
+};
 
 function DeskCurationSection({ items = [] }) {
-  const [selectedStyleId, setSelectedStyleId] = useState(() => {
-    return readCurationSelection()?.styleId ?? null;
-  });
-
-  const [selectedProductNumber, setSelectedProductNumber] = useState(() => {
-    return readCurationSelection()?.productId ?? null;
-  });
+  // 어느 페이지에 있었든 홈으로 돌아오면 항상 첫 번째 스타일/상품부터 보이도록,
+  // 이전 선택을 기억하지 않고 null(= 첫 번째 스타일)로 시작한다
+  const [selectedStyleId, setSelectedStyleId] = useState(null);
+  const [selectedProductNumber, setSelectedProductNumber] = useState(null);
   // 서버에서 받은 상품을 저장할 상태
   const [productData, setProductData] = useState(null);
   // 로딩, 오류 상태
@@ -69,20 +71,6 @@ function DeskCurationSection({ items = [] }) {
     (item) => item.productId === activeProductNumber,
   );
 
-  // 같은 탭에서 뒤로가기나 새로고침을 해도 현재 선택된 상태를 유지
-  // sessionStorage에 선택되어 있는 styleId와 ProductNumber를 저장
-  useEffect(() => {
-    if (activeStyleId === null || activeProductNumber === null) {
-      return;
-    }
-    const selection = {
-      styleId: activeStyleId,
-      productId: activeProductNumber,
-    };
-
-    sessionStorage.setItem("homeCurationSelection", JSON.stringify(selection));
-  }, [activeStyleId, activeProductNumber]);
-
   // 큐레이션 상품 정보 연결
   useEffect(() => {
     if (activeProductNumber == null) {
@@ -102,7 +90,9 @@ function DeskCurationSection({ items = [] }) {
       try {
         const product = await getProductRaw(activeProductNumber);
 
-        await preloadingImages([product.imageUrl]);
+        await preloadingImages([
+          toResizedImageUrl(product.imageUrl, PRODUCT_SHOWCASE_WIDTH),
+        ]);
 
         if (!ignore) {
           setProductData(product);
@@ -132,7 +122,9 @@ function DeskCurationSection({ items = [] }) {
       const image = new Image();
       image.src = item.imageUrl;
     });*/
-    const imageUrls = items.map((item) => item.imageUrl);
+    const imageUrls = items.map((item) =>
+      toResizedImageUrl(item.imageUrl, DESK_IMAGE_WIDTH),
+    );
 
     preloadingImages(imageUrls);
   }, [items]);
@@ -146,11 +138,13 @@ function DeskCurationSection({ items = [] }) {
       setIsProductLoading(true);
 
       const [, product] = await Promise.all([
-        preloadingImages([item.imageUrl]),
+        preloadingImages([toResizedImageUrl(item.imageUrl, DESK_IMAGE_WIDTH)]),
         getProductRaw(firstProductId),
       ]);
 
-      await preloadingImages([product.imageUrl]);
+      await preloadingImages([
+        toResizedImageUrl(product.imageUrl, PRODUCT_SHOWCASE_WIDTH),
+      ]);
 
       setProductData(product);
       setSelectedStyleId(item.styleId);
@@ -211,6 +205,7 @@ function DeskCurationSection({ items = [] }) {
               type="button"
               isSelected={item.styleId === activeStyleId}
               aria-pressed={item.styleId === activeStyleId}
+              title={STYLE_NAME_KO[item.styleId]}
               onClick={() => {
                 handleStyleChange(item);
               }}
@@ -237,6 +232,7 @@ function DeskCurationSection({ items = [] }) {
             type="button"
             aria-label="데스크 스타일 선택"
             aria-expanded={isKeywordOpen}
+            title="데스크 스타일 선택"
             onClick={() => {
               setIsKeywordOpen((previous) => !previous);
             }}
@@ -252,6 +248,7 @@ function DeskCurationSection({ items = [] }) {
                   <KeywordMenuButton
                     type="button"
                     aria-pressed={item.styleId === activeStyleId}
+                    title={STYLE_NAME_KO[item.styleId]}
                     onClick={(event) => {
                       handleStyleChange(item);
                       setIsKeywordOpen(false);

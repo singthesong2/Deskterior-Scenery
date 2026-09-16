@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { EmptyReviewIcon } from "../../components/icons/Icons";
 
 export const Section = styled.section(({ theme }) => ({
   width: "100%",
@@ -30,7 +31,7 @@ export const Header = styled.div(({ theme }) => ({
 export const Title = styled.h2(({ theme }) => ({
   margin: 0,
   fontFamily: theme.fontFamily.display,
-  fontSize: theme.fontSize["5xl"], // 2.5rem (40px)
+  fontSize: theme.fontSize["4xl"], // 2rem (32px)
   fontWeight: theme.fontWeight.regular, // 400
   fontStyle: "normal",
   lineHeight: "normal",
@@ -38,7 +39,6 @@ export const Title = styled.h2(({ theme }) => ({
   color: theme.colors.textMain,
 
   [theme.media.mobile]: {
-    fontSize: theme.fontSize["4xl"], // 32px
     letterSpacing: "normal",
   },
 }));
@@ -83,7 +83,7 @@ export const FormRow = styled.div(({ theme }) => ({
   },
 }));
 
-export const RatingBox = styled.div(({ theme }) => ({
+export const RatingBox = styled.div(({ theme, $loggedIn }) => ({
   display: "flex",
   flex: "0 0 auto",
   width: "14.5rem",
@@ -95,6 +95,7 @@ export const RatingBox = styled.div(({ theme }) => ({
   padding: theme.spacing.md,
   borderRadius: theme.radius.md,
   background: "rgba(235, 105, 35, 0.15)",
+  cursor: $loggedIn ? "default" : "pointer",
 
   [theme.media.mobile]: {
     width: "auto",
@@ -120,7 +121,7 @@ export const RatingHint = styled.span(({ theme }) => ({
   color: theme.colors.secondText, // #74766F
 }));
 
-export const Textarea = styled.textarea(({ theme }) => ({
+export const Textarea = styled.textarea(({ theme, $loggedIn }) => ({
   flex: "1 0 0",
   height: "8.25rem",
   padding: theme.spacing.md,
@@ -134,6 +135,7 @@ export const Textarea = styled.textarea(({ theme }) => ({
   lineHeight: "normal",
   letterSpacing: "-0.00875rem",
   color: theme.colors.textMain,
+  cursor: $loggedIn ? "text" : "pointer",
 
   "&::placeholder": { color: theme.colors.mutedText },
   "&:focus": {
@@ -171,7 +173,7 @@ export const SubmitButton = styled.button(({ theme }) => ({
   gap: theme.spacing.xs,
   borderRadius: theme.radius.md,
   background: theme.colors.textMain,
-  color: "#FFF",
+  color: theme.colors.cards, // #FDFDFD
   textAlign: "center",
   fontSize: theme.fontSize.md, // 1rem (16px)
   fontStyle: "normal",
@@ -261,7 +263,7 @@ export const EmptyState = styled.div({
   background: "#FFF",
 });
 
-export const EmptyIcon = styled.svg({
+export const EmptyIcon = styled(EmptyReviewIcon)({
   width: "6.875rem",
   height: "6.875rem",
 });

@@ -64,10 +64,7 @@ const ReviewForm = ({
     <>
       <S.Form onSubmit={handleSubmit}>
         <S.FormRow>
-          <S.RatingBox
-            onClick={promptLogin}
-            style={{ cursor: isLoggedIn ? "default" : "pointer" }}
-          >
+          <S.RatingBox onClick={promptLogin} $loggedIn={isLoggedIn}>
             <S.RatingLabel>{rating.toFixed(1)}</S.RatingLabel>
             <ReviewStars
               value={rating}
@@ -94,7 +91,7 @@ const ReviewForm = ({
                 ? "리뷰를 작성해 주세요"
                 : "로그인 후 리뷰를 작성할 수 있어요"
             }
-            style={{ cursor: isLoggedIn ? "text" : "pointer" }}
+            $loggedIn={isLoggedIn}
             onChange={(event) => {
               setContent(event.target.value);
               setError("");
@@ -109,12 +106,19 @@ const ReviewForm = ({
             <S.CancelButton
               type="button"
               disabled={submitting}
+              title="취소"
               onClick={() => onCancel?.()}
             >
               Cancel
             </S.CancelButton>
           )}
-          <S.SubmitButton type="submit" disabled={submitting}>
+          <S.SubmitButton
+            type="submit"
+            disabled={submitting}
+            title={
+              submitting ? "저장 중" : isEditing ? "리뷰 수정" : "리뷰 등록"
+            }
+          >
             {submitting ? "Saving..." : isEditing ? "Edit" : "Submit"}
           </S.SubmitButton>
         </S.FormActions>
@@ -125,6 +129,7 @@ const ReviewForm = ({
           title="Login Required"
           description="별점 등록과 리뷰 작성을 하려면 먼저 로그인해 주세요."
           confirmText="Login"
+          confirmTitle="로그인"
           onClose={() => setLoginModalOpen(false)}
           onConfirm={() => {
             setLoginModalOpen(false);
