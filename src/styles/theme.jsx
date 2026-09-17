@@ -35,7 +35,6 @@ const fontSize = {
 
 // 폰트 굵기
 const fontWeight = {
-  light: 300, // (base)
   regular: 400,
   medium: 500,
   semiBold: 600,

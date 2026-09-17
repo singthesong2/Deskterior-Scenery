@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
+import useAuthStore from "../../store/UseAuthStore";
 import { Link, useLocation } from "react-router";
 import { toast } from "react-toastify";
+import { FailToastStyle } from "../../styles/FailToast.styles";
+import { SuccessToastStyle } from "../../styles/SuccessToast.styles";
 import useCartStore from "../../store/cartStore";
 import { getProduct } from "../../api/productsApi";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import EmptyCart from "../../components/cart/EmptyCart";
-import RecommendItems from "../../components/cart/RecommendItems";
 import Modal from "../../components/common/Modal";
 import PaymentModal from "../../components/common/PaymentModal";
+import RecommendItems from "../../components/cart/RecommendItems";
 import FailToast from "../../components/common/FailToast";
 import SuccessToast from "../../components/common/SuccessToast";
 import useLoadingStore from "../../store/UseLoadingStore";
@@ -28,6 +31,7 @@ import {
 } from "../../styles/CartStyles/CartPage.styles";
 
 const CartPage = () => {
+  const user = useAuthStore((s) => s.user);
   const cartItems = useCartStore((s) => s.cartItems);
   const error = useCartStore((s) => s.error);
   const fetchCart = useCartStore((s) => s.fetchCart);
@@ -118,9 +122,10 @@ const CartPage = () => {
     finishPageLoading(pathname);
   }, [cartLoaded, productInfoReady, pathname, finishPageLoading]);
 
-  const showFailToast = (message) => toast(<FailToast message={message} />);
+  const showFailToast = (message) =>
+    toast(<FailToast message={message} />, { style: FailToastStyle });
   const showSuccessToast = (message) =>
-    toast(<SuccessToast message={message} />);
+    toast(<SuccessToast message={message} />, { style: SuccessToastStyle });
 
   useEffect(() => {
     if (error) {
@@ -257,6 +262,7 @@ const CartPage = () => {
                   type="checkbox"
                   checked={isAllChecked}
                   onChange={handleToggleAllCheck}
+                  aria-label="전체 상품 선택"
                 />
                 Selected All
               </SelectAllLabel>
@@ -275,11 +281,12 @@ const CartPage = () => {
         ) : (
           <div>
             <ItemListSection>
-              {cartItems.map((item) => (
+              {cartItems.map((item, index) => (
                 <CartItem
                   key={item.cartItemId}
                   item={item}
                   isChecked={checkedItems.includes(item.cartItemId)}
+                  isPriority={index === 0}
                   isSoldOut={isSoldOutProduct(item.productId)}
                   isBest={Boolean(productInfoMap[item.productId]?.isBest)}
                   isNew={Boolean(productInfoMap[item.productId]?.isNew)}
@@ -298,6 +305,10 @@ const CartPage = () => {
               isAllSoldOut={isAllSoldOut}
               isCheckoutDisabled={isAllSoldOut || checkedItems.length === 0}
               onCheckout={() => {
+                if (!user) {
+                  showFailToast("로그인이 필요한 서비스입니다.");
+                  return;
+                }
                 if (isAllSoldOut) {
                   showFailToast("품절된 상품은 결제할 수 없습니다.");
                   return;

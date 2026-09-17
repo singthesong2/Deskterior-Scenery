@@ -69,6 +69,11 @@ export const ModalDescription = styled.p(({ theme }) => ({
   [theme.media.wide]: {
     fontSize: theme.fontSize.md,
   },
+  [theme.media.smallMobile]: {
+    fontSize: "13px",
+    wordBreak: "keep-all",
+    letterSpacing: "-0.5px",
+  },
 }));
 
 // 버튼

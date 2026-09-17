@@ -17,17 +17,11 @@ import {
   CurationInner,
 } from "../../styles/MainStyles/DeskCurationSection.styles";
 import { getProductRaw } from "../../api/productsApi";
-import categories from "../../data/categories";
 import { preloadingImages } from "../../utils/preloadingImages";
-import { toResizedImageUrl } from "../../utils/imageProxy";
-import {
-  SelectedProductCard,
-  PRODUCT_SHOWCASE_WIDTH,
-} from "./SelectedProductCard";
-import { DeskProductMap, DESK_IMAGE_WIDTH } from "./DeskProductMap";
+import { SelectedProductCard } from "./SelectedProductCard";
+import { DeskProductMap } from "./DeskProductMap";
 import { ChevronDownIcon } from "../icons/Icons";
 
-// 스타일 키워드 데이터(main.js)에 한글 이름이 없어서, 호버 텍스트용으로만 따로 매핑
 const STYLE_NAME_KO = {
   minimal: "미니멀",
   natural: "내추럴",
@@ -38,9 +32,7 @@ const STYLE_NAME_KO = {
   pastel: "파스텔",
 };
 
-function DeskCurationSection({ items = [] }) {
-  // 어느 페이지에 있었든 홈으로 돌아오면 항상 첫 번째 스타일/상품부터 보이도록,
-  // 이전 선택을 기억하지 않고 null(= 첫 번째 스타일)로 시작한다
+function DeskCurationSection({ items = [], categories = [], }) {
   const [selectedStyleId, setSelectedStyleId] = useState(null);
   const [selectedProductNumber, setSelectedProductNumber] = useState(null);
   // 서버에서 받은 상품을 저장할 상태
@@ -50,7 +42,6 @@ function DeskCurationSection({ items = [] }) {
   const [productError, setProductError] = useState("");
   const [isKeywordOpen, setIsKeywordOpen] = useState(false);
 
-  // 아무것도 선택되지 않았을 때 첫 번째 키워드를 자동으로 선택(1, Minimal)
   const activeStyleId = selectedStyleId ?? items[0]?.styleId;
   const selectedStyle =
     items.find((item) => item.styleId === activeStyleId) ?? items[0];
@@ -64,7 +55,6 @@ function DeskCurationSection({ items = [] }) {
   const selectedCategory = categories.find(
     (category) => category.id === selectedProduct?.categoryId,
   );
-  // selectedStyle에 coordinate가 있으면 가져오고 undefined이거나 null 이면 빈 배열을 반환함
   const coordinates = selectedStyle?.coordinate ?? [];
   // 현재 상품 순서 계산
   const activeProductIndex = coordinates.findIndex(
@@ -79,8 +69,6 @@ function DeskCurationSection({ items = [] }) {
       return;
     }
 
-    //if (productData?.id === activeProductNumber) return;
-
     let ignore = false;
 
     const fetchSelectedProduct = async () => {
@@ -90,9 +78,7 @@ function DeskCurationSection({ items = [] }) {
       try {
         const product = await getProductRaw(activeProductNumber);
 
-        await preloadingImages([
-          toResizedImageUrl(product.imageUrl, PRODUCT_SHOWCASE_WIDTH),
-        ]);
+        await preloadingImages([product.imageUrl]);
 
         if (!ignore) {
           setProductData(product);
@@ -116,15 +102,8 @@ function DeskCurationSection({ items = [] }) {
     };
   }, [activeProductNumber]);
 
-  // 화면이 처음 열릴 때 imageUrl을 미리 저장
   useEffect(() => {
-    /*items.forEach((item) => {
-      const image = new Image();
-      image.src = item.imageUrl;
-    });*/
-    const imageUrls = items.map((item) =>
-      toResizedImageUrl(item.imageUrl, DESK_IMAGE_WIDTH),
-    );
+    const imageUrls = items.map((item) => item.imageUrl);
 
     preloadingImages(imageUrls);
   }, [items]);
@@ -138,13 +117,11 @@ function DeskCurationSection({ items = [] }) {
       setIsProductLoading(true);
 
       const [, product] = await Promise.all([
-        preloadingImages([toResizedImageUrl(item.imageUrl, DESK_IMAGE_WIDTH)]),
+        preloadingImages([item.imageUrl]),
         getProductRaw(firstProductId),
       ]);
 
-      await preloadingImages([
-        toResizedImageUrl(product.imageUrl, PRODUCT_SHOWCASE_WIDTH),
-      ]);
+      await preloadingImages([product.imageUrl]);
 
       setProductData(product);
       setSelectedStyleId(item.styleId);
@@ -198,7 +175,6 @@ function DeskCurationSection({ items = [] }) {
           둘러보고 싶은 스타일 키워드를 선택해 보세요
         </MoodKeywordText>
         <KeywordChipContainer>
-          {/* main.js에서 keyword의 name을 가져옴 */}
           {items.map((item) => (
             <KeywordButton
               key={item.styleId}
@@ -216,6 +192,7 @@ function DeskCurationSection({ items = [] }) {
         </KeywordChipContainer>
 
         <KeywordDropdown
+        data-keyword-dropdown
           onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) {
               setIsKeywordOpen(false);

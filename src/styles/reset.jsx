@@ -11,13 +11,13 @@ export const reset = css`
      (한 번 캐시되면 다음 방문부터는 바로 Pretendard로 보인다) */
   @font-face {
     font-family: "Pretendard";
-    font-weight: 300 700;
+    font-weight: 400 700;
     font-display: optional;
     src: url("https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/woff2/PretendardVariable.woff2")
       format("woff2-variations");
   }
 
-  /* 🌟 DM Serif Text */
+  /* DM Serif Text */
   @font-face {
     font-family: "DM Serif Text";
     font-style: normal;

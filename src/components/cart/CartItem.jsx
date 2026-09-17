@@ -30,6 +30,7 @@ const CartItem = ({
   isSoldOut,
   isBest,
   isNew,
+  isPriority,
   onToggleCheck,
   onIncrease,
   onDecrease,
@@ -62,16 +63,17 @@ const CartItem = ({
           checked={isChecked}
           onChange={() => onToggleCheck(item.cartItemId)}
           disabled={isSoldOut}
+          aria-label={`${item.name} 선택`}
         />
 
         <Link to={`/products/${item.productId}`}>
           <ImageBox>
             {!imageLoaded && <ImageLoading>상품 불러오는 중...</ImageLoading>}
             <ItemImage
-              src={toResizedImageUrl(item.imageUrl, 200)}
+              src={toResizedImageUrl(item.imageUrl, 100)}
               alt={item.name}
-              fetchpriority="high"
-              loading="eager" // 즉시 실행
+              fetchPriority={isPriority ? "high" : "auto"}
+              loading={isPriority ? "eager" : "lazy"}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageLoaded(true)}
               $isLoaded={imageLoaded}
@@ -101,6 +103,7 @@ const CartItem = ({
           <QuantityButton
             onClick={() => onDecrease(item.cartItemId)}
             disabled={isSoldOut || item.quantity <= 1}
+            aria-label={`${item.name} 수량 감소`}
           >
             -
           </QuantityButton>
@@ -108,6 +111,7 @@ const CartItem = ({
           <QuantityButton
             onClick={() => onIncrease(item.cartItemId)}
             disabled={isSoldOut}
+            aria-label={`${item.name} 수량 증가`}
           >
             +
           </QuantityButton>

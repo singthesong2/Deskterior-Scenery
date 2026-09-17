@@ -10,6 +10,10 @@ export const EmptyContainer = styled.div(({ theme }) => ({
   padding: `162px ${theme.spacing["3xl"]} 160px`,
   marginBottom: "64px",
   textAlign: "center",
+  [theme.media.mobile]: {
+    padding: "100px 10px",
+    marginBottom: "32px",
+  },
 }));
 
 export const IconWrapper = styled.div(({ theme }) => ({
@@ -24,6 +28,9 @@ export const Title = styled.h3(({ theme }) => ({
   fontSize: theme.fontSize.lg,
   fontWeight: theme.fontWeight.regular,
   color: theme.colors.secondText,
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.sm,
+  },
 }));
 
 export const Subtitle = styled.p(({ theme }) => ({
@@ -31,6 +38,9 @@ export const Subtitle = styled.p(({ theme }) => ({
   fontWeight: theme.fontWeight.regular,
   color: theme.colors.secondText,
   marginBottom: theme.spacing["3xl"],
+  [theme.media.mobile]: {
+    fontSize: theme.fontSize.sm,
+  },
 }));
 
 export const ContinueButton = styled.button(({ theme }) => ({
@@ -42,5 +52,9 @@ export const ContinueButton = styled.button(({ theme }) => ({
   borderRadius: theme.radius.md,
   "&:hover": {
     filter: "brightness(1.5)",
+  },
+  "&:focus-visible": {
+    outline: `${theme.borderWidth.focus} solid ${theme.colors.emphasis}`,
+    outlineOffset: "2px",
   },
 }));

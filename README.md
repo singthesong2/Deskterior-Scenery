@@ -2,8 +2,6 @@
 
 책상 위 공간을 꾸미는 **데스크테리어(Desk + Interior) 소품 전문 쇼핑몰**입니다.
 
-> ⚠️ 이 README는 코드베이스를 기반으로 작성된 초안입니다. `[ ]`로 표시된 항목은 팀원분들이 직접 채워 넣어야 합니다.
-
 <br>
 
 ## 목차
@@ -26,32 +24,25 @@
 
 ## 프로젝트 소개
 
-**SCENERY**는 조명, 수납, 디지털/전자기기, 데스크 액세서리, 문구 등 책상 주변을 꾸미는 소품을 카테고리별로 둘러보고 구매할 수 있는 이커머스 웹 서비스입니다. 상품 탐색부터 장바구니, 위시리스트(찜), 리뷰 작성, 결제 확인까지 일반적인 쇼핑몰의 핵심 구매 흐름을 구현했습니다.
-
-- 배포 URL: `[ ]`
-- 테스트 계정: `[ ]`
+SCENERY는 조명, 수납, 디지털/전자기기, 데스크 액세서리, 문구 등 책상 주변을 꾸미는 소품을 카테고리별 큐레이션으로 취향껏 둘러보고 구매할 수 있는 이커머스 웹 서비스로, 상품 탐색부터 장바구니, 위시리스트(찜), 리뷰 작성까지 일반적인 쇼핑몰의 핵심 흐름을 구현했습니다.
 
 <br>
 
 ## 팀원 및 역할
 
-| 이름 | GitHub | 역할 |
-| --- | --- | --- |
-| 최우원 | [@singthesong2](https://github.com/singthesong2) | 팀장, 로그인/회원가입, 마이페이지 |
-| 김양왕 | [@gimyangwang-bit](https://github.com/gimyangwang-bit) | 카테고리/상품 목록 페이지 |
-| 나민우 | [@Naminwoo](https://github.com/Naminwoo) | 장바구니 페이지, 마이페이지 찜 기능 |
-| 김채가 | [@chaegagim-code](https://github.com/chaegagim-code) | 상세 페이지, 회의록 작성, PPT 초안 |
-| 최현옥 | [@hyunock](https://github.com/hyunock) | 디자인, 홈 페이지 |
-
-> 각자 담당한 화면/기능(예: 로그인·회원가입, 상품 목록/상세, 장바구니, 리뷰, 공통 컴포넌트 등)을 적어주세요.
+| 이름   | GitHub                                                 | 역할                                      |
+| ------ | ------------------------------------------------------ | ----------------------------------------- |
+| 최우원 | [@singthesong2](https://github.com/singthesong2)       | 로그인/회원가입, 404 페이지, 마이페이지   |
+| 김양왕 | [@gimyangwang-bit](https://github.com/gimyangwang-bit) | 카테고리/상품 목록 페이지, README.MD 작성 |
+| 나민우 | [@Naminwoo](https://github.com/buriburi-king)          | 장바구니 페이지, 마이페이지 찜 기능       |
+| 김채가 | [@chaegagim-code](https://github.com/chaegagim-code)   | 상세 페이지, 회의록 작성, PPT 제작        |
+| 최현옥 | [@ocksoosoo](https://github.com/hyunock)                 | 디자인, 홈 페이지, 마이페이지             |
 
 <br>
 
 ## 개발 기간
 
 `2026.08.25 ~ 2026.09.15` (약 3주)
-
-> 최초 커밋(`first commit`) 기준 시작일이며, 실제 기획/디자인 기간이 있었다면 함께 적어주세요.
 
 <br>
 
@@ -65,74 +56,121 @@
 - **Desk Accessories** (데스크 액세서리)
 - **Stationery** (문구)
 
-`[ ]` 서비스가 해결하고자 한 문제, 타겟 사용자, 차별화 포인트 등을 추가해주세요.
+- **해결하려는 문제**: 재택근무·홈오피스가 늘면서 책상 꾸미기(데스크테리어) 수요는 커졌는데, 조명/수납/문구/전자기기가 카테고리별로 흩어진 쇼핑몰이 많아 한 번에 취향대로 데스크 셋업을 완성하기 어렵다는 점
+- **타겟 사용자**: 재택·1인 오피스 환경을 꾸미고 싶은 2030 자취생/직장인, 미니멀하고 톤온톤인 데스크테리어를 선호하는 사용자
+- **차별화 포인트**: 조명·수납·전자기기·액세서리·문구를 하나의 "책상 위 풍경"이라는 콘셉트로 묶어 카테고리 간 자연스러운 연계 쇼핑을 유도하는 큐레이션형 구성
 
 <br>
 
 ## 주요 기능
 
+### 메인
+- 인터랙티브 히어로 배너
+- 스타일별 데스크 큐레이션
+- 동적 이미지 슬라이더의 무한 순환 및 페이지 인디케이터
+- 모바일 더보기 기능
+
 ### 인증
+
 - 회원가입 / 아이디 중복 확인 / 로그인 / 로그아웃
 - 새로고침 시 토큰(localStorage) 기반 로그인 상태 자동 복구
+- Zod 기반 폼 유효성 검사, 실패 시 흔들림 애니메이션으로 에러 피드백
+- 아이디 중복 확인 필수 처리 (미확인 시 가입 불가, 응답 지연 중 값이 바뀌면 stale 응답 무시)
 
 ### 상품
-- 카테고리별 상품 목록 조회 (페이지네이션, 정렬/필터 툴바)
+
+- 카테고리별 상품 목록 조회 (페이지네이션, 검색, 정렬/필터 툴바)
+- 반응형 상품 그리드 (모바일 2열 / PC·태블릿 3열)
 - 상품 상세 페이지 (이미지 갤러리, 상세 설명, BEST/NEW/품절 뱃지)
 - 상품 리뷰 목록 조회, 평점 요약(평균 별점)
 
 ### 리뷰
+
 - 로그인 사용자의 리뷰 작성 / 수정 / 삭제 (본인 리뷰만)
+- 리뷰 4개 이상이면 처음엔 3개만 보여주고 "+"로 전체 펼치기
+- 비로그인 상태로 별점/작성 시도 시 로그인 안내 모달로 유도
+- 수정한 리뷰는 "(수정됨)" 표시, 작성자가 탈퇴한 리뷰는 "알수없는 회원"으로 익명 처리
 
 ### 장바구니
+
 - 상품 담기, 수량 변경, 개별/선택 삭제, 전체 비우기
 - 비회원도 장바구니 이용 가능, 로그인 시 서버와 자동 동기화
 - 헤더 아이콘에 담긴 상품 개수 뱃지 표시
+- 배송비 규칙: 선택 상품 합계 8만원 이상 무료배송, 미만이면 3,000원 부과
+- 선택한 상품만 합계 계산해서 결제, 미선택/전체 품절 시 결제 제한 및 안내
+- 품절 상품은 전체선택/합계 계산에서 자동 제외
+- 장바구니 하단 추천 상품 노출
 
 ### 위시리스트(찜)
+
 - 상품 찜하기/취소 (비회원도 가능, 로컬 저장)
 - 로그아웃 시 찜 목록 초기화
+- 처음엔 6개만 보여주고 "+"로 3개씩 더보기
+- 위시리스트 전체 삭제 (확인 모달)
+- 목록 조회 실패 시 에러 안내 + Retry 재시도 버튼
 
 ### 결제
+
 - 구매 확인 모달을 통한 결제 진행 플로우
+- 상세 페이지에서 장바구니 없이 바로 구매(즉시 결제) 가능
+- 실제 PG 연동 없이 확인 모달 기반의 결제 시뮬레이션 플로우
 
 ### 마이페이지
-- `[ ]` 마이페이지에서 제공하는 기능(주문 내역, 회원 정보 수정 등)을 적어주세요.
+
+- 회원 정보 조회 및 이름/연락처/주소 수정 (Zod 검증, 저장 실패 시 흔들림 애니메이션)
+- 비밀번호 변경 (현재/새 비밀번호 입력, 각각 표시/숨기기 토글, 현재와 동일한 비밀번호로는 변경 불가)
+- 회원 탈퇴 (확인 모달, 탈퇴 시 장바구니/위시리스트/로그인 정보 초기화)
+- 위시리스트(찜) 목록 확인 및 관리 (자세한 기능은 [위시리스트(찜)](#위시리스트찜) 참고)
 
 ### 공통 UX
+
 - 반응형 헤더 및 모바일 햄버거 메뉴
 - 전역 토스트 알림(성공/실패), 페이지 전환 로딩 인디케이터
 - 스크롤 위치 복원, 맨 위로 가기 버튼
+- 커스텀 404 페이지 (5초 카운트다운 후 자동 홈 이동)
+- OS "동작 줄이기(reduce motion)" 설정을 존중하는 전역 애니메이션 처리
+- 키보드 접근성 (커스텀 드롭다운 등에 focus-visible 아웃라인, aria-expanded/aria-hidden 처리)
+- 페이지 상단으로 이동시키는 플로팅 버튼
+- 현재 페이지의 위치 표시 및 상위 페이지 이동 링크를 제공하는 브레드 크럼(bread crumb)
 
 <br>
 
 ## 기술 스택
 
 **Frontend**
+
 - React 19 (React Compiler 적용)
-- Vite 8
+- Vite 8 (Rolldown 기반)
 - React Router 8
 
 **상태 관리 / 데이터 패칭**
+
 - Zustand (+ `persist` 미들웨어)
-- TanStack Query (React Query)
 
 **스타일링**
+
 - Emotion (`@emotion/react`, `@emotion/styled`)
 
 **폼 / 검증**
+
 - Zod
 
 **UI / 기타**
+
 - Tabler Icons React
 - Motion (애니메이션)
 - React Spinners (로딩 인디케이터)
 - React Toastify (토스트 알림)
+- Pretendard / DM Serif Text 웹폰트 (CDN)
 
 **Lint / 개발 도구**
+
 - ESLint (`eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`)
 - Babel + `babel-plugin-react-compiler`
 
-`[ ]` 백엔드/DB/배포 관련 스택(사용 중인 서버, 데이터베이스, 배포 플랫폼 등)을 추가해주세요.
+**API 문서**
+
+- Swagger (OpenAPI)
 
 <br>
 
@@ -140,9 +178,12 @@
 
 ```
 Deskterior-Scenery/
+├── docs/
+│   └── screenshots/                # README에 쓰인 스크린샷
 ├── public/
 │   ├── favicon.svg
-│   └── icons.svg
+│   ├── icons.svg
+│   └── robots.txt
 ├── src/
 │   ├── api/                     # 서버 통신 (fetch 래퍼 + 도메인별 API)
 │   │   ├── authApi.js
@@ -151,7 +192,8 @@ Deskterior-Scenery/
 │   │   ├── clientApi.js         # 공통 fetch 래퍼 (인증 헤더, 에러 처리)
 │   │   ├── mainApi.js
 │   │   ├── productsApi.js
-│   │   └── reviewsApi.js
+│   │   ├── reviewsApi.js
+│   │   └── wishlistApi.js
 │   ├── assets/                  # 이미지 / 영상 리소스
 │   ├── components/
 │   │   ├── cart/                # 장바구니 아이템, 요약, 추천 상품
@@ -163,8 +205,13 @@ Deskterior-Scenery/
 │   │   ├── review/                 # 리뷰 작성/목록/요약
 │   │   └── AuthForm.jsx
 │   ├── constants/                 # 목업 상수 데이터
-│   ├── data/                      # 카테고리, 상품명 매핑 등 정적 데이터
-│   ├── hooks/
+│   ├── data/                      # 카테고리, 상품, 정렬 옵션 등 정적 데이터
+│   ├── hook/                      # 커스텀 훅
+│   │   ├── useCategoryPageParams.jsx
+│   │   ├── useCategoryProducts.jsx
+│   │   ├── useIsMobile.jsx
+│   │   ├── usePageLoading.jsx
+│   │   └── useResponsiveRowSize.jsx
 │   ├── pages/
 │   │   ├── Cart/CartPage.jsx
 │   │   ├── Category/CategoryPage.jsx
@@ -173,12 +220,15 @@ Deskterior-Scenery/
 │   │   ├── LoginForm.jsx
 │   │   ├── SignupForm.jsx
 │   │   ├── MyPage.jsx
+│   │   ├── WishListSection.jsx     # 마이페이지 내 위시리스트 섹션
 │   │   ├── NotFoundPage.jsx
 │   │   └── commonLayout.jsx        # 공통 레이아웃 (Header/Footer + Outlet)
 │   ├── schema/                     # Zod 스키마 (회원가입/로그인 검증)
-│   ├── store/                      # Zustand 스토어 (인증, 로딩, 장바구니, 카테고리, 위시리스트)
+│   ├── store/                      # Zustand 스토어 (인증, 로딩, 장바구니, 카테고리, 상품 카탈로그, 위시리스트)
 │   ├── styles/                     # Emotion 스타일 (기능별 하위 폴더로 분리)
 │   ├── utils/
+│   │   ├── imageProxy.js           # 이미지 리사이징 프록시(wsrv.nl) URL 변환
+│   │   └── preloadingImages.jsx
 │   ├── App.jsx                     # 라우트 정의
 │   └── main.jsx                    # 엔트리 포인트
 ├── .env.example
@@ -221,9 +271,9 @@ npm run lint      # ESLint 검사
 
 `.env.example`을 참고하여 프로젝트 루트에 `.env` 파일을 생성합니다.
 
-| 변수명 | 설명 | 예시 |
-| --- | --- | --- |
-| `VITE_API_BASE_URL` | 백엔드 API 서버의 base URL | `https://api.example.com/api/14/team1` |
+| 변수명              | 설명                       | 예시                                        |
+| ------------------- | -------------------------- | ------------------------------------------- |
+| `VITE_API_BASE_URL` | 백엔드 API 서버의 base URL | `https://api.example.com/api/{기수}/{team}` |
 
 > 민감한 실제 값을 README에 작성하지 않도록 주의합니다. 실제 값은 `.env` 파일에만 두고 커밋하지 않습니다.
 
@@ -231,17 +281,17 @@ npm run lint      # ESLint 검사
 
 ## 주요 화면
 
-| 화면 | 이미지 |
-| --- | --- |
-| 홈 | ![홈](docs/screenshots/01-home.png) |
-| 카테고리(상품 목록) | ![카테고리](docs/screenshots/02-category.png) |
-| 상품 상세 | ![상품 상세](docs/screenshots/03-product-detail.png) |
-| 장바구니 | ![장바구니](docs/screenshots/04-cart.png) |
-| 로그인 | ![로그인](docs/screenshots/05-login.png) |
-| 회원가입 | ![회원가입](docs/screenshots/06-signup.png) |
-| 모바일 반응형(홈) | ![모바일 홈](docs/screenshots/07-home-mobile.png) |
-
-> 결제 확인 모달 화면은 실제 로그인 후 구매 흐름에서 캡처해야 해서 아직 비어 있습니다. `[ ]` 로그인 → 장바구니 담기 → 체크아웃 화면을 캡처해서 추가해주세요.
+| 화면                        | 이미지                                                 |
+| --------------------------- | ------------------------------------------------------ |
+| 홈                          | ![홈](docs/screenshots/homepage.png)                   |
+| 카테고리(상품 목록)         | ![카테고리](docs/screenshots/category.png)             |
+| 상품 상세                   | ![상품 상세](docs/screenshots/product-detailpage.png)  |
+| 장바구니                    | ![장바구니](docs/screenshots/cartpage.png)             |
+| 로그인                      | ![로그인](docs/screenshots/login.png)                  |
+| 회원가입                    | ![회원가입](docs/screenshots/signuppage.png)           |
+| 모바일 반응형(홈)           | ![모바일 홈](docs/screenshots/home%20%28mobile%29.png) |
+| 마이페이지(위시리스트 포함) | ![마이페이지](docs/screenshots/mypage.png)             |
+| 404 페이지                  | ![404 페이지](docs/screenshots/404page.png)            |
 
 <br>
 
@@ -253,67 +303,111 @@ Swagger 문서: 팀 노션/Swagger는 별도 공유
 
 ### 인증 (`/auth`)
 
-| Method | Endpoint | 설명 |
-| --- | --- | --- |
-| POST | `/auth/signup` | 회원가입 |
-| POST | `/auth/check-id` | 아이디 중복 확인 |
-| POST | `/auth/login` | 로그인 |
-| POST | `/auth/logout` | 로그아웃 |
-| GET | `/auth/me` | 로그인한 사용자 정보 조회 |
+| Method | Endpoint         | 설명                      |
+| ------ | ---------------- | ------------------------- |
+| POST   | `/auth/signup`   | 회원가입                  |
+| POST   | `/auth/check-id` | 아이디 중복 확인          |
+| POST   | `/auth/login`    | 로그인                    |
+| POST   | `/auth/logout`   | 로그아웃                  |
+| GET    | `/auth/me`       | 로그인한 사용자 정보 조회 |
+| PATCH  | `/auth/me`       | 회원 정보 수정            |
+| PATCH  | `/auth/password` | 비밀번호 변경             |
+| DELETE | `/auth/me`       | 회원 탈퇴                 |
 
 ### 상품 (`/products`)
 
-| Method | Endpoint | 설명 |
-| --- | --- | --- |
-| GET | `/products?category=&page=&limit=` | 상품 목록 조회 |
-| GET | `/products/{productId}` | 상품 상세 조회 |
-| POST | `/products` | 상품 등록 `[ ]` |
+| Method | Endpoint                           | 설명           |
+| ------ | ---------------------------------- | -------------- |
+| GET    | `/products?category=&page=&limit=` | 상품 목록 조회 |
+| GET    | `/products/{productId}`            | 상품 상세 조회 |
+| POST   | `/products`                        | 상품 등록      |
+
+`POST /products` 요청 body 예시
+
+```json
+{
+  "name": "3-in-1 Foldable Wireless Charger",
+  "categoryId": "digital-electronics",
+  "price": 48000,
+  "imageUrl": "https://i.ibb.co/MxtphN8v/17.webp",
+  "description": "폰, 워치, 이어폰을 슬림하게 거치하며 동시 충전하는 무선 스테이션",
+  "badge": [],
+  "stock": 10
+}
+```
+
+### 카테고리 (`/categories`)
+
+| Method | Endpoint      | 설명               |
+| ------ | ------------- | ------------------ |
+| GET    | `/categories` | 카테고리 목록 조회 |
 
 ### 리뷰 (`/products/{productId}/reviews`, `/reviews`)
 
-| Method | Endpoint | 설명 |
-| --- | --- | --- |
-| GET | `/products/{productId}/reviews` | 리뷰 목록 + 평균 평점 조회 |
-| POST | `/products/{productId}/reviews` | 리뷰 작성 (로그인 필요) |
-| PATCH | `/reviews/{reviewId}` | 리뷰 수정 (작성자만) |
-| DELETE | `/reviews/{reviewId}` | 리뷰 삭제 (작성자만) |
+| Method | Endpoint                        | 설명                       |
+| ------ | ------------------------------- | -------------------------- |
+| GET    | `/products/{productId}/reviews` | 리뷰 목록 + 평균 평점 조회 |
+| POST   | `/products/{productId}/reviews` | 리뷰 작성 (로그인 필요)    |
+| PATCH  | `/reviews/{reviewId}`           | 리뷰 수정 (작성자만)       |
+| DELETE | `/reviews/{reviewId}`           | 리뷰 삭제 (작성자만)       |
 
 ### 장바구니 (`/cart`)
 
-| Method | Endpoint | 설명 |
-| --- | --- | --- |
-| GET | `/cart` | 장바구니 전체 조회 |
-| POST | `/cart/items` | 상품 담기 |
-| PATCH | `/cart/items/{cartItemId}` | 수량 변경 |
-| DELETE | `/cart/items/{cartItemId}` | 개별 상품 삭제 |
-| DELETE | `/cart/items` | 선택 상품 삭제 |
-| DELETE | `/cart` | 장바구니 전체 삭제 |
-| GET | `/cart/count` | 장바구니 상품 개수 조회 |
+| Method | Endpoint                   | 설명                    |
+| ------ | -------------------------- | ----------------------- |
+| GET    | `/cart`                    | 장바구니 전체 조회      |
+| POST   | `/cart/items`              | 상품 담기               |
+| PATCH  | `/cart/items/{cartItemId}` | 수량 변경               |
+| DELETE | `/cart/items/{cartItemId}` | 개별 상품 삭제          |
+| DELETE | `/cart/items`              | 선택 상품 삭제          |
+| DELETE | `/cart`                    | 장바구니 전체 삭제      |
+| GET    | `/cart/count`              | 장바구니 상품 개수 조회 |
+
+### 위시리스트(찜) (`/wishlist`)
+
+| Method | Endpoint                | 설명                 |
+| ------ | ----------------------- | -------------------- |
+| GET    | `/wishlist`             | 위시리스트 전체 조회 |
+| POST   | `/wishlist/{productId}` | 찜하기               |
+| DELETE | `/wishlist/{productId}` | 찜 취소              |
+| DELETE | `/wishlist`             | 위시리스트 전체 삭제 |
 
 <br>
 
 ## 트러블슈팅
 
-> 코드에 기록된 이슈 위주의 초안입니다. 팀원분들이 겪은 다른 이슈(배포, CORS, 협업 컨벤션 등)도 함께 추가해주세요.
+- **상품 카드 하나에 뱃지·버튼·리뷰 이동까지 몰아넣으면서 꼬인 문제**
+  이미지, 품절/BEST/NEW 뱃지, 찜/장바구니 버튼, 상품명·평점(리뷰 이동) 링크를 카드 하나에 모두 넣다 보니 쌓임 순서와 클릭 영역이 자주 충돌했습니다. 겹치는 요소마다 z-index를 정리하고, 클릭이 필요 없는 오버레이는 `pointer-events: none`으로 밑의 링크에 클릭을 그대로 전달해 해결했습니다.
 
-- **모달이 화면 중앙이 아니라 헤더 안에 갇혀 보이는 문제**
-  헤더에 적용된 `backdrop-filter`가 `position: fixed`인 자식 요소의 containing block을 뷰포트가 아닌 헤더 박스로 바꿔버려, 로그아웃 확인 모달이 화면 중앙이 아닌 헤더 영역 안에서만 렌더링되었습니다. 모바일 메뉴와 동일하게 `createPortal`로 모달을 `document.body`에 직접 포탈링하여 해결했습니다.
-
-- **로그인 상태에 따라 같은 URL의 API 응답이 다른데, 브라우저가 이전 응답을 재사용하는 문제**
-  로그인/비로그인 상태에서 동일한 엔드포인트가 다른 데이터를 반환할 수 있는데, 브라우저가 `304 Not Modified`로 예전 응답을 그대로 재사용하는 경우가 있었습니다. 공통 fetch 래퍼(`clientApi`)에 `cache: "no-store"`를 지정해 항상 최신 응답을 받도록 했습니다.
-
-- **모바일 메뉴가 열려 있는 동안 ESC 키를 누르면 위에 뜬 로그아웃 모달이 아니라 메뉴가 먼저 닫히는 문제**
-  ESC 핸들러가 등록된 `useEffect`의 의존성 배열에 모달 열림 상태를 직접 넣으면, 모달을 열고 닫을 때마다 스크롤 잠금·포커스 이동 로직 전체가 재실행되어 포커스가 엉뚱한 곳으로 튀는 부작용이 있었습니다. 최신 상태를 `ref`로 따로 추적해 effect 재실행 없이 ESC 시점에 "지금 실제로 보이는 레이어(모달 vs 메뉴)"만 닫도록 했습니다.
-
-- **위시리스트(찜) 목록을 `Set`으로 관리하는데 `localStorage`에 저장하면 빈 객체(`{}`)로 저장되는 문제**
-  `Set`은 `JSON.stringify` 시 배열이 아닌 `{}`로 직렬화되어 새로고침하면 찜 목록이 날아가는 문제가 있었습니다. Zustand `persist` 미들웨어에 커스텀 `replacer`/`reviver`를 적용해 저장 시 배열로, 복원 시 다시 `Set`으로 변환하도록 했습니다.
+- **LCP를 7초 이상 지연시키던 블로킹 이미지 프리로드 문제**
+  상세 페이지에서 이미지를 미리 불러오려던 `preloadingImages` 호출이 오히려 메인 콘텐츠 렌더링을 막아 LCP를 7초 이상 지연시켰습니다. 해당 블로킹 프리로드 호출을 제거해 해결했습니다.
 
 <br>
 
 ## 프로젝트 회고
 
-`[ ]` 팀원별로 프로젝트를 진행하며 느낀 점, 아쉬운 점, 다음 프로젝트에 적용하고 싶은 점 등을 자유롭게 작성해주세요.
+- **김양왕**
+  - 느낀 점
+    수업 시간에 배운 내용을 실제로 실무에 연계하는 과정은 프로젝트 기간 내내 어렵고 힘든 순간의 연속이었습니다. 특히 카테고리/상품 목록 페이지를 맡으면서 상품 카드 하나에 이미지, 뱃지, 찜/장바구니 버튼, 가격, 평점까지 여러 요소를 함께 구성하는 게 가장 힘들었는데, 손이 많이 가는 문제를 하나씩 원인부터 추적해서 고쳐나가는 과정에서 실력이 붙는 걸 스스로 체감할 수 있었습니다. 안 했다면 얻지 못했을 값진 경험이라는 걸 알면서도, 지금은 선뜻 하길 잘했다는 말이 나오지 않을 만큼 피로와 힘듦이 남아 있습니다만, 분명하게 이전보다 큰 성장을 했다고는 자신 있게 말할 수 있습니다. 이 과정을 겪으며 결국 이 분야는 한 번 해봤는지, 이걸 아는지 모르는지에 따라 차이가 크다는 걸 크게 느꼈고, 그래서 앞으로는 머리로만 아는 것에 그치지 않고 더 많이 부딪히고 직접 해보면서 익혀나가는 개발자가 되고 싶습니다.
 
-- **김양왕**: `[ ]`
-- `[ ]`: `[ ]`
+  - 아쉬운 점
+    언제나처럼 저의 실력과 경험 부족이 가장 아쉽습니다. 다른 팀원분들에게 많은 도움이 되고 싶었지만 그러지 못한 저의 현실에 못내 아쉬운 마음이 들었고, 특히 문제 상황을 마주했을 때 원인을 빠르게 좁혀나가는 순발력이 아직 부족하다고 느꼈습니다. 또한 정해진 기간 안에 일을 처리해야 한다는 조급함 때문에 다양한 관점에서 충분히 고민하고 머릿속으로 미리 그려볼 여유 없이 서둘러 결정을 내리다 보니, 프로젝트 후반까지 계속 수정을 반복하게 된 점도 아쉬웠습니다. 그럼에도 완벽할 수도 모든 걸 다 담을 수도 없다고 생각하기 때문에 이 정도의 아쉬움은 자연스러운 부분이라고 생각합니다.
+
+  - 다음 프로젝트에 적용하고 싶은 점
+    기능을 먼저 만들고 부딪히기보다, 문서와 예제를 조금 더 꼼꼼히 찾아보고 시작해서 이번처럼 만들면서 겪는 시행착오를 줄이고 싶습니다. 기능적으로는 전체 상품을 한눈에 볼 수 있는 화면과 다크 모드, 할인 상품 섹션, 다양한 필터를 추가하고 싶습니다. 특히 지금 카테고리/상품 목록 페이지에는 총 상품 개수 표시조차 없고 가격대로 좁혀 볼 수 있는 필터도 없어서, 다음엔 이런 기본적인 부분부터 꼼꼼히 챙기고 싶습니다.
+
+- **김채가**
+  - 완성도 평가: 10점 / 10점
+  - 잘한 부분과 아쉬운 점
+    팀원과의 소통이 잘한 부분이었고, 아쉬운 점은 딱히 없었습니다.
+  - 추후 개선점이나 보완할 점
+    상세 페이지 UI 디테일 부분을 더 다듬고 싶습니다.
+  - 느낀 점이나 경험한 성과
+    API 연결이 처음이라 어려웠지만 강사님 덕분에 잘 넘어간 것 같습니다.
+
+- **최현옥**
+  - 잘한 부분과 아쉬운 점: 디자인 시안 그대로 완성한 점, 그리고 필수 구현 사항에 더하여 웹사이트의 컨셉과 분위기에 맞는 추가 기능까지 구현한 점은 만족스러우나, 아직 아이디어를 로직으로 바로 설계할 역량이 부족한 점이 아쉽습니다.
+  - 추후 개선점이나 보완할 점: 메인 페이지의 애니메이션을 보완하여 성능을 더 올리고, 컴포넌트 단위를 더 명확하고 세밀하게 쪼개어 재사용 가능한 범위를 늘리면 좋을 것 같습니다.
+  - 느낀 점이나 경험한 성과: 성능 테스트를 진행하는 과정에서 마음만큼 성능 향상이 되지 않았던 경험을 통해 접근성, 성능, 로딩 속도 등 다방면을 고려해야 한다는 점을 깨달았습니다. 디자인과 기능이 갖춰진 웹사이트를 만들어볼 수 있었고 팀원들과 협업도 잘 되어서 인상적인 프로젝트 경험으로 남을 것 같습니다.
+  
 - `[ ]`: `[ ]`

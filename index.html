@@ -2,14 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <link
+      rel="preload"
+      as="image"
+      href="/src/assets/obj_desk_lamp.webp"
+      type="image/webp"
+      fetchpriority="high"
+      media="(min-width: 1024px)"
+    />    
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0 viewport-fit=cover"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <!-- 이미지가 wsrv.nl 리사이징 프록시를 거쳐서 오므로, 이 도메인에 미리 연결 -->
-    <link rel="preconnect" href="https://wsrv.nl" />
-    <link rel="dns-prefetch" href="https://wsrv.nl" />
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/fontsource/fonts/dm-serif-text@latest/latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
     <title>scenery</title>
   </head>
   <body>
