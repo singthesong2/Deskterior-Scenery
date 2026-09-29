@@ -3,6 +3,7 @@ import { checkId } from "../api/authApi";
 import { IconEye, IconEyeClosed, IconCircleCheck } from "@tabler/icons-react";
 import { showSuccessToast, showFailToast } from "./common/ShowToast";
 import { loginSchema, signupSchema } from "../schema/AuthSchema";
+import useToggle from "../hook/useToggle";
 import { useNavigate } from "react-router";
 import {
   Form,
@@ -42,8 +43,8 @@ function AuthForm({ mode, onSubmit }) {
   const [successMessage, setSuccessMessage] = useState("");
   const [message, setMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [showPassword, togglePassword] = useToggle();
+  const [showPasswordConfirm, togglePasswordConfirm] = useToggle();
   const [shakingButton, setShakingButton] = useState(false);
   const [idShakingButton, setIdShakingButton] = useState(false);
   const navigate = useNavigate();
@@ -382,7 +383,7 @@ function AuthForm({ mode, onSubmit }) {
 
             <PasswordHidenButton
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={togglePassword}
               aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
               title={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
@@ -420,7 +421,7 @@ function AuthForm({ mode, onSubmit }) {
 
               <PasswordHidenButton
                 type="button"
-                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                onClick={togglePasswordConfirm}
                 aria-label={
                   showPasswordConfirm
                     ? "비밀번호 재확인 숨기기"
