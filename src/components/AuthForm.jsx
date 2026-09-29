@@ -286,6 +286,7 @@ function AuthForm({ mode, onSubmit }) {
                 placeholder="길동"
                 value={formData.firstName}
                 onChange={handleChange}
+                autoFocus
               />
               <ErrorMessage $visible={!!fieldErrors.firstName} $firstName>
                 {fieldErrors.firstName && (
@@ -336,6 +337,7 @@ function AuthForm({ mode, onSubmit }) {
               }
               value={formData.id}
               onChange={handleChange}
+              autoFocus={mode === "login"}
             />
 
             {mode === "signup" && (
