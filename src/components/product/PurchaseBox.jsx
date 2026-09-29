@@ -4,6 +4,7 @@ import * as S from "../../styles/ProductDetail/PurchaseBox.styles";
 
 const PurchaseBox = ({
   quantity = 1,
+  unitPrice = 0,
   onQuantityChange,
   onAddToCart,
   onCheckout,
@@ -19,6 +20,7 @@ const PurchaseBox = ({
     Math.max(1, Math.floor(Number(quantity) || 1)),
   );
 
+  const totalPrice = unitPrice * safeQty;
   const decrease = () => onQuantityChange(Math.max(1, safeQty - 1));
   const increase = () => onQuantityChange(Math.min(maxQuantity, safeQty + 1));
 
@@ -45,6 +47,11 @@ const PurchaseBox = ({
           +
         </S.StepButton>
       </S.Stepper>
+
+      <S.TotalPriceRow>
+        <span>총 상품 금액</span>
+        <strong aria-live="polite">{totalPrice.toLocaleString()}원</strong>
+      </S.TotalPriceRow>
 
       <S.ButtonRow>
         <S.CartButton
