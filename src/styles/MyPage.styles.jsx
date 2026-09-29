@@ -446,7 +446,7 @@ export const CurrentPasswordHidenButton = styled.button(({ theme }) => ({
   padding: 0,
   border: "none",
   backgroundColor: "transparent",
-  color: theme.colors.secondText,
+  color: theme.colors.textMain,
   cursor: "pointer",
 }));
 
@@ -461,7 +461,7 @@ export const NewPasswordHidenButton = styled.button(({ theme }) => ({
   padding: 0,
   border: "none",
   backgroundColor: "transparent",
-  color: theme.colors.secondText,
+  color: theme.colors.textMain,
   cursor: "pointer",
 }));
 

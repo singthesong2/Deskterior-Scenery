@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation, Link } from "react-router";
 import useLoadingStore from "../store/UseLoadingStore";
 import useCartStore from "../store/cartStore";
+import useToggle from "../hook/useToggle";
 import {
   logout,
   getMe,
@@ -98,9 +99,16 @@ function Mypage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isPasswordSaving, setIsPasswordSaving] = useState(false);
 
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false);
+  const [showCurrentPassword, toggleCurrentPassword, setShowCurrentPassword] =
+    useToggle();
+
+  const [showNewPassword, toggleNewPassword, setShowNewPassword] = useToggle();
+
+  const [
+    showNewPasswordConfirm,
+    toggleNewPasswordConfirm,
+    setShowNewPasswordConfirm,
+  ] = useToggle();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -524,9 +532,7 @@ function Mypage() {
 
                       <CurrentPasswordHidenButton
                         type="button"
-                        onClick={() =>
-                          setShowCurrentPassword(!showCurrentPassword)
-                        }
+                        onClick={toggleCurrentPassword}
                         aria-label={
                           showCurrentPassword
                             ? "비밀번호 숨기기"
@@ -566,7 +572,7 @@ function Mypage() {
 
                       <NewPasswordHidenButton
                         type="button"
-                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        onClick={toggleNewPassword}
                         aria-label={
                           showNewPassword ? "비밀번호 숨기기" : "비밀번호 보기"
                         }
@@ -602,9 +608,7 @@ function Mypage() {
 
                       <NewPasswordHidenButton
                         type="button"
-                        onClick={() =>
-                          setShowNewPasswordConfirm(!showNewPasswordConfirm)
-                        }
+                        onClick={toggleNewPasswordConfirm}
                         aria-label={
                           showNewPasswordConfirm
                             ? "비밀번호 숨기기"
