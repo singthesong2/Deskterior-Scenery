@@ -70,6 +70,38 @@ export const Qty = styled.span(({ theme }) => ({
   },
 }));
 
+export const TotalPriceRow = styled.div(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  paddingTop: theme.spacing.sm,
+  borderTop: `${theme.borderWidth.default} solid ${theme.colors.subtle}`,
+
+  "& span": {
+    color: theme.colors.textMain,
+    fontSize: theme.fontSize.md,
+    fontWeight: theme.fontWeight.regular,
+  },
+
+  "& strong": {
+    color: theme.colors.textMain,
+    fontSize: theme.fontSize.xl,
+    fontWeight: theme.fontWeight.semiBold,
+    lineHeight: "normal",
+  },
+
+  [theme.media.tablet]: {
+    "& span": {
+      fontSize: theme.fontSize.sm,
+    },
+
+    "& strong": {
+      fontSize: theme.fontSize.lg,
+    },
+  },
+}));
+
 export const ButtonRow = styled.div(({ theme }) => ({
   display: "flex",
   gap: theme.spacing.xs,
