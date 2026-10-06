@@ -192,7 +192,9 @@ const ProductDetailPage = () => {
 
       toggleWish(product.id);
       showSuccessToast(
-        isWished ? "위시리스트에서 삭제되었습니다." : "위시리스트에 추가되었습니다.",
+        isWished
+          ? "위시리스트에서 삭제되었습니다."
+          : "위시리스트에 추가되었습니다.",
       );
     } catch (err) {
       console.error("위시리스트 변경 실패:", err);
@@ -306,6 +308,7 @@ const ProductDetailPage = () => {
               />
               <PurchaseBox
                 quantity={quantity}
+                unitPrice={product.discountPrice ?? product.price}
                 onQuantityChange={setQuantity}
                 onAddToCart={handleAddToCart}
                 onCheckout={handleCheckout}

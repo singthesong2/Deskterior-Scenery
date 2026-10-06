@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import useDebounce from "../../hook/useDebounce";
+import useOnClickOutside from "../../hook/useOnClickOutside";
 import { SORT_OPTIONS } from "../../data/sortOptions";
 import * as S from "../../styles/ListPageStyles/ProductToolbar.styles";
 
@@ -17,7 +19,6 @@ const ProductToolbar = ({
   const [inputValue, setInputValue] = useState(search);
   const [syncedSearch, setSyncedSearch] = useState(search);
   const [lastSent, setLastSent] = useState(search);
-  const debounceRef = useRef(null);
 
   // 외부에서 검색어가 바뀌면 입력창도 동기화 (단, 방금 우리가 보낸 값이면
   // 건드리지 않음 - 그 사이 타이핑한 내용이 지워질 수 있음)
@@ -28,24 +29,22 @@ const ProductToolbar = ({
     }
   }
 
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, []);
+  const { debounce: debounceSearch, cancel: cancelSearch } = useDebounce(
+    (value) => {
+      setLastSent(value);
+      onSearchChange?.(value);
+    },
+    SEARCH_DEBOUNCE_MS,
+  );
 
   const handleSearchInputChange = (value) => {
     setInputValue(value);
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setLastSent(value);
-      onSearchChange?.(value);
-    }, SEARCH_DEBOUNCE_MS);
+    debounceSearch(value);
   };
 
   // X 버튼: 디바운스 없이 즉시 검색어를 비움
   const handleClearSearch = () => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
+    cancelSearch();
     setInputValue("");
     setLastSent("");
     onSearchChange?.("");
@@ -53,27 +52,22 @@ const ProductToolbar = ({
 
   // 돋보기 버튼: 디바운스를 기다리지 않고 지금 입력된 검색어로 바로 검색
   const handleSubmitSearch = () => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
+    cancelSearch();
     setLastSent(inputValue);
     onSearchChange?.(inputValue);
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = (event) => {
-      if (sortBoxRef.current && !sortBoxRef.current.contains(event.target)) {
-        // 메뉴 안의 옵션에 가 있던 포커스가 aria-hidden 처리된 채로 남지 않도록 해제
-        if (sortBoxRef.current.contains(document.activeElement)) {
-          document.activeElement.blur();
-        }
-        setIsOpen(false);
+  useOnClickOutside(
+    sortBoxRef,
+    () => {
+      if (sortBoxRef.current?.contains(document.activeElement)) {
+        document.activeElement.blur();
       }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+      setIsOpen(false);
+    },
+    isOpen,
+  );
 
   const currentOption =
     SORT_OPTIONS.find((option) => option.value === sortBy) ?? SORT_OPTIONS[0];
